@@ -172,43 +172,33 @@ a la curva — un error que solo se ve cuando ya está publicado.
 La curva es Catmull-Rom convertida a béziers: una polilínea recta parece un
 electrocardiograma, la curva parece una tendencia.
 
-### 3c-bis. El rail es metal
+### 3c-bis. El rail es negro mate
 
-Una placa de acero cepillado con su propio brillo. El contenido es el escenario;
-el rail es el chasis que lo sostiene.
+Negro mate con toques metalizados, **dibujado con gradientes, no con una foto**.
+El contenido es el escenario; el rail es el chasis que lo sostiene.
 
-Se probaron antes dos caminos y los dos se descartaron por lo mismo — no le daban
-identidad propia: el **blanco hueso** robaba protagonismo a la foto en vez de
-dárselo, y el **vidrio** dejaba pasar la foto de la vista, que detrás de un menú
-llega desenfocada y no aporta.
+Se probaron tres caminos antes:
 
-**El rail es una franja muy alta y estrecha**, del orden de 1:5,6. De cualquier
-textura solo se ve una rebanada vertical, así que el archivo viene ya recortado
-por la banda donde cruza el brillo diagonal, en vez de estampar la foto entera
-y confiar en el `cover`.
+| Intento | Por qué se descartó |
+|---|---|
+| **Blanco hueso** | Una superficie clara y maciza a la izquierda robaba protagonismo a la foto en vez de dárselo |
+| **Vidrio** | Dejaba pasar la foto de la vista, que detrás de un menú llega desenfocada y no aporta |
+| **Acero cepillado (foto)** | Se veía, pero traía líneas y un especular a blanco puro: el texto secundario caía a **2.13:1** |
 
-**Dos correcciones de legibilidad, ambas calculadas:**
+Dibujarlo resuelve las tres cosas a la vez: el reflejo va exactamente donde
+conviene, el fondo se mantiene siempre oscuro y no hay archivo que descargar.
+**En el punto más claro del rail —base más el destello más fuerte— el texto
+secundario da 8.34:1.** Antes había que pelear por llegar a 4.9.
 
-| | Antes | Después |
-|---|---|---|
-| Especular de la textura | 253 (blanco puro) | 168 |
-| Pista secundaria sobre el brillo | 2.13:1 ✗ | 4.91:1 ✓ |
+**Mate no es negro plano.** Lleva grano finísimo en `::after`. Sin él, una
+superficie oscura grande forma bandas en el degradado y se lee a plástico; con
+él, a metal anodizado.
 
-La textura se sirve con la parte alta de la curva comprimida: por debajo de 96
-no se toca y de ahí arriba se dobla hacia un techo de 168. Así conserva el
-brillo sin llegar a blanco.
+**Los reflejos son anchos y muy tenues** (7,5 % y 4,2 % de blanco). Un reflejo
+estrecho y marcado es brillo de plástico; el metal mate devuelve la luz difusa.
 
-Aun así, un gris medio detrás de texto es el peor caso posible para el
-contraste. El velo `--g-rail` se cierra a `.54` en la banda del brillo y el tono
-de `--rail-dim` sube: el peor punto del rail da 4.91:1 y el resto, mucho más
-oscuro, pasa de 10:1.
-
-**Sin `opacity` en el texto secundario.** Con una textura variable detrás, una
-opacidad hace que el contraste dependa de si el texto cae sobre el brillo o
-sobre la sombra. El tono se fija y es predecible en toda la altura.
-
-**La veladura diagonal del sistema se retira del rail:** el metal ya trae la
-suya, y dos brillos cruzados se leen como suciedad.
+**Sin `opacity` en el texto secundario**, aquí y en cualquier superficie con
+algo variable detrás: el tono se fija y no depende de qué caiga debajo.
 
 ### 3d. Superficies de énfasis
 

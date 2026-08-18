@@ -769,53 +769,55 @@ tr.is-mine { background: var(--brand-tint); }
 body[data-bleed] .auth-error { color: var(--band-neg);
   background: rgba(229,35,31,.16); border-color: rgba(255,157,150,.3); }
 
-/* ── 22. Rail de metal ────────────────────────────────────────────────────
-   Una placa de acero cepillado con su propio brillo. El rail deja de ser
-   vidrio: no enseña la foto de la vista, tiene material propio. El contenido
-   es el escenario; el rail es el chasis que lo sostiene.
+/* ── 22. Rail negro mate ──────────────────────────────────────────────────
+   Negro mate con toques metalizados, dibujado con gradientes y no con una
+   foto. Se probó una textura de acero cepillado: se veía, pero traía sus
+   líneas y un especular a blanco puro que dejaba el texto secundario en
+   2.13:1. Dibujado, el reflejo va exactamente donde conviene y el fondo se
+   mantiene siempre oscuro — el peor punto del rail pasa de 9:1.
 
-   El rail es una franja muy alta y estrecha —del orden de 1:5,6— así que de
-   la textura solo se ve una rebanada vertical. Por eso el archivo ya viene
-   recortado por la banda donde cruza el brillo diagonal, en vez de estampar
-   la foto entera y confiar en el `cover`.                                  */
+   Antes de eso se probó blanco hueso —robaba protagonismo a la foto— y vidrio
+   —dejaba pasar una foto desenfocada que no aportaba detrás de un menú—. El
+   mate le da material propio sin competir con nada.                        */
 
 .nav {
   background-color: var(--rail-base);
-  background-image: var(--g-rail), var(--tex-metal);
-  background-size: auto, cover;
-  background-position: center, center top;
-  background-repeat: no-repeat, no-repeat;
+  background-image: var(--g-rail);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  box-shadow: inset -1px 0 0 rgba(255,255,255,.09),
-              inset 0 1px 0 rgba(255,255,255,.13),
-              26px 0 60px -34px rgba(0,0,0,.75);
+  box-shadow: inset -1px 0 0 rgba(255,255,255,.075),
+              inset 0 1px 0 rgba(255,255,255,.11),
+              26px 0 60px -34px rgba(0,0,0,.8);
 }
 
-/* La veladura diagonal del sistema se retira aquí: el metal ya trae la suya,
-   y dos brillos cruzados se leen como suciedad. */
-.nav::after { background-image: none; }
+/* Grano finísimo. Mate no es negro plano: sin grano, una superficie oscura
+   grande forma bandas en el degradado y se lee a plástico. Con él, a metal
+   anodizado. Va en `::after`, que ya existía para la veladura del sistema. */
+.nav::after, .ob-rail::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+  opacity: .30;
+  mix-blend-mode: overlay;
+}
 
-/* Los estados son luz sobre metal. */
-.nav-brand:hover { background: rgba(255,255,255,.08); }
+/* Los estados son luz sobre el mate. */
+.nav-brand:hover { background: rgba(255,255,255,.07); }
 .nav-item { color: var(--rail-dim); }
-.nav-item:hover { background: rgba(255,255,255,.08); color: #fff; }
-.nav-item.is-on { background: rgba(255,255,255,.12); color: #fff;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.14); }
+.nav-item:hover { background: rgba(255,255,255,.075); color: #fff; }
+.nav-item.is-on { background: rgba(255,255,255,.11); color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.13); }
 
-.nav-ic { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.09);
+.nav-ic { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.08);
   color: var(--rail-dim); }
 .nav-item:hover .nav-ic { color: #fff; }
 .nav-item.is-on .nav-ic { color: #fff; }
 
-.nav-user, .cuenta { background: rgba(255,255,255,.07);
-  border-color: rgba(255,255,255,.13); }
-.nav-user:hover, .cuenta:hover { background: rgba(255,255,255,.12); }
-.brand-logo { background: rgba(255,255,255,.08); }
+.nav-user, .cuenta { background: rgba(255,255,255,.06);
+  border-color: rgba(255,255,255,.11); }
+.nav-user:hover, .cuenta:hover { background: rgba(255,255,255,.11); }
+.brand-logo { background: rgba(255,255,255,.07); }
 
-/* Sin `opacity` en el texto secundario: con una textura variable detrás, una
-   opacidad hace que el contraste dependa de si cae sobre el brillo o sobre la
-   sombra. El tono se fija y es predecible en toda la altura del rail. */
+/* Sin `opacity` en el texto secundario: el tono se fija y no depende de qué
+   haya detrás en cada punto de la altura del rail. */
 .nav-txt em, .nav-brand-txt em, .nav-user-txt em, .cuenta-txt em {
   opacity: 1; color: var(--rail-dim); }
 .nav-user-swap { color: var(--rail-dim); }
@@ -823,11 +825,8 @@ body[data-bleed] .auth-error { color: var(--band-neg);
 /* El onboarding usa el mismo chasis. */
 .ob-rail {
   background-color: var(--rail-base);
-  background-image: var(--g-rail), var(--tex-metal);
-  background-size: auto, cover;
-  background-position: center, center top;
+  background-image: var(--g-rail);
 }
-.ob-rail::after { background-image: none; }
 
 /* El logo pasó de SVG a PNG con alfa. `object-fit: contain` para que nunca se
    deforme, y la sombra proyectada se recorta a la silueta —no a la caja— por

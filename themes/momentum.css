@@ -81,18 +81,18 @@
   --band-neg:   #ff9d96;
   --band-amber: var(--accent-hi);   /* el dato titular sobre negro va en esmeralda */
 
-/* El rail es METAL: una placa de acero cepillado con su propio brillo, no una
-   lámina translúcida. Deja de dejar ver la foto de la vista y pasa a tener
-   material propio — el contenido es el escenario, el rail es el chasis.
+/* El rail es negro mate con toques metalizados, y se dibuja con gradientes,
+   no con una foto. Una textura de metal cepillado se veía, pero traía sus
+   líneas y su brillo especular a blanco puro — y sobre un gris medio el texto
+   secundario caía a 2.13:1. Dibujarlo permite ponerle el reflejo exacto donde
+   conviene y mantener el fondo siempre oscuro: aquí el peor punto pasa de 9:1.
 
-   El especular de la textura llegaba a blanco puro (253) y aquí encima va
-   texto blanco: la imagen se sirve con la parte alta de la curva comprimida a
-   un techo de 168, así conserva el brillo sin competir con el texto. */
-  --tex-metal:  url('../assets/fondos/metal.jpg?v=3');
-  --rail-base:  #07090b;
+   Mate no es negro plano: lleva grano finísimo. Sin él, un negro grande en
+   pantalla forma bandas y se lee a plástico, no a metal anodizado. */
+  --rail-base:  #06080a;
   --rail-text:  #ffffff;
-  --rail-dim:   #c3d0c8;
-  --rail-line:  rgba(255,255,255,.12);
+  --rail-dim:   #a8b8ae;
+  --rail-line:  rgba(255,255,255,.10);
   --nav-on-bg:  rgba(52,211,153,.16);
 
 /* Sombras: azul muy oscuro. Un gris puro sobre este blanco se ve sucio. */
@@ -192,18 +192,17 @@
   /* Velo sobre el metal: se abre en la banda del brillo para dejarlo lucir y
      se cierra arriba y abajo, que es donde viven la marca y la ficha de
      usuario y hace falta contraste. */
-  /* El velo no es decorativo, es lo que hace legible el texto sobre el brillo.
-     Calculado: el especular de la textura llega a 168 y sobre un gris medio el
-     texto secundario caía a 2.13:1. Con .54 en la banda del brillo y el tono
-     de `--rail-dim` subido, el peor punto del rail da 4.91:1. El resto del
-     rail, que es mucho más oscuro, pasa de 10:1. */
-  --g-rail:  linear-gradient(178deg, rgba(6,10,12,.74) 0%, rgba(6,10,12,.54) 26%,
-                             rgba(6,10,12,.54) 62%, rgba(6,10,12,.80) 100%);
-  --g-sheen-v: linear-gradient(178deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.03) 34%,
-                               rgba(255,255,255,0) 56%);
-  --g-sheen:   var(--g-sheen-v),
-               linear-gradient(112deg, transparent 34%, rgba(var(--accent-rgb),.14) 46%,
-                               rgba(255,255,255,.02) 54%, transparent 62%);
+  /* Los toques metalizados: dos reflejos anchos y muy tenues, uno alto y otro
+     bajo, más el asentamiento de sombra al pie. Anchos y suaves a propósito —
+     un reflejo estrecho y marcado es brillo de plástico; el metal mate
+     devuelve la luz difusa. */
+  --g-rail:
+    linear-gradient(158deg, rgba(214,232,226,.075) 0%, rgba(214,232,226,.022) 17%,
+                    transparent 34%),
+    linear-gradient(200deg, transparent 52%, rgba(200,220,214,.042) 68%,
+                    rgba(200,220,214,.012) 78%, transparent 88%),
+    linear-gradient(180deg, rgba(255,255,255,.05) 0%, transparent 9%,
+                    transparent 74%, rgba(0,0,0,.42) 100%);
 
 /* Vidrio: la ficha flotante sobre foto. */
   --glass:       rgba(255,255,255,.13);
