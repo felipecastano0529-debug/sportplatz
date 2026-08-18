@@ -826,7 +826,10 @@ select.input { appearance: none; cursor: pointer;
    área de contenido (el rail queda fuera), así que no se arrastra con el
    scroll y las tarjetas flotan encima de la cancha de verdad.            */
 
-.view-bg { position: fixed; top: 0; right: 0; bottom: 0; left: var(--nav-w);
+/* Ocupa TODA la pantalla, también por debajo del rail. El rail es vidrio y la
+   foto tiene que continuar detrás de él; si el fondo empezara donde termina el
+   menú, el vidrio no tendría nada que dejar ver. */
+.view-bg { position: fixed; inset: 0;
   z-index: 0; pointer-events: none; overflow: hidden; }
 .view-bg .media-wash { position: absolute; inset: 0;
   /* Los campos se calibraron para tarjetas pequeñas. A pantalla completa,

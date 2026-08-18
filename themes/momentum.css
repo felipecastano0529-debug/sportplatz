@@ -81,20 +81,19 @@
   --band-neg:   #ff9d96;
   --band-amber: var(--accent-hi);   /* el dato titular sobre negro va en esmeralda */
 
-/* El rail va en blanco hueso: es la única superficie clara grande de la app,
-   y contra el estadio oscuro del contenido se lee como una hoja de papel
-   apoyada al lado. `--rail-dim` usa n-600 y no n-500 porque sobre este hueso
-   n-500 daba 4.36:1 — por debajo de AA para texto pequeño. n-600 da 7.18:1. */
-  --rail-bg-a:  #faf8f2;
-  --rail-bg-b:  #ede9df;
-  --rail-text:  var(--n-950);
-  --rail-dim:   var(--n-600);
-  --rail-line:  rgba(28,34,26,.11);
-  /* La pista secundaria del menú. No es n-500 (4.36:1, por debajo de AA) ni
-     n-600 (7.18:1, igual que la etiqueta y sin jerarquía): es el punto medio
-     que da 5.20:1 y aun así se lee más ligero que el nombre de la sección. */
-  --rail-hint:  #5a6678;
-  --nav-on-bg:  rgba(4,120,87,.10);
+/* El rail es VIDRIO, no una superficie: el fondo de la vista pasa por detrás
+   y se ve a través de él. Por eso `--g-rail` es translúcido y no un color —
+   detrás hay una foto, y taparla sería desperdiciar el escenario.
+
+   La opacidad no es libre. Compuesto el peor caso —cielo claro de la foto de
+   voleibol, en la banda alta donde el velo es más flojo— la pista secundaria
+   da 4.89:1 a .62 y 4.25:1 a .55. Por debajo de .62 deja de pasar AA, así que
+   se queda en .64: con margen, y dejando ver bastante más foto que .74. */
+  --rail-glass: rgba(9, 16, 13, .64);
+  --rail-text:  #ffffff;
+  --rail-dim:   #a8b8ae;
+  --rail-line:  rgba(255,255,255,.12);
+  --nav-on-bg:  rgba(52,211,153,.16);
 
 /* Sombras: azul muy oscuro. Un gris puro sobre este blanco se ve sucio. */
   --shadow-rgb: 11, 20, 38;
@@ -190,7 +189,10 @@
   --g-red:        linear-gradient(180deg, #f4453f 0%, #d21b17 100%);
 
   --g-ink:   linear-gradient(158deg, var(--band-bg-a) 0%, var(--band-bg-b) 100%);
-  --g-rail:  linear-gradient(170deg, var(--rail-bg-a) 0%, var(--rail-bg-b) 100%);
+  /* Un velo vertical sobre el vidrio: más denso arriba, donde vive la marca,
+     y más abierto abajo, para que la foto respire por el pie del rail. */
+  --g-rail:  linear-gradient(178deg, rgba(6,12,10,.30) 0%, rgba(6,12,10,.10) 44%,
+                             rgba(6,12,10,.24) 100%);
   --g-sheen-v: linear-gradient(178deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.03) 34%,
                                rgba(255,255,255,0) 56%);
   --g-sheen:   var(--g-sheen-v),

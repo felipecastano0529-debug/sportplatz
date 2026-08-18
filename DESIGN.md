@@ -164,30 +164,37 @@ a la curva — un error que solo se ve cuando ya está publicado.
 La curva es Catmull-Rom convertida a béziers: una polilínea recta parece un
 electrocardiograma, la curva parece una tendencia.
 
-### 3c-bis. El rail en blanco hueso
+### 3c-bis. El rail es vidrio, no una superficie
 
-El rail es la única superficie clara grande de la app. Contra el estadio oscuro
-del contenido se lee como una hoja de papel apoyada al lado, y **se queda quieto
-mientras el contenido cambia** — es el marco, no el escenario.
+El fondo de la vista ocupa **toda la pantalla, también por debajo del rail**, y
+el rail es una lámina translúcida encima. El estadio ya no queda partido en dos
+por una barra opaca: sigue de lado a lado y el menú flota sobre él.
 
-Invertirlo no fue cambiar un color. El rail estaba construido para fondo oscuro:
-los estados eran `rgba(255,255,255,.06)`, los textos blancos, y la veladura
-cenital sumaba luz. Sobre hueso, un velo blanco no se ve y los estados
-desaparecen. Todo eso vive en un bloque aparte de `premium.css`: si algún día
-vuelve a oscuro, se borra ese bloque y se revierten los tokens `--rail-*`.
+Se probó antes en blanco hueso. Se descartó: una superficie clara y maciza a la
+izquierda robaba protagonismo a la foto en vez de dárselo, que era justo lo
+contrario de lo que la sección tenía que hacer.
 
-**Dos trampas de contraste, ambas medidas:**
+**La opacidad del vidrio no es libre.** Compuesto el peor caso —el cielo claro
+de la foto de voleibol, en la banda alta donde el velo es más flojo— la pista
+secundaria del menú da:
 
-| Elemento | Antes | Ahora |
-|---|---|---|
-| Pista secundaria (`Cuánto entra`) | **2.65:1** — fallaba AA | **5.16:1** |
-| Etiqueta de sección | 7.12:1 | 7.12:1 |
+| Opacidad del vidrio | Contraste de la pista |
+|---|---|
+| `.55` | 4.25:1 ✗ |
+| `.62` | 4.89:1 ✓ |
+| `.64` (elegida) | ~5.0:1 ✓ |
+| `.74` | 6.02:1 ✓ pero apenas deja ver la foto |
 
-La pista llevaba `opacity: .72`. Con texto blanco sobre oscuro eso sigue siendo
-brillante; con texto oscuro sobre hueso, lava el color hasta hacerlo ilegible.
-Se quita la opacidad y el tono se fija en `--rail-hint`, que no es `n-500`
-(4.36:1, por debajo de AA) ni `n-600` (7.18:1, igual que la etiqueta y sin
-jerarquía): es el punto intermedio que da 5.20:1 y aún se lee más ligero.
+Se queda en `.64`: con margen sobre AA y dejando pasar bastante más fondo. Es
+un cálculo analítico sobre las capas (foto → velo → vidrio), no una medición
+del píxel compuesto: `backdrop-filter` no es inspeccionable desde el DOM.
+
+**La pista secundaria no lleva `opacity`.** Con un fondo variable detrás, una
+opacidad hace que el contraste dependa de la foto. El tono se fija en
+`--rail-dim` y así es predecible pase lo que pase por detrás.
+
+**El onboarding es la excepción:** ahí no hay fondo de vista, así que su rail es
+sólido. Un vidrio sin nada que dejar ver es solo un gris.
 
 ### 3d. Superficies de énfasis
 

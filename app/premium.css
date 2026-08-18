@@ -769,81 +769,56 @@ tr.is-mine { background: var(--brand-tint); }
 body[data-bleed] .auth-error { color: var(--band-neg);
   background: rgba(229,35,31,.16); border-color: rgba(255,157,150,.3); }
 
-/* ── 22. Rail en blanco hueso ─────────────────────────────────────────────
-   El rail estaba construido entero para fondo oscuro: los estados eran
-   `rgba(255,255,255,.06)`, los textos blancos, y la veladura cenital de
-   `--g-sheen-v` sumaba luz. Sobre hueso, un velo blanco no se ve y los
-   estados desaparecen.
+/* ── 22. Rail de vidrio ───────────────────────────────────────────────────
+   El rail deja de ser una superficie y pasa a ser una lámina: el fondo de la
+   vista corre por detrás y se ve a través. Eso es lo que le da presencia al
+   escenario — el estadio ya no queda partido en dos por una barra opaca,
+   sigue de lado a lado y el menú flota encima.
 
-   Aquí se invierten esas capas. Es un bloque aparte a propósito: los tokens
-   `--rail-*` cambian el color, pero lo que estaba escrito a mano hay que
-   escribirlo a mano. Si algún día el rail vuelve a oscuro, se borra esto y
-   se revierten los tokens — nada más.                                     */
+   La opacidad del vidrio no es libre. Por debajo de ~.70 el estadio se cuela
+   con luz suficiente para que la pista secundaria baje de 4.5:1, que es donde
+   deja de ser legible. Está en .74 con margen.                            */
 
-/* La veladura de luz no aporta nada sobre una superficie clara: se cambia por
-   una sombra interior muy leve, que sí da volumen sobre hueso. */
-.nav::after {
-  background-image: linear-gradient(178deg,
-    rgba(28,34,26,.05) 0%, rgba(28,34,26,.015) 30%, transparent 55%);
+.nav {
+  background-color: var(--rail-glass);
+  background-image: var(--g-rail);
+  backdrop-filter: blur(22px) saturate(130%);
+  -webkit-backdrop-filter: blur(22px) saturate(130%);
+  /* Un filo de luz a la derecha en vez de una sombra: sobre foto, una sombra
+     difusa se lee como suciedad; una línea se lee como canto de cristal. */
+  box-shadow: inset -1px 0 0 rgba(255,255,255,.10),
+              inset 0 1px 0 rgba(255,255,255,.14),
+              26px 0 60px -34px rgba(0,0,0,.7);
 }
 
-/* El filo derecho: sin él, el hueso y el estadio se tocan sin transición. */
-.nav { box-shadow: 1px 0 0 rgba(28,34,26,.09),
-                   22px 0 52px -30px rgba(var(--shadow-rgb), .5),
-                   inset 0 1px 0 rgba(255,255,255,.9); }
+/* La veladura diagonal vuelve, que sobre vidrio oscuro sí se ve. */
+.nav::after { background-image: var(--g-sheen-v); }
 
-.nav-brand:hover { background: rgba(28,34,26,.05); }
+/* Los estados vuelven a ser luz, no sombra. */
+.nav-brand:hover { background: rgba(255,255,255,.08); }
+.nav-item { color: var(--rail-dim); }
+.nav-item:hover { background: rgba(255,255,255,.08); color: #fff; }
+.nav-item.is-on { background: rgba(255,255,255,.13); color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.14); }
 
-.nav-item { color: var(--n-600); }
-.nav-item:hover { background: rgba(28,34,26,.05); color: var(--n-950); }
-/* Sobre oscuro bastaba un 9% de blanco para marcar el activo. Sobre hueso el
-   mismo salto no se ve: hay que subirlo y añadirle un filo, o la sección en la
-   que estás deja de distinguirse de las otras seis. */
-.nav-item.is-on { background: rgba(28,34,26,.085); color: var(--n-950);
-  box-shadow: inset 0 0 0 1px rgba(28,34,26,.05), inset 0 1px 0 rgba(255,255,255,.9); }
-/* `opacity: .72` funcionaba con texto blanco sobre oscuro; sobre hueso lava el
-   texto hasta 2.65:1. Se quita la opacidad y el tono se fija con un token. */
-.nav-txt em, .nav-brand-txt em, .nav-user-txt em, .cuenta-txt em, .ob-foot {
-  opacity: 1; color: var(--rail-hint); }
-.nav-item.is-on .nav-txt em { color: var(--n-600); }
-
-/* El icono en reposo es una pastilla de papel; el activo se queda con el
-   degradado de marca y su resplandor, que sobre hueso destaca aún más. */
-.nav-ic { background: rgba(28,34,26,.05); border-color: rgba(28,34,26,.07);
-  color: var(--n-600); }
-.nav-item:hover .nav-ic { color: var(--n-800); }
+.nav-ic { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.09);
+  color: var(--rail-dim); }
+.nav-item:hover .nav-ic { color: #fff; }
 .nav-item.is-on .nav-ic { color: #fff; }
 
-.nav-user { background: rgba(28,34,26,.04); border-color: rgba(28,34,26,.09); }
-.nav-user:hover { background: rgba(28,34,26,.07); }
-.nav-user-txt b { color: var(--n-950); }
+.nav-user, .cuenta { background: rgba(255,255,255,.07);
+  border-color: rgba(255,255,255,.13); }
+.nav-user:hover, .cuenta:hover { background: rgba(255,255,255,.12); }
+.brand-logo { background: rgba(255,255,255,.08); }
 
-.nav-user-swap { color: var(--n-400); }
+/* La pista secundaria: sin opacidad y con su propio tono. `opacity: .72` sobre
+   vidrio la dejaba en 3.1:1 según lo que hubiera detrás; fijarla la vuelve
+   predecible pase lo que pase por el fondo. */
+.nav-txt em, .nav-brand-txt em, .nav-user-txt em, .cuenta-txt em {
+  opacity: 1; color: var(--rail-dim); }
+.nav-user-swap { color: var(--rail-dim); }
 
-.brand-logo { background: rgba(28,34,26,.05); }
-
-/* La fila de cuenta hereda el mismo cambio de temperatura. */
-.cuenta { background: rgba(28,34,26,.04); border-color: rgba(28,34,26,.09); }
-.cuenta:hover { background: rgba(28,34,26,.07); }
-.cuenta-txt b { color: var(--n-950); }
-
-.cuenta--demo { background: rgba(4,120,87,.09); border-color: rgba(4,120,87,.26); }
-.cuenta--demo:hover { background: rgba(4,120,87,.15); }
-.cuenta--demo .ic,
-.cuenta--demo .cuenta-txt em { color: var(--brand); }
-.cuenta--dentro .ic { color: var(--green-deep); }
-
-/* Los pasos del onboarding viven en el mismo rail. */
-.ob-rail { color: var(--rail-text); }
-.ob-brand span { color: var(--n-950); }
-.ob-step-t { color: var(--rail-hint); }
-.ob-step.is-now .ob-step-t { color: var(--n-950); }
-.ob-step-n { background: rgba(28,34,26,.06); border-color: rgba(28,34,26,.1);
-  color: var(--rail-hint); }
-.ob-step.is-now .ob-step-n { color: #fff; }
-.ob-step.is-done .ob-step-n { color: var(--brand); }
-
-.ob-step { border-bottom-color: rgba(28,34,26,.08); }
-
-/* La barra de scroll del rail, si la navegación no cabe. */
-.nav { scrollbar-color: rgba(28,34,26,.22) transparent; }
+/* El onboarding no tiene fondo de vista detrás, así que ahí el rail se queda
+   sólido. Un vidrio sin nada que dejar ver es solo un gris. */
+.ob-rail { background-color: #0a1310; background-image: var(--g-sheen-v),
+  linear-gradient(170deg, #16211a 0%, #040806 100%); }
