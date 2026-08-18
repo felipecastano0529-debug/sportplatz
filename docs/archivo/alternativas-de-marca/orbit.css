@@ -1,0 +1,100 @@
+/* ==========================================================================
+   TEMA 01 · ORBIT
+   Marca: tres anillos entrelazados. Editorial y cálido, formas suaves,
+   carbón en vez de negro puro, una tipografía display con carácter.
+   ========================================================================== */
+
+:root {
+  --bg:        #101012;
+  --bg-elev:   #17171a;
+  --surface:   #17171a;
+  --surface-2: #1f1f23;
+  --line:      #2a2a2f;
+  --line-soft: #202024;
+  --line-strong: #3a3a41;
+
+  --text:   #f4f2ef;
+  --text-2: #b6b3ae;
+  --text-3: #7d7a75;
+
+  --accent:       #e4392f;   /* rojo del anillo */
+  --accent-hover: #f2483d;
+  --accent-2:     #2f6ce5;   /* azul */
+  --accent-3:     #f2c14e;   /* amarillo */
+  --on-accent:    #100f0f;
+
+  --ok:   #4ec98a;
+  --warn: #f2c14e;
+  --neg:  #ef5f52;
+
+  --r-xl: 22px; --r-lg: 18px; --r-md: 12px; --r-sm: 7px; --r-pill: 999px;
+
+  --font-display: 'Bricolage Grotesque', 'Public Sans', system-ui, sans-serif;
+  --font-body:    'Public Sans', system-ui, -apple-system, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+  --display-weight: 700;
+  --display-track:  -0.025em;
+  --display-case:   none;
+
+  --shadow-1: 0 1px 2px rgba(0,0,0,.4);
+  --shadow-2: 0 24px 60px -20px rgba(0,0,0,.75);
+  --nav-w: 236px;
+
+  --bar-bg: #2f2f35;
+  --nav-bg: #131315;
+  --nav-on-bg: #1f1f23;
+  --stat-alt-bg: #1a1517;
+
+  --wa-bg: #0c1418; --wa-head: #1d2a31; --wa-in: #1e2c33; --wa-out: #0b6152; --wa-ok: #0a7a63;
+  --phone-shell: #202024;
+  --plan-line: #34343b;
+}
+
+body {
+  /* Un halo cálido, muy tenue, para que el carbón no se lea plano. */
+  background:
+    radial-gradient(1100px 600px at 78% -12%, rgba(228,57,47,.10), transparent 62%),
+    radial-gradient(900px 520px at 8% 105%, rgba(47,108,229,.09), transparent 60%),
+    var(--bg);
+  background-attachment: fixed;
+}
+
+/* Pelotas: cada deporte con su propio color, dibujadas en línea. */
+.ball--futbol    { --ball-fill: transparent; --ball-line: #f4f2ef; --ball-mark: #f4f2ef; }
+.ball--padel     { --ball-fill: transparent; --ball-line: #cfe04a; --ball-mark: #cfe04a; }
+.ball--tenis     { --ball-fill: transparent; --ball-line: #d8e04a; --ball-mark: #d8e04a; }
+.ball--voleibol  { --ball-fill: transparent; --ball-line: #2f6ce5; --ball-mark: #2f6ce5; }
+.ball--paintball { --ball-fill: transparent; --ball-line: #e4392f; --ball-mark: #e4392f; }
+
+/* El logo respira: los anillos giran lentísimo en el rail de navegación. */
+.nav-brand .logo .rings, .ob-brand .logo .rings {
+  transform-box: view-box; transform-origin: 50% 50%;
+  animation: orbit 48s linear infinite;
+}
+@keyframes orbit { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .logo .rings { animation: none; } }
+
+/* La rejilla del panel arranca con una fila destacada: el número de hoy manda. */
+.stat-row .stat:first-child {
+  background: linear-gradient(150deg, #1d1518, var(--surface) 58%);
+  border-color: #3a2226;
+}
+@media (min-width: 1240px) {
+  .stat-row { grid-template-columns: 1.3fr 1fr 1fr 1fr; }
+  .stat-row .stat:first-child .stat-val { font-size: clamp(28px, 2.8vw, 42px); }
+}
+
+.page-title { font-style: normal; }
+.card, .court, .tn-card, .stat { box-shadow: var(--shadow-1); }
+
+/* Encabezado del panel con un filete de color bajo el título. */
+.page-head { position: relative; padding-bottom: 22px; }
+.page-head::after {
+  content: ''; position: absolute; left: 0; bottom: 0; width: 64px; height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent) 33%, var(--accent-2) 33% 66%, var(--accent-3) 66%);
+}
+
+.nav-item.is-on { box-shadow: inset 2px 0 0 var(--accent); }
+.court-media { border-bottom: 1px solid var(--line); }
+.pod-1 { background: linear-gradient(180deg, #1e1a12, var(--surface) 70%); }

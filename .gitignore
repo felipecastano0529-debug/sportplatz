@@ -1,0 +1,11 @@
+# macOS
+.DS_Store
+
+# Vercel
+.vercel
+
+# Nada de node aquí: el proyecto no tiene dependencias ni build.
+node_modules/
+
+# Cache local del detector de diseño (la configuración sí se versiona)
+.impeccable/hook.cache.json

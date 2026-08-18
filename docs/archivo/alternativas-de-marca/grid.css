@@ -1,0 +1,127 @@
+/* ==========================================================================
+   TEMA 02 · GRID
+   Marca: cuadro con círculo, cuadrantes de color. Suizo y técnico:
+   ángulos rectos, retícula visible, todo dato en monoespaciada.
+   ========================================================================== */
+
+:root {
+  --bg:        #070707;
+  --bg-elev:   #0d0d0d;
+  --surface:   #0b0b0b;
+  --surface-2: #151515;
+  --line:      #262626;
+  --line-soft: #1a1a1a;
+  --line-strong: #3d3d3d;
+
+  --text:   #ffffff;
+  --text-2: #a8a8a8;
+  --text-3: #6e6e6e;
+
+  --accent:       #ffce00;   /* amarillo — el color de acción */
+  --accent-hover: #ffd92e;
+  --accent-2:     #0047ff;   /* azul */
+  --accent-3:     #e4002b;   /* rojo */
+  --on-accent:    #000000;
+
+  --ok:   #00c46a;
+  --warn: #ffce00;
+  --neg:  #e4002b;
+
+  --r-xl: 2px; --r-lg: 2px; --r-md: 2px; --r-sm: 1px; --r-pill: 2px;
+
+  --font-display: 'Archivo', system-ui, sans-serif;
+  --font-body:    'Archivo', system-ui, -apple-system, sans-serif;
+  --font-mono:    'IBM Plex Mono', ui-monospace, monospace;
+  --display-weight: 800;
+  --display-track:  -0.03em;
+  --display-case:   uppercase;
+
+  --shadow-1: none;
+  --shadow-2: 0 0 0 1px #262626, 0 30px 70px -24px rgba(0,0,0,.9);
+  --nav-w: 216px;
+
+  --bar-bg: #242424;
+  --nav-bg: #070707;
+  --nav-on-bg: #131313;
+
+  --wa-bg: #0a0a0a; --wa-head: #161616; --wa-in: #1a1a1a; --wa-out: #14351f; --wa-ok: #16472a;
+  --phone-shell: #1c1c1c;
+  --plan-line: #2e2e2e;
+}
+
+/* Retícula de fondo: el sistema se ve, no se esconde. */
+body {
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.024) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.024) 1px, transparent 1px);
+  background-size: 56px 56px;
+  background-attachment: fixed;
+}
+
+.ball--futbol    { --ball-line: #ffffff; --ball-mark: #ffffff; }
+.ball--padel     { --ball-line: #ffce00; --ball-mark: #ffce00; }
+.ball--tenis     { --ball-line: #ffce00; --ball-mark: #ffce00; }
+.ball--voleibol  { --ball-line: #0047ff; --ball-mark: #0047ff; }
+.ball--paintball { --ball-line: #e4002b; --ball-mark: #e4002b; }
+
+/* Todo lo que sea rótulo va en versal con tracking; los datos, monoespaciados. */
+.card-head h2, .modal-head h2, .court-name, .sport-name, .pod-name {
+  text-transform: uppercase; letter-spacing: .01em;
+}
+.stat-label, .card-sub, .court-sport { font-family: var(--font-mono); font-size: 11px;
+  letter-spacing: .06em; text-transform: uppercase; }
+.stat-val, .day b, .sc-goals b, .mini-stats b { font-family: var(--font-mono); font-weight: 700;
+  letter-spacing: -.03em; }
+
+/* Numeración de la navegación: es un índice, no un menú decorado. */
+.nav { padding: 0; gap: 0; }
+.nav-brand { padding: 22px 18px; border-bottom: 1px solid var(--line); }
+.nav-list { gap: 0; }
+.nav-item { border-radius: 0; padding: 13px 18px; border-bottom: 1px solid var(--line-soft); counter-increment: nav; }
+.nav-item::before {
+  content: counter(nav, decimal-leading-zero);
+  font-family: var(--font-mono); font-size: 10px; color: var(--text-3); margin-right: 2px;
+}
+.nav-list { counter-reset: nav; }
+.nav-dot { display: none; }
+.nav-item.is-on { background: var(--accent); color: #000; }
+.nav-item.is-on::before { color: rgba(0,0,0,.55); }
+.nav-item.is-on .nav-txt em { color: rgba(0,0,0,.6); }
+.nav-foot { padding: 14px 18px; border-top: 1px solid var(--line); }
+.nav-user { border-top: 0; padding: 0; }
+.avatar { border-radius: 0; background: var(--accent-2); color: #fff; }
+
+/* Tarjetas sin sombra: se separan por línea, no por profundidad. */
+.card, .court, .stat, .tn-card, .agenda, .table-wrap, .sport-card { box-shadow: none; }
+.stat { border-left: 3px solid var(--line); }
+.stat:nth-child(1) { border-left-color: var(--accent); }
+.stat:nth-child(2) { border-left-color: var(--accent-2); }
+.stat:nth-child(3) { border-left-color: var(--accent-3); }
+.stat:nth-child(4) { border-left-color: var(--text-3); }
+
+.page-head { border-bottom: 1px solid var(--line); padding-bottom: 20px; }
+.kicker { color: var(--accent); }
+
+.btn { border-radius: 0; }
+.btn-primary { font-weight: 700; text-transform: uppercase; letter-spacing: .04em; font-size: 12.5px; }
+.pill, .seg, .seg-b, .stamp, .chip, .tag { border-radius: 0; }
+.day { border-radius: 0; }
+.slot { border-radius: 0; }
+.br-chip { border-radius: 0; }
+
+.tab { text-transform: uppercase; letter-spacing: .07em; font-size: 11.5px; font-family: var(--font-mono); }
+
+/* La barra del gráfico no se redondea: es una columna de datos. */
+.bar { border-radius: 0; }
+.rank-track, .rank-fill, .sc-track, .sc-track i, .tn-prog, .tn-prog i, .day-bar, .day-bar i, .pay-bar, .pay-bar i { border-radius: 0; }
+
+.table th { border-bottom-width: 2px; border-bottom-color: var(--text-3); }
+.table tr.is-top td { background: rgba(255,206,0,.07); }
+
+.pod { border-radius: 0; }
+.pod-1 { border-color: var(--accent); border-width: 2px; }
+.pod-place { font-family: var(--font-mono); }
+
+.phone-frame { border-radius: 4px; border-width: 6px; }
+.court-media { border-bottom: 1px solid var(--line); }

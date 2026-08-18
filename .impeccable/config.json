@@ -1,0 +1,38 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "app/base.css"
+        ],
+        "createdAt": "2026-08-18T00:54:25.104Z",
+        "reason": "Claude: las tres coincidencias son .ag-cell.is-paid/is-part/is-due, la franja de estado de una celda horaria de agenda. Es la convencion de cuadricula de calendario (Google Calendar, Outlook), no un side-tab decorativo de tarjeta, y acompana al tinte de fondo como segunda senal de estado de pago."
+      },
+      {
+        "rule": "codex-grid-background",
+        "value": "*",
+        "files": [
+          "app/base.css"
+        ],
+        "createdAt": "2026-08-18T00:55:02.581Z",
+        "reason": "Claude: la unica coincidencia restante es .wa-body, el papel tapiz punteado del mockup de WhatsApp. Replica una superficie real del producto que se esta representando; son puntos radiales, no una reticula de medicion decorativa."
+      },
+      {
+        "rule": "bounce-easing",
+        "value": "cubic-bezier(.34, 1.12, .48, 1)",
+        "createdAt": "2026-08-18T01:01:44.270Z",
+        "reason": "Claude: 12% de sobreimpulso, bajado a proposito desde 1.4 en esta misma sesion. No es rebote decorativo global: DESIGN.md seccion 6 lo acota a tres momentos (la marca de check al elegir deporte, el punto del dia en el grafico, y la entrada del podio). Es el mismo valor en CSS y en JS para que las dos capas se muevan igual. Pendiente de confirmacion del usuario, a quien ya se le ofrecio bajarlo a cero."
+      },
+      {
+        "rule": "bounce-easing",
+        "value": "cubic-bezier(.34,1.12,.48,1)",
+        "createdAt": "2026-08-18T01:01:44.308Z",
+        "reason": "Claude: misma curva sin espacios, tal como aparece en app/ui/motion.js (SPRING.snap). Ver la razon del valor con espacios."
+      }
+    ]
+  }
+}

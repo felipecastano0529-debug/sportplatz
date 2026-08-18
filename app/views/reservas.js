@@ -1,0 +1,235 @@
+/* ==========================================================================
+   VISTA · Reservas
+   Agenda por hora × cancha, 14 días navegables.
+
+   La cuadrícula se queda sobre superficie clara a propósito, aunque el fondo
+   de la sección sea la cancha a sangre: son 17 filas de datos seguidas y en
+   vidrio oscuro se leen mal. El escenario es el marco; la mesa de trabajo es
+   la mesa de trabajo.
+
+   Arreglado de la auditoría: la agenda scrollea en horizontal. Antes tenía
+   `overflow: hidden` con columnas de mínimo 7.25rem — medido, con 12 canchas
+   el grid pedía 1484 px dentro de un contenedor de 1118 px y las columnas de
+   la 8 en adelante eran físicamente inalcanzables. En móvil se rompía con 3.
+   ========================================================================== */
+
+import { $, $$, esc, money, moneyShort, iso, today, addDays, sameDay, fmtDate, fmtDateLong, fmtHour, hhmm, nextHour, uid, thousands, readNum, DAYS_S, MONTHS_S, firstName } from '../core/util.js';
+import { S, save } from '../core/store.js';
+import { SPORTS, ballSVG } from '../core/sports.js';
+import { bookingsOn, courtById, bookingById, hoursOfDay, slotTaken } from '../core/calc.js';
+import { icon } from '../ui/icons.js';
+import { stagger } from '../ui/motion.js';
+import { openModal, toast } from '../ui/modal.js';
+import { pageHead, renderApp } from '../ui/shell.js';
+import { phone as randomPhone } from '../core/seed.js';
+
+let agendaDate = iso(today());
+let agendaSport = 'all';
+
+export const getAgendaSport = () => agendaSport;
+
+export function viewReservas(main) {
+  const t = today();
+  const days = Array.from({ length: 14 }, (_, i) => addDays(t, i - 2));
+  const courts = S.courts.filter(c => agendaSport === 'all' || c.sport === agendaSport);
+  const hours = hoursOfDay();
+  const dayBookings = bookingsOn(agendaDate);
+  const ingresoDia = dayBookings.reduce((s, b) => s + b.total, 0);
+  const cobradoDia = dayBookings.reduce((s, b) => s + b.deposit, 0);
+
+  main.innerHTML = `
+    ${pageHead('Agenda', 'Reservas',
+      `<button class="btn btn-primary btn-sm" id="newBooking">${icon('plus')}Nueva reserva</button>`)}
+
+    <div class="daystrip" id="daystrip" role="tablist" aria-label="Elegir día">
+      ${days.map(d => {
+        const s = iso(d);
+        const n = bookingsOn(s).length;
+        return `<button class="day ${s === agendaDate ? 'is-on' : ''} ${sameDay(d, t) ? 'is-today' : ''}"
+                        data-day="${s}" role="tab" aria-selected="${s === agendaDate}">
+          <em>${DAYS_S[d.getDay()]}</em>
+          <b>${d.getDate()}</b>
+          <span class="day-mes">${MONTHS_S[d.getMonth()]}</span>
+          <span class="day-bar"><i style="--w:${Math.min(100, (n / Math.max(1, S.courts.length * 6)) * 100)}%"></i></span>
+        </button>`;
+      }).join('')}
+    </div>
+
+    <div class="agenda-bar">
+      <div class="filters">
+        <button class="pill ${agendaSport === 'all' ? 'is-on' : ''}" data-sport="all">Todas</button>
+        ${S.business.sports.map(id => `
+          <button class="pill ${agendaSport === id ? 'is-on' : ''}" data-sport="${id}">
+            ${ballSVG(id, 'pill-ball')}${SPORTS[id].short}</button>`).join('')}
+      </div>
+      <p class="agenda-sum">
+        <b>${money(ingresoDia)}</b> facturado ·
+        <span class="ok">${money(cobradoDia)}</span> recibido ·
+        <span class="neg">${money(ingresoDia - cobradoDia)}</span> pendiente
+      </p>
+    </div>
+
+    <div class="agenda-wrap">
+      <div class="agenda" style="--cols:${courts.length}">
+        <div class="agenda-head">
+          <div class="ag-corner">${fmtDate(agendaDate)}</div>
+          ${courts.map(c => `<div class="ag-col-head">
+            <span>${ballSVG(c.sport)}</span><b>${esc(c.name)}</b><em>${money(c.price)}</em>
+          </div>`).join('')}
+        </div>
+        <div class="agenda-body">
+          ${hours.map(h => {
+            const hs = hhmm(h);
+            return `<div class="ag-row">
+              <div class="ag-hour">${fmtHour(hs)}</div>
+              ${courts.map(c => {
+                const b = dayBookings.find(x => x.courtId === c.id && x.start === hs);
+                if (!b) return `<button class="ag-cell is-free" data-new="${c.id}|${hs}"
+                    aria-label="Reservar ${esc(c.name)} a las ${fmtHour(hs)}">
+                  <span>${icon('plus', 'ic ic-sm')}reservar</span></button>`;
+                const saldo = b.total - b.deposit;
+                const cls = saldo === 0 ? 'is-paid' : b.deposit > 0 ? 'is-part' : 'is-due';
+                return `<button class="ag-cell ${cls}" data-open="${b.id}">
+                  <b>${esc(b.customer.split(' ').slice(0, 2).join(' '))}</b>
+                  <em>${money(b.total)}${saldo > 0 ? ` · debe ${moneyShort(saldo)}` : ''}</em>
+                  ${b.source === 'bot' ? '<i class="src" title="Reservó por WhatsApp con Neo AI">WA</i>' : ''}
+                </button>`;
+              }).join('')}
+            </div>`;
+          }).join('')}
+        </div>
+      </div>
+    </div>
+    <p class="legend legend--flat">
+      <span><i class="dot is-paid"></i> pagada</span>
+      <span><i class="dot is-part"></i> con adelanto</span>
+      <span><i class="dot is-due"></i> sin abonar</span>
+      <span class="legend-note">WA marca las que entraron solas por Neo AI</span>
+    </p>`;
+
+  $$('[data-day]', main).forEach(b => b.addEventListener('click', () => {
+    agendaDate = b.dataset.day; viewReservas(main);
+  }));
+  $$('[data-sport]', main).forEach(b => b.addEventListener('click', () => {
+    agendaSport = b.dataset.sport;
+    renderApp('reservas');           // re-render completo: cambia el fondo
+  }));
+  $('#newBooking').addEventListener('click', () => openBooking({}));
+  $$('[data-new]', main).forEach(b => b.addEventListener('click', () => {
+    const [courtId, start] = b.dataset.new.split('|');
+    openBooking({ courtId, start, date: agendaDate });
+  }));
+  $$('[data-open]', main).forEach(b => b.addEventListener('click', () => openBookingDetail(b.dataset.open)));
+
+  const strip = $('#daystrip');
+  const on = $('.day.is-on', strip);
+  if (on) strip.scrollLeft = on.offsetLeft - strip.clientWidth / 2 + on.clientWidth / 2;
+  stagger($$('.ag-row', main).slice(0, 12), { y: 8, step: 18 });
+}
+
+/* ── Alta ────────────────────────────────────────────────────────────────── */
+
+export function openBooking({ courtId = S.courts[0]?.id, start = '18:00', date = agendaDate, playerId = null } = {}) {
+  if (!S.courts.length) return;
+  const opts = S.courts.map(c =>
+    `<option value="${c.id}" ${c.id === courtId ? 'selected' : ''}>${esc(c.name)} — ${money(c.price)}/h</option>`).join('');
+  const hours = hoursOfDay().map(h => {
+    const hh = hhmm(h);
+    return `<option value="${hh}" ${hh === start ? 'selected' : ''}>${fmtHour(hh)}</option>`;
+  }).join('');
+
+  openModal({
+    title: 'Nueva reserva',
+    body: `
+      <div class="form-grid">
+        <label class="field"><span class="field-label">Cliente</span>
+          <input id="fName" class="input" placeholder="Nombre y apellido" autocomplete="off"></label>
+        <label class="field"><span class="field-label">Celular</span>
+          <input id="fPhone" class="input" placeholder="+57 300 000 0000" autocomplete="off"></label>
+        <label class="field"><span class="field-label">Cancha</span>
+          <select id="fCourt" class="input">${opts}</select></label>
+        <label class="field"><span class="field-label">Día</span>
+          <input id="fDate" class="input" type="date" value="${date}"></label>
+        <label class="field"><span class="field-label">Hora</span>
+          <select id="fStart" class="input">${hours}</select></label>
+        <label class="field"><span class="field-label">Adelanto</span>
+          <span class="price-input"><i>$</i><input id="fDep" type="text" inputmode="numeric" value="0"></span></label>
+      </div>
+      <div class="form-note" id="fSummary"></div>`,
+    confirm: 'Guardar reserva',
+    onConfirm() {
+      const c = courtById($('#fCourt').value);
+      const s = $('#fStart').value;
+      const d = $('#fDate').value;
+      const name = $('#fName').value.trim() || 'Cliente sin nombre';
+      const dep = Math.min(c.price, readNum($('#fDep').value));
+      if (slotTaken(c.id, d, s)) {
+        toast('Esa hora ya está reservada en ' + c.name, 'warn');
+        return false;
+      }
+      S.bookings.push({
+        id: uid('b'), courtId: c.id, date: d, start: s, end: nextHour(s),
+        playerId,
+        customer: name, phone: $('#fPhone').value.trim() || randomPhone(),
+        total: c.price, deposit: dep, source: 'mostrador',
+        status: 'confirmada', note: ''
+      });
+      save();
+      agendaDate = d;
+      renderApp('reservas');
+      toast(`Reserva de ${name} guardada · ${fmtDate(d)} ${fmtHour(s)}`);
+    }
+  });
+
+  const sync = () => {
+    const c = courtById($('#fCourt').value);
+    const dep = Math.min(c.price, readNum($('#fDep').value));
+    $('#fSummary').innerHTML = `
+      <span>Total <b>${money(c.price)}</b></span>
+      <span>Adelanto <b class="ok">${money(dep)}</b></span>
+      <span>Queda debiendo <b class="neg">${money(c.price - dep)}</b></span>`;
+  };
+  ['#fCourt', '#fDep'].forEach(sel => $(sel).addEventListener('input', sync));
+  $('#fDep').addEventListener('input', (e) => {
+    const n = readNum(e.target.value);
+    e.target.value = n ? thousands(n) : '0';
+  });
+  sync();
+}
+
+/* ── Detalle ─────────────────────────────────────────────────────────────── */
+
+export function openBookingDetail(id) {
+  const b = bookingById(id);
+  if (!b) return;
+  const c = courtById(b.courtId);
+  const saldo = b.total - b.deposit;
+
+  openModal({
+    title: b.customer,
+    body: `
+      <ul class="kv">
+        <li><span>Cancha</span><b>${esc(c?.name || '—')}</b></li>
+        <li><span>Cuándo</span><b>${fmtDateLong(b.date)} · ${fmtHour(b.start)} a ${fmtHour(b.end)}</b></li>
+        <li><span>Celular</span><b>${esc(b.phone)}</b></li>
+        <li><span>Reservó por</span><b>${b.source === 'bot' ? 'Neo AI en WhatsApp' : 'Mostrador'}</b></li>
+        <li><span>Total</span><b>${money(b.total)}</b></li>
+        <li><span>Adelanto</span><b class="ok">${money(b.deposit)}</b></li>
+        <li class="kv-strong"><span>Saldo</span><b class="${saldo ? 'neg' : 'ok'}">${saldo ? money(saldo) : 'Pagada'}</b></li>
+      </ul>
+      ${saldo ? `<label class="field"><span class="field-label">Registrar abono</span>
+        <span class="price-input"><i>$</i><input id="fAdd" type="text" inputmode="numeric" value="${thousands(saldo)}"></span></label>` : ''}`,
+    confirm: saldo ? 'Registrar abono' : null,
+    danger: 'Cancelar reserva',
+    onDanger() {
+      S.bookings = S.bookings.filter(x => x.id !== id);
+      save(); renderApp('reservas'); toast('Reserva cancelada', 'warn');
+    },
+    onConfirm() {
+      if (!saldo) return;
+      const add = Math.min(saldo, readNum($('#fAdd').value));
+      b.deposit += add; save(); renderApp('reservas');
+      toast(`Abono de ${money(add)} registrado`);
+    }
+  });
+}

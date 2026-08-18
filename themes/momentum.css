@@ -1,0 +1,231 @@
+/* ==========================================================================
+   SPORTPLATZ · SISTEMA
+   Tokens: color, tipografía, forma, elevación, material y movimiento.
+   base.css solo consume esto; aquí no hay ni un componente.
+
+   El acento es el azul eléctrico del logo. Se eligió sobre la lima anterior
+   por una razón medible: #1447e6 da 6.83:1 sobre blanco, así que el MISMO
+   color sirve de relleno y de texto. La lima obligaba a un token aparte para
+   texto (#5b7a12) y a poner el texto en negro sobre el relleno. Un color, un
+   rol. Sobre superficie oscura sube a #4d8bff (6.12:1 sobre el negro).
+   ========================================================================== */
+
+:root {
+
+/* ── 1. COLOR ──────────────────────────────────────────────────────────────
+   Rampa neutra fría, con un punto de azul. Los grises cálidos leen a papel
+   viejo y los verdosos peleaban con el acento anterior; estos acompañan al
+   azul y dejan que el verde de la grama sea del deporte, no de la interfaz. */
+
+  --n-0:  #ffffff;
+  --n-25: #fcfdfe;
+  --n-50: #f5f7fa;
+  --n-100:#eef1f6;
+  --n-150:#e4e9f1;
+  --n-200:#d7dee9;
+  --n-300:#bcc6d5;
+  --n-400:#8f9cb0;
+  --n-500:#657286;
+  --n-600:#465162;
+  --n-700:#2f3a4a;
+  --n-800:#1b2432;
+  --n-900:#111827;
+  --n-950:#070b13;
+
+  --bg:        var(--n-50);
+  --surface:   var(--n-0);
+  --surface-2: var(--n-50);
+  --surface-3: var(--n-100);
+  --line:      var(--n-150);
+  --line-2:    var(--n-200);
+  --line-3:    var(--n-300);
+  --field:     var(--n-25);
+
+  --ink:   var(--n-950);
+  --ink-2: var(--n-600);
+  --ink-3: var(--n-500);
+  --ink-4: var(--n-400);
+
+/* Azul eléctrico. `--accent-rgb` alimenta glows, focos y sombras de color. */
+  --accent-rgb:  45, 106, 240;
+  --accent:      #1447e6;   /* relleno Y texto: 6.83:1 sobre blanco */
+  --accent-hi:   #4d8bff;   /* la forma legible sobre negro: 6.12:1 */
+  --accent-deep: #0b2f9e;
+
+  --brand:      #1447e6;   /* mismo color: ya no hace falta un token aparte */
+  --brand-2:    #2f5fef;   /* borde de foco */
+  --brand-3:    #4d8bff;   /* borde en hover */
+  --brand-deep: #0b2f9e;
+  --brand-tint: #e9efff;
+  --on-accent:  #ffffff;   /* texto sobre el relleno azul: blanco, ya sí */
+
+  --red:   #e5231f;   --red-tint:   #ffecea;   --red-deep:   #a5120f;
+  --amber: #f5a300;   --amber-tint: #fff4e0;   --amber-deep: #a86a00;
+  --green: #0d9c5f;   --green-tint: #e0f7ed;   --green-deep: #077043;
+
+  --ok: var(--green); --warn: var(--amber-deep); --neg: var(--red);
+  --gold: #c98a00;   /* el oro del podio, sólido: un degradado sobre texto no es luz */
+
+/* Superficies de énfasis: azul-negro de noche de estadio, no gris.
+   Sobre ellas los estados suben de luminancia — el mismo verde que funciona
+   en blanco ahí desaparece. */
+  --band-bg-a:  #17233b;
+  --band-bg-b:  #050912;
+  --band-text:  #ffffff;
+  --band-dim:   #97a3b8;
+  --band-line:  rgba(255,255,255,.14);
+  --band-ok:    #5ee6a0;
+  --band-neg:   #ff9d96;
+  --band-amber: var(--accent-hi);   /* el dato titular sobre negro va en azul */
+
+  --rail-bg-a:  #131e33;
+  --rail-bg-b:  #03060c;
+  --rail-text:  #ffffff;
+  --rail-dim:   #8d99ae;
+  --rail-line:  rgba(255,255,255,.12);
+  --nav-on-bg:  rgba(77,139,255,.16);
+
+/* Sombras: azul muy oscuro. Un gris puro sobre este blanco se ve sucio. */
+  --shadow-rgb: 11, 20, 38;
+  --scrim: rgba(5,9,18,.58);
+
+/* Colores de dato: separados en TONO, no en luminancia, para que se
+   distingan también en escala de grises y para un daltónico. El rojo va al
+   final a propósito — en la interfaz significa "sin abonar" y "cae", así que
+   ponerlo en el puesto 2 de un ranking lo lee como una alarma que no es. */
+  --d1: #2d6af0;  --d2: #0891b2;  --d3: #7c5cf0;
+  --d4: #f5a300;  --d5: #0d9c5f;  --d6: #e5231f;
+
+/* ── 2. TIPOGRAFÍA ─────────────────────────────────────────────────────────
+   Una sola familia con eje de ancho: Archivo (wdth 62–125, wght 100–900).
+   De ahí salen dos voces que no se parecen en nada —el titular ancho y muy
+   pesado de gráfico de televisión, y el texto de ancho normal— sin cargar
+   una segunda fuente. IBM Plex Mono solo para dato técnico: horas, códigos.
+
+   Regla de Apple: el tracking es específico del tamaño. Display muy apretado,
+   micro abierto. La interlínea baja cuando el cuerpo sube.                  */
+
+  --font:         'Archivo', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'Archivo', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --mono:         'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+
+/* Ejes de ancho: el titular se expande, el rótulo micro se aprieta. */
+  --wd-display: 112;
+  --wd-title:   106;
+  --wd-body:    100;
+
+  --fs-display: clamp(2.375rem, 4.3vw, 3.625rem);
+  --lh-display: 0.96;  --tr-display: -0.038em;  --fw-display: 800;
+
+  --fs-h1: clamp(1.625rem, 2.5vw, 2.125rem);
+  --lh-h1: 1.05;       --tr-h1: -0.03em;        --fw-h1: 800;
+
+  --fs-h2: 1.125rem;   --lh-h2: 1.28;           --tr-h2: -0.02em;   --fw-h2: 700;
+  --fs-h3: 0.9375rem;  --lh-h3: 1.35;           --tr-h3: -0.012em;  --fw-h3: 700;
+  --fs-body: 0.9375rem;--lh-body: 1.6;          --tr-body: -0.004em;
+  --fs-sm: 0.8125rem;  --lh-sm: 1.5;            --tr-sm: 0;
+  --fs-xs: 0.75rem;    --lh-xs: 1.42;           --tr-xs: 0.004em;
+  --fs-micro: 0.6875rem; --lh-micro: 1.35;      --tr-micro: 0.085em;
+
+  --num: tabular-nums lining-nums;
+
+/* ── 3. FORMA Y ESPACIO ────────────────────────────────────────────────── */
+
+  --r1: 8px; --r2: 12px; --r3: 16px; --r4: 20px; --r5: 26px; --rp: 999px;
+
+  --s1: .25rem; --s2: .5rem;  --s3: .75rem; --s4: 1rem;
+  --s5: 1.25rem; --s6: 1.5rem; --s7: 2rem;  --s8: 2.5rem;
+  --s9: 3.5rem;  --s10: 4.5rem;
+
+  --nav-w: 15.5rem;
+
+/* ── 4. ELEVACIÓN ──────────────────────────────────────────────────────────
+   Cada nivel son DOS sombras: una de contacto, corta y opaca, y una
+   ambiental, larga y difusa. Nunca una sola sombra gigante.               */
+
+  --e1: 0 1px 1.5px rgba(var(--shadow-rgb),.05), 0 1px 3px rgba(var(--shadow-rgb),.04);
+  --e2: 0 1px 2px rgba(var(--shadow-rgb),.05), 0 6px 14px -5px rgba(var(--shadow-rgb),.10);
+  --e3: 0 2px 4px rgba(var(--shadow-rgb),.05), 0 14px 30px -10px rgba(var(--shadow-rgb),.16);
+  --e4: 0 4px 8px rgba(var(--shadow-rgb),.06), 0 30px 60px -20px rgba(var(--shadow-rgb),.26);
+  --e5: 0 8px 16px rgba(var(--shadow-rgb),.07), 0 48px 90px -28px rgba(var(--shadow-rgb),.34);
+
+/* Flotación: la sombra que despega la tarjeta del papel EN REPOSO. */
+  --float:      0 12px 26px -14px rgba(var(--shadow-rgb),.34), 0 2px 6px -2px rgba(var(--shadow-rgb),.16);
+  --float-hi:   0 30px 56px -22px rgba(var(--shadow-rgb),.42), 0 8px 16px -8px rgba(var(--shadow-rgb),.22);
+  --float-dark: 0 22px 48px -18px rgba(var(--shadow-rgb),.58), 0 5px 14px -5px rgba(var(--shadow-rgb),.42);
+
+/* Filo de luz: la línea clara de 1px arriba. Separa una superficie
+   "impresa" de una superficie "física". */
+  --hi:      inset 0 1px 0 rgba(255,255,255,.85);
+  --hi-dark: inset 0 1px 0 rgba(255,255,255,.16);
+
+/* Borde con degradado: claro arriba, disuelto abajo. */
+  --edge:     linear-gradient(158deg, rgba(var(--accent-rgb),.42) 0%, rgba(var(--accent-rgb),.12) 32%,
+                              rgba(155,168,190,.12) 64%, rgba(255,255,255,0) 100%);
+  --edge-lit: linear-gradient(158deg, rgba(255,255,255,.72) 0%, rgba(255,255,255,.2) 38%,
+                              rgba(255,255,255,.04) 100%);
+
+/* Resplandores de color para lo que emite. */
+  --glow-brand: 0 6px 18px -4px rgba(var(--accent-rgb),.55), 0 1px 3px rgba(var(--accent-rgb),.35);
+  --glow-red:   0 4px 14px -3px rgba(229,35,31,.40);
+  --ring-brand: 0 0 0 3.5px rgba(var(--accent-rgb),.35);
+  --ring-red:   0 0 0 3.5px rgba(229,35,31,.20);
+
+/* ── 5. MATERIALES ─────────────────────────────────────────────────────── */
+
+  --g-brand:      linear-gradient(180deg, #2f6bf5 0%, #1240d4 100%);
+  --g-brand-hov:  linear-gradient(180deg, #4d8bff 0%, #1a52ea 100%);
+  --g-brand-soft: linear-gradient(140deg, #f4f8ff 0%, #e6eeff 100%);
+  --g-red:        linear-gradient(180deg, #f4453f 0%, #d21b17 100%);
+
+  --g-ink:   linear-gradient(158deg, var(--band-bg-a) 0%, var(--band-bg-b) 100%);
+  --g-rail:  linear-gradient(170deg, var(--rail-bg-a) 0%, var(--rail-bg-b) 100%);
+  --g-sheen-v: linear-gradient(178deg, rgba(255,255,255,.14) 0%, rgba(255,255,255,.03) 34%,
+                               rgba(255,255,255,0) 56%);
+  --g-sheen:   var(--g-sheen-v),
+               linear-gradient(112deg, transparent 34%, rgba(var(--accent-rgb),.14) 46%,
+                               rgba(255,255,255,.02) 54%, transparent 62%);
+
+/* Vidrio: la ficha flotante sobre foto. */
+  --glass:       rgba(255,255,255,.13);
+  --glass-line:  rgba(255,255,255,.26);
+  --glass-blur:  blur(20px) saturate(160%);
+  --glass-light: rgba(255,255,255,.74);
+
+/* Vidrio oscuro: el de las tarjetas sobre el campo y sobre el estadio. Es el
+   material que hace que una ficha se lea apoyada sobre la foto en vez de
+   taparla. */
+  --glass-dark:      rgba(8,13,24,.60);
+  --glass-dark-hi:   rgba(16,24,42,.72);
+  --glass-dark-line: rgba(255,255,255,.16);
+
+/* ── 6. MOVIMIENTO ─────────────────────────────────────────────────────────
+   Curvas fuertes: las de CSS por defecto no tienen carácter. Nunca ease-in
+   en UI — empieza lento justo cuando el ojo está mirando.                  */
+
+  --ease-out:    cubic-bezier(.23, 1, .32, 1);
+  --ease-in-out: cubic-bezier(.77, 0, .175, 1);
+  --ease-drawer: cubic-bezier(.32, .72, 0, 1);
+  --ease-pop:    cubic-bezier(.34, 1.12, .48, 1);  /* insinúa inercia, no rebota */
+
+  --t-press: 140ms;
+  --t-hover: 180ms;
+  --t-pop:   220ms;
+  --t-modal: 320ms;
+
+/* ── 7. FONDOS DE ESCENARIO ────────────────────────────────────────────────
+   Las fotos del cliente. La horizontal a escritorio, la vertical a móvil:
+   al revés, en escritorio el estadio se recorta a una franja y se pierden
+   las gradas y los reflectores, que es lo que hace la foto.               */
+
+  --bg-estadio:        url('../assets/fondos/estadio-desktop.jpg');
+  --bg-estadio-movil:  url('../assets/fondos/estadio-mobile.jpg');
+
+/* ── 8. HALOS DEL FONDO POR DEPORTE ────────────────────────────────────── */
+
+  --halo-futbol:    rgba(30,190,116,.32);
+  --halo-padel:     rgba(20,190,205,.30);
+  --halo-tenis:     rgba(80,210,160,.28);
+  --halo-voleibol:  rgba(220,160,80,.26);
+  --halo-paintball: rgba(229,35,31,.24);
+}

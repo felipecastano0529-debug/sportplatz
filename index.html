@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sportplatz — reservas, torneos y Neo AI para canchas</title>
+<meta name="description" content="Plataforma de reservas de canchas: panel del dueño, agenda por hora, torneos con llaves, equipos con su histórico y Neo AI respondiendo por WhatsApp.">
+<meta name="color-scheme" content="light">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sportplatz — reservas, torneos y Neo AI para canchas">
+<meta property="og:description" content="Configura tu complejo deportivo en cuatro preguntas y entra a la plataforma: agenda por hora, torneos con llaves que avanzan solas, equipos con su histórico y un bot que reserva por WhatsApp.">
+<meta property="og:image" content="assets/fondos/estadio-desktop.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Archivo trae eje de ancho (wdth 62–125). De una sola familia salen dos
+     voces distintas: el titular ancho y muy pesado, y el texto normal. -->
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="themes/momentum.css">
+<link rel="stylesheet" href="app/base.css">
+<link rel="stylesheet" href="app/premium.css">
+
+<link rel="preload" as="image" href="assets/fondos/estadio-desktop.jpg" media="(min-width: 48rem)">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230E1116'/><path d='M27 24H72' stroke='%231447e6' stroke-width='22' stroke-linecap='round'/><path d='M60 51L29 79' stroke='%23e52521' stroke-width='22' stroke-linecap='round'/><circle cx='80' cy='50' r='10' fill='%23ffd400'/></svg>">
+</head>
+<body data-theme="momentum">
+
+<div id="backdrop" aria-hidden="true"></div>
+<div id="app"></div>
+
+<script>
+/* La marca: el trazo que arranca. Dos golpes y un punto. */
+window.SP_LOGO = `
+<svg class="logo" viewBox="0 0 100 100" role="img" aria-label="Sportplatz">
+  <g fill="none" stroke-linecap="round" stroke-width="23">
+    <path d="M27 23H72" stroke="#1447e6"/>
+    <path d="M60 51L29 79" stroke="#e52521"/>
+  </g>
+  <circle cx="80" cy="50" r="10" fill="#ffd400"/>
+</svg>`;
+</script>
+<script type="module" src="app/main.js"></script>
+<noscript>
+  <p style="font:500 1rem/1.6 system-ui;max-width:32rem;margin:4rem auto;padding:0 1.5rem;color:#111827">
+    Sportplatz necesita JavaScript activado para funcionar.
+  </p>
+</noscript>
+</body>
+</html>
