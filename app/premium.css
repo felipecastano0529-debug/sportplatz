@@ -768,3 +768,82 @@ tr.is-mine { background: var(--brand-tint); }
   border: 1px solid rgba(229,35,31,.24); }
 body[data-bleed] .auth-error { color: var(--band-neg);
   background: rgba(229,35,31,.16); border-color: rgba(255,157,150,.3); }
+
+/* ── 22. Rail en blanco hueso ─────────────────────────────────────────────
+   El rail estaba construido entero para fondo oscuro: los estados eran
+   `rgba(255,255,255,.06)`, los textos blancos, y la veladura cenital de
+   `--g-sheen-v` sumaba luz. Sobre hueso, un velo blanco no se ve y los
+   estados desaparecen.
+
+   Aquí se invierten esas capas. Es un bloque aparte a propósito: los tokens
+   `--rail-*` cambian el color, pero lo que estaba escrito a mano hay que
+   escribirlo a mano. Si algún día el rail vuelve a oscuro, se borra esto y
+   se revierten los tokens — nada más.                                     */
+
+/* La veladura de luz no aporta nada sobre una superficie clara: se cambia por
+   una sombra interior muy leve, que sí da volumen sobre hueso. */
+.nav::after {
+  background-image: linear-gradient(178deg,
+    rgba(28,34,26,.05) 0%, rgba(28,34,26,.015) 30%, transparent 55%);
+}
+
+/* El filo derecho: sin él, el hueso y el estadio se tocan sin transición. */
+.nav { box-shadow: 1px 0 0 rgba(28,34,26,.09),
+                   22px 0 52px -30px rgba(var(--shadow-rgb), .5),
+                   inset 0 1px 0 rgba(255,255,255,.9); }
+
+.nav-brand:hover { background: rgba(28,34,26,.05); }
+
+.nav-item { color: var(--n-600); }
+.nav-item:hover { background: rgba(28,34,26,.05); color: var(--n-950); }
+/* Sobre oscuro bastaba un 9% de blanco para marcar el activo. Sobre hueso el
+   mismo salto no se ve: hay que subirlo y añadirle un filo, o la sección en la
+   que estás deja de distinguirse de las otras seis. */
+.nav-item.is-on { background: rgba(28,34,26,.085); color: var(--n-950);
+  box-shadow: inset 0 0 0 1px rgba(28,34,26,.05), inset 0 1px 0 rgba(255,255,255,.9); }
+/* `opacity: .72` funcionaba con texto blanco sobre oscuro; sobre hueso lava el
+   texto hasta 2.65:1. Se quita la opacidad y el tono se fija con un token. */
+.nav-txt em, .nav-brand-txt em, .nav-user-txt em, .cuenta-txt em, .ob-foot {
+  opacity: 1; color: var(--rail-hint); }
+.nav-item.is-on .nav-txt em { color: var(--n-600); }
+
+/* El icono en reposo es una pastilla de papel; el activo se queda con el
+   degradado de marca y su resplandor, que sobre hueso destaca aún más. */
+.nav-ic { background: rgba(28,34,26,.05); border-color: rgba(28,34,26,.07);
+  color: var(--n-600); }
+.nav-item:hover .nav-ic { color: var(--n-800); }
+.nav-item.is-on .nav-ic { color: #fff; }
+
+.nav-user { background: rgba(28,34,26,.04); border-color: rgba(28,34,26,.09); }
+.nav-user:hover { background: rgba(28,34,26,.07); }
+.nav-user-txt b { color: var(--n-950); }
+
+.nav-user-swap { color: var(--n-400); }
+
+.brand-logo { background: rgba(28,34,26,.05); }
+
+/* La fila de cuenta hereda el mismo cambio de temperatura. */
+.cuenta { background: rgba(28,34,26,.04); border-color: rgba(28,34,26,.09); }
+.cuenta:hover { background: rgba(28,34,26,.07); }
+.cuenta-txt b { color: var(--n-950); }
+
+.cuenta--demo { background: rgba(4,120,87,.09); border-color: rgba(4,120,87,.26); }
+.cuenta--demo:hover { background: rgba(4,120,87,.15); }
+.cuenta--demo .ic,
+.cuenta--demo .cuenta-txt em { color: var(--brand); }
+.cuenta--dentro .ic { color: var(--green-deep); }
+
+/* Los pasos del onboarding viven en el mismo rail. */
+.ob-rail { color: var(--rail-text); }
+.ob-brand span { color: var(--n-950); }
+.ob-step-t { color: var(--rail-hint); }
+.ob-step.is-now .ob-step-t { color: var(--n-950); }
+.ob-step-n { background: rgba(28,34,26,.06); border-color: rgba(28,34,26,.1);
+  color: var(--rail-hint); }
+.ob-step.is-now .ob-step-n { color: #fff; }
+.ob-step.is-done .ob-step-n { color: var(--brand); }
+
+.ob-step { border-bottom-color: rgba(28,34,26,.08); }
+
+/* La barra de scroll del rail, si la navegación no cabe. */
+.nav { scrollbar-color: rgba(28,34,26,.22) transparent; }

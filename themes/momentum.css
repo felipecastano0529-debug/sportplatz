@@ -81,12 +81,20 @@
   --band-neg:   #ff9d96;
   --band-amber: var(--accent-hi);   /* el dato titular sobre negro va en esmeralda */
 
-  --rail-bg-a:  #131e33;
-  --rail-bg-b:  #03060c;
-  --rail-text:  #ffffff;
-  --rail-dim:   #8d99ae;
-  --rail-line:  rgba(255,255,255,.12);
-  --nav-on-bg:  rgba(52,211,153,.16);
+/* El rail va en blanco hueso: es la única superficie clara grande de la app,
+   y contra el estadio oscuro del contenido se lee como una hoja de papel
+   apoyada al lado. `--rail-dim` usa n-600 y no n-500 porque sobre este hueso
+   n-500 daba 4.36:1 — por debajo de AA para texto pequeño. n-600 da 7.18:1. */
+  --rail-bg-a:  #faf8f2;
+  --rail-bg-b:  #ede9df;
+  --rail-text:  var(--n-950);
+  --rail-dim:   var(--n-600);
+  --rail-line:  rgba(28,34,26,.11);
+  /* La pista secundaria del menú. No es n-500 (4.36:1, por debajo de AA) ni
+     n-600 (7.18:1, igual que la etiqueta y sin jerarquía): es el punto medio
+     que da 5.20:1 y aun así se lee más ligero que el nombre de la sección. */
+  --rail-hint:  #5a6678;
+  --nav-on-bg:  rgba(4,120,87,.10);
 
 /* Sombras: azul muy oscuro. Un gris puro sobre este blanco se ve sucio. */
   --shadow-rgb: 11, 20, 38;

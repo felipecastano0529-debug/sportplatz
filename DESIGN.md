@@ -164,10 +164,35 @@ a la curva — un error que solo se ve cuando ya está publicado.
 La curva es Catmull-Rom convertida a béziers: una polilínea recta parece un
 electrocardiograma, la curva parece una tendencia.
 
+### 3c-bis. El rail en blanco hueso
+
+El rail es la única superficie clara grande de la app. Contra el estadio oscuro
+del contenido se lee como una hoja de papel apoyada al lado, y **se queda quieto
+mientras el contenido cambia** — es el marco, no el escenario.
+
+Invertirlo no fue cambiar un color. El rail estaba construido para fondo oscuro:
+los estados eran `rgba(255,255,255,.06)`, los textos blancos, y la veladura
+cenital sumaba luz. Sobre hueso, un velo blanco no se ve y los estados
+desaparecen. Todo eso vive en un bloque aparte de `premium.css`: si algún día
+vuelve a oscuro, se borra ese bloque y se revierten los tokens `--rail-*`.
+
+**Dos trampas de contraste, ambas medidas:**
+
+| Elemento | Antes | Ahora |
+|---|---|---|
+| Pista secundaria (`Cuánto entra`) | **2.65:1** — fallaba AA | **5.16:1** |
+| Etiqueta de sección | 7.12:1 | 7.12:1 |
+
+La pista llevaba `opacity: .72`. Con texto blanco sobre oscuro eso sigue siendo
+brillante; con texto oscuro sobre hueso, lava el color hasta hacerlo ilegible.
+Se quita la opacidad y el tono se fija en `--rail-hint`, que no es `n-500`
+(4.36:1, por debajo de AA) ni `n-600` (7.18:1, igual que la etiqueta y sin
+jerarquía): es el punto intermedio que da 5.20:1 y aún se lee más ligero.
+
 ### 3d. Superficies de énfasis
 
-Rail, primera métrica, cabeceras de tabla y agenda, chip de día activo y toast
-son **verde-negro de noche**, nunca gris. Cada uno monta tres capas: `--g-ink`
+Primera métrica, cabeceras de tabla y agenda, chip de día activo y toast son
+**verde-negro de noche**, nunca gris. (El rail ya no: ver 3c-bis.) Cada uno monta tres capas: `--g-ink`
 (o `--g-rail`), `--g-sheen`, y `--hi-dark`. Sobre ellas el esmeralda claro es el
 color del dato titular; el rojo del logo entra como **acento estructural**, nunca como
 relleno.
