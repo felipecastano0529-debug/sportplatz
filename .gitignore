@@ -9,3 +9,4 @@ node_modules/
 
 # Cache local del detector de diseño (la configuración sí se versiona)
 .impeccable/hook.cache.json
+.env*

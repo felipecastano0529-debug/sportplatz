@@ -25,7 +25,7 @@
         "rule": "bounce-easing",
         "value": "cubic-bezier(.34, 1.12, .48, 1)",
         "createdAt": "2026-08-18T01:01:44.270Z",
-        "reason": "Claude: 12% de sobreimpulso, bajado a proposito desde 1.4 en esta misma sesion. No es rebote decorativo global: DESIGN.md seccion 6 lo acota a tres momentos (la marca de check al elegir deporte, el punto del dia en el grafico, y la entrada del podio). Es el mismo valor en CSS y en JS para que las dos capas se muevan igual. Pendiente de confirmacion del usuario, a quien ya se le ofrecio bajarlo a cero."
+        "reason": "Usuario delegó la decisión ('hazlo todo') tras ofrecerle explícitamente bajarlo a cero. 12% de sobreimpulso, reducido desde 1.4. DESIGN.md sección 6 lo acota a tres momentos: la marca de check al elegir deporte, el punto del día en el gráfico, y la entrada del podio. Mismo valor en CSS y en JS."
       },
       {
         "rule": "bounce-easing",

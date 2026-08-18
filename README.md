@@ -1,5 +1,7 @@
 # Sportplatz — reservas, torneos, equipos y Neo AI para canchas
 
+**En vivo: https://sportplatz-eight.vercel.app**
+
 Demo pública, interactiva y funcional. Sin dependencias y sin build: se sirve y anda.
 
 El visitante configura su complejo en cuatro preguntas y entra a una plataforma
@@ -155,8 +157,16 @@ copia tal cual. Cada `viewX(main)` es un componente en potencia.
 `themes/momentum.css` es el único archivo que hay que tocar para retematizar:
 mapea esos tokens a `tailwind.config` y el resto viaja.
 
+## Desplegar
+
+Ver **[docs/DESPLIEGUE.md](docs/DESPLIEGUE.md)**. En corto: `vercel deploy --prod`.
+
 ## Lo que falta y no es código
 
-- Backend real: usuarios y sesiones de verdad, pagos del adelanto, y conectar
-  Neo AI a la API de WhatsApp.
-- Fotos propias de cada deporte y cada cancha (las de estadio ya están).
+- **Fotos propias de cada deporte y cada cancha.** Las de estadio ya están. Las
+  demás se suben desde la propia app en segundos, arrastrándolas encima; mientras
+  tanto se dibuja el campo del deporte con el plano de la cancha, que se lee como
+  una decisión y no como un hueco.
+- **Backend real**: usuarios y sesiones de verdad, pagos del adelanto, y conectar
+  Neo AI a la API de WhatsApp. Hoy el rol se cambia con un conmutador, sin
+  autenticación — que para un demo es una ventaja, no una carencia.
