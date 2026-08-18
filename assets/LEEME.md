@@ -46,8 +46,14 @@ el archivo.
 **Deportes** — `assets/deportes/`, proporción 16:10, mínimo 800×500:
 
 ```
-futbol.jpg   padel.jpg   tenis.jpg   voleibol.jpg   paintball.jpg
+futbol.jpg   ← ya está
+padel.jpg   tenis.jpg   voleibol.jpg   paintball.jpg   ← faltan
 ```
+
+`futbol.jpg` sale de recortar el césped de la misma foto de estadio que usa el
+Panel. Se recortó a propósito la franja inferior: con el cielo dentro, el Panel
+y la sección de Sintética enseñarían la misma imagen y el ojo lo nota. Así son
+dos lugares distintos sacados de una sola foto.
 
 **Canchas** — `assets/canchas/`, proporción 16:10, mínimo 960×600. El nombre se arma
 solo: `<deporte>-<número>.jpg`. Con 3 sintéticas y 2 de pádel busca:
