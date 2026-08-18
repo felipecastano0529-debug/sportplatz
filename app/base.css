@@ -1287,7 +1287,8 @@ body[data-bleed] .stat:first-child { border-color: rgba(255,255,255,.14); }
   box-shadow: var(--e1), var(--hi);
   transition: border-color var(--t-hover) var(--ease-out), transform var(--t-hover) var(--ease-out),
               box-shadow var(--t-hover) var(--ease-out); }
-.sc-row.is-first { border-color: var(--brand-3); background: var(--g-brand-soft); }
+.sc-row.is-first { border-color: var(--brand-3);
+  background-color: var(--surface); background-image: var(--g-brand-soft); }
 .sc-n { font-size: var(--fs-xs); font-weight: 800; color: var(--ink-4); font-variant-numeric: var(--num); }
 .sc-who b { display: block; font-size: var(--fs-sm); font-weight: 700; letter-spacing: -.016em; }
 .sc-who em { display: flex; align-items: center; gap: .375rem; font-style: normal;

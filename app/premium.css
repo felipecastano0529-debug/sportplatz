@@ -235,6 +235,13 @@ body[data-bleed] {
   --red-tint:   rgba(255,157,150,.16);
   --amber-tint: rgba(245,163,0,.18);
   --brand-tint: rgba(var(--accent-rgb), .18);
+
+  /* El tinte suave de marca era el único degradado del sistema que seguía
+     siendo claro aquí: #f1fbf7 sobre negro con la tinta ya en blanco. La fila
+     del líder de goleadores salía blanca sobre blanco. Es el mismo verde,
+     traslúcido, para que la primera fila destaque sin cambiar de mundo. */
+  --g-brand-soft: linear-gradient(140deg,
+      rgba(var(--accent-rgb), .34) 0%, rgba(var(--accent-rgb), .11) 100%);
 }
 
 /* Vidrio oscuro: la ficha apoyada sobre la foto. Una tarjeta blanca maciza
@@ -305,6 +312,12 @@ body[data-bleed] .btn-secondary:hover { background: rgba(255,255,255,.18); }
 body[data-bleed] .input,
 body[data-bleed] .price-input { background: rgba(255,255,255,.09); color: #fff;
   border-color: var(--glass-dark-line); }
+
+/* La barra del goleador: el verde de relleno sobre blanco (#047857) se hunde
+   contra el carril oscuro. Sube a la forma legible sobre negro, como el resto
+   de los estados. */
+body[data-bleed] .sc-track i { background-image: linear-gradient(180deg, #34d399 0%, #10a06e 100%); }
+body[data-bleed] .sc-row.is-first { border-color: rgba(52,211,153,.55); }
 
 body[data-bleed] .empty { color: var(--ink-3); }
 body[data-bleed] .pane-note { color: var(--ink-3); }
