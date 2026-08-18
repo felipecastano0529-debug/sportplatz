@@ -20,9 +20,16 @@ seguiría ejecutando el JS viejo contra el CSS nuevo, o al revés.
 pregunta al servidor si cambió. Si no cambió responde `304 Not Modified` y no se
 vuelve a descargar. Se paga una petición, no el archivo.
 
-**`assets/` va con un día de caché.** Las fotos pesan y cambian poco. Si
-reemplazas una conservando el nombre, tarda hasta 24 h en propagarse a quien ya
-la vio; para forzarlo antes, cámbiale el nombre.
+**`assets/` también va con `no-cache`, y no con un día de caché como estuvo al
+principio.** Ese día de caché costó un rato de depuración: se reemplazó la foto
+de tenis conservando el nombre y el navegador siguió sirviendo la vieja durante
+horas, sin ni siquiera preguntar al servidor. Con `must-revalidate` no basta —
+dentro de la ventana de `max-age` el navegador ni pregunta.
+
+Como las fotos se reemplazan a mano y conservan el nombre, la única opción
+honesta sin build es revalidar siempre: se paga una petición condicional por
+imagen, no los bytes. El día que haya build con nombres con hash, esto puede
+volver a cachearse para siempre.
 
 ## Cabeceras de seguridad
 

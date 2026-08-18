@@ -837,10 +837,25 @@ select.input { appearance: none; cursor: pointer;
   filter: brightness(1.4) saturate(1.15); }
 .view-bg .plan { position: absolute; inset: 0; width: 100%; height: 100%;
   padding: clamp(2rem, 7vw, 7rem); opacity: .5; }
+/* El fondo a sangre no lleva animación de entrada, y es deliberado.
+
+   La llevaba, y dos veces se reportó que "el fondo no cambia": la foto estaba
+   cargada pero una transición que no llegaba a correr la dejaba en
+   `opacity: 0`, invisible. Para el elemento más grande de la vista, cualquier
+   mecanismo que pueda dejarlo invisible es un mal negocio: la entrada valía
+   800 ms de gracia y costaba que la sección pareciera rota.
+
+   Las miniaturas de cada cancha SÍ conservan su fundido: ahí detrás está el
+   campo dibujado, así que si el fundido falla no se ve un hueco. */
 .view-bg .media-img { position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; opacity: 0; transform: scale(1.06);
-  transition: opacity 700ms var(--ease-out), transform 1200ms var(--ease-out); }
-.view-bg .media-img.ok { opacity: 1; transform: scale(1); }
+  object-fit: cover;
+  /* Visible por CSS, sin depender de la clase `.ok` que añade el `onload`.
+     Ese evento es una tarea, y en una pestaña en segundo plano las tareas se
+     estrangulan: la imagen quedaba cargada y decodificada pero sin la clase,
+     así que el `opacity: 0` de `.media-img` la mantenía invisible. Una imagen
+     que ya está en el navegador no puede depender de que corra JavaScript
+     para verse. */
+  opacity: 1; }}
 /* Velo: sin él, texto y tarjetas se pierden sobre el césped iluminado. */
 .vb-scrim { position: absolute; inset: 0;
   background:
