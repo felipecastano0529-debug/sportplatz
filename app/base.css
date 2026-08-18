@@ -1062,8 +1062,8 @@ body[data-bleed] .stat:first-child { border-color: rgba(255,255,255,.14); }
    computa a `auto`, la columna de horas se anclaba a ese contenedor interno
    y se iba con el scroll horizontal en vez de quedarse pegada. */
 .agenda {
-  --ag-col: 8.25rem;
-  --ag-gut: 5.75rem;
+  --ag-col: 10rem;
+  --ag-gut: 6.5rem;
   --ag-tpl: var(--ag-gut) repeat(var(--cols), minmax(var(--ag-col), 1fr));
   /* Llena el ancho cuando hay pocas canchas y se extiende cuando hay muchas. */
   --ag-w: max(100%, calc(var(--ag-gut) + var(--cols) * var(--ag-col)));
@@ -1074,33 +1074,42 @@ body[data-bleed] .stat:first-child { border-color: rgba(255,255,255,.14); }
    `width: max-content` cada una resolvía sus pistas por su propio contenido y
    las columnas se desalineaban entre cabecera y cuerpo. */
 .agenda-head { display: grid; grid-template-columns: var(--ag-tpl);
-  width: var(--ag-w); position: sticky; top: 0; z-index: 3; background-image: var(--g-ink); color: var(--band-text);
+  width: var(--ag-w); position: sticky; top: 0; z-index: 3;
+  background-color: var(--panel-base); background-image: var(--g-panel);
+  background-blend-mode: var(--blend-panel); color: var(--band-text);
   box-shadow: 0 6px 18px -8px rgba(var(--shadow-rgb), .4); }
 .ag-corner { padding: .625rem .75rem; font-size: var(--fs-micro); font-weight: 700;
   text-transform: uppercase; letter-spacing: .06em; color: var(--band-dim);
   box-shadow: inset -1px 0 0 var(--band-line); display: flex; align-items: center; }
-.ag-col-head { padding: .5625rem .6875rem; box-shadow: inset -1px 0 0 var(--band-line);
-  display: grid; gap: 1px; }
+.ag-col-head { padding: .6875rem .8125rem; box-shadow: inset -1px 0 0 var(--band-line);
+  display: grid; gap: 2px; }
 .ag-col-head:last-child { box-shadow: none; }
 .ag-col-head .ball { width: .875rem; height: .875rem; }
-.ag-col-head b { font-size: var(--fs-xs); font-weight: 700; letter-spacing: -.012em; }
-.ag-col-head em { font-style: normal; font-size: var(--fs-micro); color: var(--band-dim);
+.ag-col-head b { font-size: var(--fs-sm); font-weight: 700; letter-spacing: -.012em; }
+.ag-col-head em { font-style: normal; font-size: var(--fs-xs); color: var(--band-dim);
   font-variant-numeric: var(--num); font-weight: 600; }
 .agenda-body { width: var(--ag-w); }
 .ag-row { display: grid; grid-template-columns: var(--ag-tpl);
   width: var(--ag-w); border-bottom: 1px solid var(--line); }
 .ag-row:last-child { border-bottom: 0; }
-.ag-hour { padding: .5rem .75rem; font-family: var(--mono); font-size: var(--fs-micro);
+.ag-hour { padding: .5rem .75rem; font-family: var(--mono); font-size: var(--fs-xs);
   font-weight: 500; color: var(--ink-4); border-right: 1px solid var(--line);
-  display: flex; align-items: center; background: var(--surface-2); }
-.ag-cell { position: relative; padding: .5rem .625rem; min-height: 3.25rem; text-align: left;
-  border-right: 1px solid var(--line); display: grid; align-content: center; gap: 1px;
+  display: flex; align-items: center; white-space: nowrap; background: var(--surface-2); }
+.ag-cell { position: relative; padding: .625rem .75rem; min-height: 4.25rem; text-align: left;
+  border-right: 1px solid var(--line); display: grid; align-content: center; gap: 2px;
   transition: background var(--t-hover) var(--ease-out); }
 .ag-cell:last-child { border-right: 0; }
-.ag-cell b { font-size: var(--fs-xs); font-weight: 700; letter-spacing: -.014em;
+/* El nombre cabe en dos líneas antes de rendirse a los puntos suspensivos:
+   una reserva sin nombre legible obliga a abrirla para saber de quién es,
+   que es justo lo que la agenda tiene que ahorrar. La etiqueta de origen
+   vive arriba a la derecha, así que la primera línea le deja sitio. */
+.ag-cell b { font-size: var(--fs-sm); font-weight: 700; letter-spacing: -.014em;
+  overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; line-clamp: 2; }
+.ag-cell:not(.is-free) b { padding-right: 1.5rem; }
+.ag-cell em { font-style: normal; font-size: var(--fs-xs); font-weight: 600;
+  font-variant-numeric: var(--num); opacity: .85;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ag-cell em { font-style: normal; font-size: var(--fs-micro); font-weight: 600;
-  font-variant-numeric: var(--num); opacity: .85; }
 .ag-cell.is-free { color: var(--ink-4); }
 .ag-cell.is-free span { display: inline-flex; align-items: center; gap: .25rem;
   font-size: var(--fs-micro); font-weight: 700; opacity: 0;
@@ -1111,9 +1120,9 @@ body[data-bleed] .stat:first-child { border-color: rgba(255,255,255,.14); }
 .ag-cell.is-part { background: var(--amber-tint); box-shadow: inset 3px 0 0 var(--amber); }
 .ag-cell.is-due  { background: var(--red-tint);   box-shadow: inset 3px 0 0 var(--red); }
 .ag-cell:not(.is-free):hover { filter: brightness(.985) saturate(1.2); }
-.src { position: absolute; right: .375rem; top: .375rem; font-style: normal;
-  font-size: 8.5px; font-weight: 800; letter-spacing: .04em; color: #fff;
-  background: var(--green); border-radius: 3px; padding: 1px 3px;
+.src { position: absolute; right: .4375rem; top: .4375rem; font-style: normal;
+  font-size: 9.5px; font-weight: 800; letter-spacing: .04em; color: #fff;
+  background: var(--green); border-radius: 4px; padding: 1.5px 4px;
   box-shadow: 0 1px 3px rgba(15,169,104,.5); }
 
 /* ───────────────────────────────────────────────────────────────── Torneos */

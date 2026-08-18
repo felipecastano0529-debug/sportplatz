@@ -205,7 +205,11 @@ body.vfondo-ok.vfondo-costura[data-bleed="stadium"] .vb-photo {
    adaptan solos. Es el mismo mecanismo del retinte por deporte.          */
 
 body[data-bleed] {
-  --surface:   var(--glass-dark);
+  /* Opaco, no vidrio. Todo lo que se apoya sobre el escenario —llaves,
+     filas de calendario, goleadores, pastillas— leía la foto por debajo de
+     su propio texto. Con la superficie sólida cada pieza tiene suelo, y
+     encima de la placa se lee como el escalón siguiente. */
+  --surface:   var(--panel-2);
   --surface-2: rgba(255,255,255,.055);
   --surface-3: rgba(255,255,255,.10);
   --field:     rgba(255,255,255,.07);
@@ -244,8 +248,16 @@ body[data-bleed] {
       rgba(var(--accent-rgb), .34) 0%, rgba(var(--accent-rgb), .11) 100%);
 }
 
-/* Vidrio oscuro: la ficha apoyada sobre la foto. Una tarjeta blanca maciza
-   taparía el estadio; en vidrio se lee como algo puesto encima. */
+/* Placa negra mate: el mismo material del rail, ahora también en las fichas.
+   Antes eran vidrio —foto desenfocada por debajo— y funcionaba como efecto,
+   pero doce tarjetas de vidrio sobre una foto de estadio dejan la pantalla
+   sin un solo plano quieto: todo dato se leía sobre luces movidas. El mate
+   les da suelo propio. El estadio sigue estando —en los márgenes, entre
+   tarjetas y detrás del rail— y ahora se ve MÁS, porque hay algo sólido
+   contra lo que compararlo.
+
+   Sin `backdrop-filter`: no hay nada que desenfocar detrás de una superficie
+   opaca, y quitarlo ahorra doce capas compuestas por cuadro. */
 body[data-bleed] .card,
 body[data-bleed] .stat,
 body[data-bleed] .tn-card,
@@ -253,17 +265,30 @@ body[data-bleed] .team-card,
 body[data-bleed] .pl-card,
 body[data-bleed] .slots-card,
 body[data-bleed] .neo,
+body[data-bleed] .court,
+body[data-bleed] .sport-card,
+body[data-bleed] .pod,
 body[data-bleed] .table-wrap {
-  background-color: var(--glass-dark);
-  background-image:
-    linear-gradient(180deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,0) 42%),
-    radial-gradient(130% 80% at 50% -35%, rgba(var(--accent-rgb), .16), transparent 62%);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border-color: var(--glass-dark-line);
+  background-color: var(--panel-base);
+  background-image: var(--g-panel);
+  background-blend-mode: var(--blend-panel);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-color: var(--panel-line);
   box-shadow: var(--float-dark), var(--hi-dark);
   color: var(--ink);
 }
+/* La métrica titular llevaba el azul de noche y ahora sería el único cuadro
+   de otro color en toda la pantalla. Sigue siendo la primera por lo que ya la
+   distinguía —el número en esmeralda— y no por ser de otro material. */
+body[data-bleed] .stat:first-child {
+  background-color: var(--panel-base);
+  background-image: radial-gradient(150% 95% at 50% -30%, rgba(var(--accent-rgb), .30), transparent 68%),
+                    var(--g-panel);
+  background-blend-mode: normal, var(--blend-panel);
+  border-color: rgba(var(--accent-rgb), .28);
+}
+
 body[data-bleed] .card-quiet { background-color: rgba(255,255,255,.06); background-image: none; }
 body[data-bleed] .card-danger { background-color: rgba(120,20,18,.32); }
 
@@ -272,10 +297,9 @@ body[data-bleed] .card-danger { background-color: rgba(120,20,18,.32); }
    blanco de la superficie clara y salía medio lavado, medio oscuro. Aquí es
    una superficie maciza de noche, sin translucidez y sin foco cenital claro. */
 body[data-bleed] .modal {
-  background-color: #0d1524;
-  background-image:
-    linear-gradient(180deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,0) 34%),
-    radial-gradient(120% 70% at 50% -30%, rgba(var(--accent-rgb), .16), transparent 60%);
+  background-color: var(--panel-base);
+  background-image: var(--g-panel);
+  background-blend-mode: var(--blend-panel);
   border: 1px solid rgba(255,255,255,.12);
   box-shadow: var(--e5), var(--hi-dark);
   color: #fff;
@@ -320,14 +344,31 @@ body[data-bleed] .price-input { background: rgba(255,255,255,.09); color: #fff;
 body[data-bleed] .sc-track i { background-image: linear-gradient(180deg, #34d399 0%, #10a06e 100%); }
 body[data-bleed] .sc-row.is-first { border-color: rgba(52,211,153,.55); }
 
+/* Texto que vive suelto sobre el escenario, sin ficha debajo. Con las
+   superficies ya opacas estos son los últimos que se leen contra las luces;
+   una sombra corta les da el borde que la foto les quita. */
+body[data-bleed] .empty,
+body[data-bleed] .pane-note,
+body[data-bleed] .legend,
+body[data-bleed] .fx-date { text-shadow: 0 1px 10px rgba(0,0,0,.75); }
 body[data-bleed] .empty { color: var(--ink-3); }
 body[data-bleed] .pane-note { color: var(--ink-3); }
 body[data-bleed] .legend { color: var(--ink-3); }
 
-/* La agenda es la excepción declarada: son 17 filas de datos y en vidrio
-   oscuro se leen mal. El escenario es el marco; la mesa de trabajo se queda
-   siendo mesa de trabajo. Se re-aclara localmente, otra vez por tokens. */
-body[data-bleed] .agenda-wrap .agenda,
+/* La agenda dejó de ser la excepción blanca. Se re-aclaraba porque en VIDRIO
+   17 filas de datos se leían mal — la foto pasaba por debajo de cada número.
+   Sobre placa mate opaca eso ya no ocurre: el peor texto de la tabla queda en
+   7:1 y la mesa de trabajo puede ser del mismo material que todo lo demás.
+   Los tres estados de cobro se apoyan en los tintes oscuros que el escenario
+   ya define, así que no hace falta una regla por color. */
+body[data-bleed] .agenda {
+  background-color: var(--panel-base);
+  background-image: var(--g-panel);
+  background-blend-mode: var(--blend-panel);
+  border-color: var(--panel-line);
+}
+/* La tabla llana sí sigue clara: vive dentro de fichas y modales donde el
+   material ya es otro. */
 body[data-bleed] .table-wrap.is-plain {
   --surface: var(--n-0); --surface-2: var(--n-50); --surface-3: var(--n-100);
   --ink: var(--n-950); --ink-2: var(--n-600); --ink-3: var(--n-500); --ink-4: var(--n-400);
@@ -338,9 +379,12 @@ body[data-bleed] .table-wrap.is-plain {
   backdrop-filter: none; -webkit-backdrop-filter: none;
   color: var(--n-950);
 }
-body[data-bleed] .agenda-wrap .agenda .ag-cell.is-paid { background: #e0f7ed; }
-body[data-bleed] .agenda-wrap .agenda .ag-cell.is-part { background: #fff4e0; }
-body[data-bleed] .agenda-wrap .agenda .ag-cell.is-due  { background: #ffecea; }
+
+/* La leyenda no es una ficha: es un pie de tabla. Sobre el escenario, con
+   fondo propio, se leía como una tarjeta más y pesaba lo mismo que la
+   agenda entera. */
+body[data-bleed] .legend { background: none; border-color: transparent;
+  backdrop-filter: none; -webkit-backdrop-filter: none; padding: .5rem .25rem; }
 
 /* ── 4. Agenda: scroll horizontal ─────────────────────────────────────────
    Con `overflow: hidden` y columnas de mínimo 7.25rem, 12 canchas pedían
@@ -353,6 +397,31 @@ body[data-bleed] .agenda-wrap .agenda .ag-cell.is-due  { background: #ffecea; }
 .agenda-wrap { border-radius: var(--r4); }
 .ag-hour, .ag-corner { position: sticky; left: 0; z-index: 2; }
 .ag-corner { z-index: 5; }
+
+/* Reservas es un panel de trabajo, no un documento que se lee bajando: la
+   agenda ocupa exactamente lo que queda de ventana y scrollea por dentro.
+   Antes tenía `max-height: 72vh` sin descontar los 300 px de cabecera, día y
+   filtros que van encima, así que se salía por abajo de la pantalla y lo
+   primero que veías al entrar era una tabla cortada a media fila.
+
+   Solo en escritorio: en móvil el alto de ventana es un terreno movedizo
+   —la barra del navegador entra y sale— y ahí la página entera scrollea. */
+@media (min-width: 62rem) {
+  body[data-view="reservas"] .main { height: 100vh; overflow: hidden;
+    display: flex; flex-direction: column; padding-bottom: var(--s5); }
+  body[data-view="reservas"] .main-inner { display: flex; flex-direction: column;
+    flex: 1; min-height: 0; }
+  body[data-view="reservas"] .agenda-wrap { flex: 1; min-height: 18rem; display: flex; }
+  body[data-view="reservas"] .agenda { max-height: none; height: 100%; }
+
+  /* Y se aprieta lo de encima. Cada píxel que ocupa la cabecera es una fila
+     de horas que no se ve, y aquí la tabla es el contenido, no el remate. */
+  body[data-view="reservas"] .main { padding-top: var(--s5); }
+  body[data-view="reservas"] .page-head { margin-bottom: var(--s4); }
+  body[data-view="reservas"] .daystrip { margin-bottom: .5rem; padding-bottom: .5rem; }
+  body[data-view="reservas"] .agenda-bar { margin-bottom: .5rem; }
+  body[data-view="reservas"] .legend--flat { margin-top: .5rem; }
+}
 
 .legend--flat { margin-top: .75rem; }
 
@@ -750,6 +819,21 @@ body[data-bleed] .stamp--ok { color: var(--band-ok); }
 .br-side.is-mine b { color: var(--brand); font-weight: 800; }
 body[data-bleed] .br-side.is-mine b { color: var(--accent-hi); }
 tr.is-mine { background: var(--brand-tint); }
+/* El partido jugado se hunde en vez de desteñirse: con `--surface-2` era
+   blanco al 5,5 % y sobre el estadio eso es transparente — el marcador de un
+   partido terminado se leía encima de las luces. */
+body[data-bleed] .br-match.is-played { background-color: var(--panel-base); }
+
+/* El rótulo de ronda: verde de marca sobre tinte translúcido es un chip que
+   funciona sobre blanco y desaparece sobre las luces del estadio. Suelo
+   propio y el verde legible sobre negro. */
+body[data-bleed] .br-title {
+  color: var(--accent-hi);
+  background-color: var(--panel-2);
+  background-image: linear-gradient(0deg, rgba(var(--accent-rgb), .20), rgba(var(--accent-rgb), .20));
+  border-color: rgba(var(--accent-rgb), .30);
+}
+
 .bracket--read .br-match { cursor: default; }
 
 .bracket-wrap { overflow-x: auto; padding-bottom: .5rem; }

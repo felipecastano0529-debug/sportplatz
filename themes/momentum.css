@@ -211,6 +211,37 @@
     linear-gradient(180deg, rgba(255,255,255,.055) 0%, transparent 8%,
                     transparent 72%, rgba(0,0,0,.46) 100%);
 
+/* La placa: el mismo negro mate del rail, modelado para un rectángulo ancho.
+   El rail es una columna alta y su luz cae en diagonal larga; una tarjeta se
+   lee por el filo de arriba y el asiento de abajo, así que el reparto cambia
+   aunque el material sea el mismo.
+
+   `--panel-base` es dos puntos más claro que `--rail-base` a propósito: el
+   rail tiene que seguir siendo lo más hundido de la pantalla para que las
+   tarjetas floten por encima. Si los dos fueran el mismo negro, el contenido
+   y el menú quedarían en el mismo plano.
+
+   El grano va DENTRO del degradado, mezclado en `overlay`, porque en las
+   tarjetas los dos pseudo-elementos ya están ocupados (foco del puntero y
+   anillo de borde). Sin él, un negro grande forma bandas y se lee a plástico.
+   Quien use `--g-panel` debe declarar también `--blend-panel`. */
+  --panel-base: #0a0e13;
+  /* Un escalón por encima de la placa: filas, llaves y celdas que se apoyan
+     sobre ella (o directamente sobre el escenario) y tienen que leerse como
+     un objeto encima, no como un hueco. */
+  --panel-2:    #11161e;
+  --panel-line: rgba(255,255,255,.10);
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E");
+  --g-panel:
+    var(--grain),
+    radial-gradient(120% 70% at 22% -18%, rgba(226,240,235,.10) 0%, transparent 62%),
+    linear-gradient(152deg, rgba(214,232,226,.055) 0%, rgba(214,232,226,.016) 22%,
+                    transparent 46%),
+    radial-gradient(150% 90% at 50% -30%, rgba(var(--accent-rgb), .13), transparent 66%),
+    linear-gradient(180deg, rgba(255,255,255,.05) 0%, transparent 9%,
+                    transparent 74%, rgba(0,0,0,.42) 100%);
+  --blend-panel: overlay, normal, normal, normal, normal;
+
 /* Vidrio: la ficha flotante sobre foto. */
   --glass:       rgba(255,255,255,.13);
   --glass-line:  rgba(255,255,255,.26);

@@ -100,7 +100,7 @@ export function viewReservas(main) {
                 const cls = saldo === 0 ? 'is-paid' : b.deposit > 0 ? 'is-part' : 'is-due';
                 return `<button class="ag-cell ${cls}" data-open="${b.id}">
                   <b>${esc(b.customer.split(' ').slice(0, 2).join(' '))}</b>
-                  <em>${money(b.total)}${saldo > 0 ? ` · debe ${moneyShort(saldo)}` : ''}</em>
+                  <em>${saldo > 0 ? `${moneyShort(b.total)} · debe ${moneyShort(saldo)}` : money(b.total)}</em>
                   ${SRC[b.source]?.tag ? `<i class="src" title="${SRC[b.source].title}">${SRC[b.source].tag}</i>` : ''}
                 </button>`;
               }).join('')}
@@ -113,7 +113,7 @@ export function viewReservas(main) {
       <span><i class="dot is-paid"></i> pagada</span>
       <span><i class="dot is-part"></i> con adelanto</span>
       <span><i class="dot is-due"></i> sin abonar</span>
-      <span class="legend-note">WA marca las que entraron solas por Neo AI</span>
+      <span class="legend-note">WA e IA marcan las que entraron solas por Neo AI</span>
     </p>`;
 
   $$('[data-day]', main).forEach(b => b.addEventListener('click', () => {
