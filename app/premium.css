@@ -412,18 +412,99 @@ body[data-bleed] .legend { background: none; border-color: transparent;
   body[data-view="reservas"] .main-inner { display: flex; flex-direction: column;
     flex: 1; min-height: 0; }
   body[data-view="reservas"] .agenda-wrap { flex: 1; min-height: 18rem; display: flex; }
-  body[data-view="reservas"] .agenda { max-height: none; height: 100%; }
+  /* `flex: 1` y no solo `height: 100%`: dentro de un contenedor flex la tabla
+     se quedaba en el ancho de sus columnas y dejaba un vacío a la derecha en
+     vez de repartirlo entre ellas. */
+  body[data-view="reservas"] .agenda { flex: 1; min-width: 0; max-height: none; height: 100%; }
 
   /* Y se aprieta lo de encima. Cada píxel que ocupa la cabecera es una fila
-     de horas que no se ve, y aquí la tabla es el contenido, no el remate. */
-  body[data-view="reservas"] .main { padding-top: var(--s5); }
-  body[data-view="reservas"] .page-head { margin-bottom: var(--s4); }
-  body[data-view="reservas"] .daystrip { margin-bottom: .5rem; padding-bottom: .5rem; }
-  body[data-view="reservas"] .agenda-bar { margin-bottom: .5rem; }
-  body[data-view="reservas"] .legend--flat { margin-top: .5rem; }
+     de horas que no se ve, y aquí la tabla es el contenido, no el remate.
+
+     El titular pasa a renglón: la pastilla AGENDA y el nombre de la sección
+     comparten línea con el botón, en cuerpo de encabezado de tarjeta y no de
+     portada. En una sección que se abre para trabajar, un título de portada
+     cuesta dos filas de horas — y ya sabes dónde estás porque lo dice el
+     rail. */
+  /* Título y controles comparten renglón. Eran tres franjas apiladas —título,
+     días, filtros— y la tabla empezaba a 216 px del techo; ahora son dos. */
+  body[data-view="reservas"] .main { padding-top: var(--s4); }
+  body[data-view="reservas"] .main-inner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(0, 1fr);
+    grid-template-areas: "head bar" "days days" "table table"; }
+  /* El centrado va por item y no en el grid: `align-items: center` dejaba de
+     estirar la tabla, que entonces medía sus 17 filas enteras y se salía por
+     arriba y por abajo de la ventana. */
+  body[data-view="reservas"] .page-head  { grid-area: head; align-self: center; }
+  body[data-view="reservas"] .agenda-bar { grid-area: bar; align-self: center;
+    justify-content: flex-end; }
+  /* La tira de días cruza las dos columnas: su ancho natural son catorce
+     chips y, si se le da una columna propia, la impone al título. */
+  body[data-view="reservas"] .daystrip   { grid-area: days; }
+  body[data-view="reservas"] .agenda-wrap { grid-area: table; }
+  body[data-view="reservas"] .page-head { align-items: center; margin-bottom: .625rem;
+    gap: 1rem; }
+  body[data-view="reservas"] .page-head > div:first-child {
+    display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
+  body[data-view="reservas"] .page-title { margin-top: 0;
+    font-size: clamp(1.375rem, 2.2vw, 1.875rem); letter-spacing: -.03em; }
+  /* Y los días se aprietan: la tira es un selector, no una portada. */
+  body[data-view="reservas"] .daystrip { margin-bottom: .375rem; padding-bottom: .375rem; }
+  body[data-view="reservas"] .day { width: 3.625rem; padding: .3125rem .375rem .375rem; }
+  body[data-view="reservas"] .day b { font-size: 1.0625rem; line-height: 1.1; }
+  body[data-view="reservas"] .day em,
+  body[data-view="reservas"] .day .day-mes { font-size: 9px; letter-spacing: .05em; }
+  body[data-view="reservas"] .day-bar { margin-top: .3125rem; }
+  body[data-view="reservas"] .agenda-bar { margin-bottom: .5rem; gap: .75rem; }
+
+  /* La tabla sangra hasta los bordes del área de contenido. El estadio se
+     pierde detrás de ella y está bien: en esta sección el contenido ES la
+     tabla, y cada centímetro que gana son media cancha más a la vista sin
+     tener que scrollear a los lados. Solo la cabecera y los controles
+     conservan margen; abajo y a la derecha la placa muere contra el borde,
+     así que ahí no lleva radio ni filo. */
+  body[data-view="reservas"] .main { max-width: none;
+    padding-left: 0; padding-right: 0; padding-bottom: 0; }
+  body[data-view="reservas"] .page-head,
+  body[data-view="reservas"] .agenda-bar {
+    margin-left: clamp(1rem, 2.6vw, 2.25rem); margin-right: clamp(1rem, 2.6vw, 2.25rem); }
+  body[data-view="reservas"] .daystrip {
+    padding-left: clamp(1rem, 2.6vw, 2.25rem); padding-right: clamp(1rem, 2.6vw, 2.25rem);
+    margin-left: 0; margin-right: 0; }
+  body[data-view="reservas"] .agenda {
+    border-radius: var(--r4) 0 0 0; border-right: 0; border-bottom: 0; }
+  body[data-view="reservas"] .agenda-wrap::after { border-radius: 0; }
 }
 
+/* Aviso de que la tabla sigue a la derecha. Con once canchas no hay ancho de
+   pantalla que las muestre todas, y una columna cortada limpia en el borde
+   no se lee como "hay más": se lee como que ahí se acaba. El velo aparece
+   solo cuando de verdad hay algo más allá y se apaga al llegar al final. */
+/* Misma razón que la esquina: la columna de horas es sticky y con un blanco
+   al 5,5 % se le veían las reservas por debajo al correr la tabla. */
+body[data-bleed] .ag-hour { background-color: #0d1219; }
+
+.agenda-wrap { position: relative; }
+.agenda-wrap::after {
+  content: ''; position: absolute; top: 0; right: 0; bottom: 0; width: 3.5rem;
+  pointer-events: none; border-radius: 0 var(--r4) var(--r4) 0;
+  background: linear-gradient(90deg, rgba(10,14,19,0) 0%, rgba(10,14,19,.92) 88%);
+  opacity: 0; transition: opacity 220ms var(--ease-out);
+}
+.agenda-wrap.has-more::after { opacity: 1; }
+
 .legend--flat { margin-top: .75rem; }
+/* En la barra de filtros la leyenda es una nota al margen, no una ficha:
+   sin fondo, sin borde y sin robarle el ancho al resumen del día. */
+.legend--inline { margin: 0; padding: 0; gap: .625rem; background: none; border: 0;
+  backdrop-filter: none; -webkit-backdrop-filter: none; font-size: var(--fs-micro);
+  letter-spacing: 0; }
+/* Y es lo primero que cede: por debajo de este ancho, filtros y resumen del
+   día ya no caben con ella en la misma línea, y una barra de dos renglones
+   le quita a la tabla más de lo que la leyenda aporta — los tres colores se
+   explican solos en cuanto ves una celda que dice "debe $60k". */
+@media (min-width: 62rem) and (max-width: 90rem) { .legend--inline { display: none; } }
 
 /* ── 5. Escudos y avatares ────────────────────────────────────────────────
    Un equipo sin escudo no enseña un cuadro gris: enseña su inicial sobre su

@@ -1078,8 +1078,13 @@ body[data-bleed] .stat:first-child { border-color: rgba(255,255,255,.14); }
   background-color: var(--panel-base); background-image: var(--g-panel);
   background-blend-mode: var(--blend-panel); color: var(--band-text);
   box-shadow: 0 6px 18px -8px rgba(var(--shadow-rgb), .4); }
+/* La esquina y la columna de horas se quedan pegadas mientras la tabla corre
+   a los lados, así que necesitan fondo PROPIO y opaco: heredando el del
+   contenedor, las celdas les pasaban por debajo y se leía el nombre de una
+   cancha a través de la fecha. */
 .ag-corner { padding: .625rem .75rem; font-size: var(--fs-micro); font-weight: 700;
   text-transform: uppercase; letter-spacing: .06em; color: var(--band-dim);
+  background-color: var(--panel-base);
   box-shadow: inset -1px 0 0 var(--band-line); display: flex; align-items: center; }
 .ag-col-head { padding: .6875rem .8125rem; box-shadow: inset -1px 0 0 var(--band-line);
   display: grid; gap: 2px; }

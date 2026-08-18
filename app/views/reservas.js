@@ -16,7 +16,7 @@
 import { $, $$, esc, money, moneyShort, iso, today, addDays, sameDay, fmtDate, fmtDateLong, fmtHour, hhmm, nextHour, uid, thousands, readNum, DAYS_S, MONTHS_S, firstName } from '../core/util.js';
 import { S, save } from '../core/store.js';
 import { SPORTS, ballSVG } from '../core/sports.js';
-import { bookingsOn, courtById, bookingById, hoursOfDay, slotTaken } from '../core/calc.js';
+import { bookingsOn, courtById, bookingById, hoursOfDay, openHour, slotTaken } from '../core/calc.js';
 import { icon } from '../ui/icons.js';
 import { stagger } from '../ui/motion.js';
 import { openModal, toast } from '../ui/modal.js';
@@ -71,10 +71,15 @@ export function viewReservas(main) {
           <button class="pill ${agendaSport === id ? 'is-on' : ''}" data-sport="${id}">
             ${ballSVG(id, 'pill-ball')}${SPORTS[id].short}</button>`).join('')}
       </div>
-      <p class="agenda-sum">
+      <p class="legend legend--inline" title="WA e IA marcan las que entraron solas por Neo AI">
+        <span><i class="dot is-paid"></i> pagada</span>
+        <span><i class="dot is-part"></i> adelanto</span>
+        <span><i class="dot is-due"></i> sin abonar</span>
+      </p>
+      <p class="agenda-sum" title="${money(ingresoDia)} facturado · ${money(cobradoDia)} recibido · ${money(ingresoDia - cobradoDia)} pendiente">
         <b>${money(ingresoDia)}</b> facturado ·
-        <span class="ok">${money(cobradoDia)}</span> recibido ·
-        <span class="neg">${money(ingresoDia - cobradoDia)}</span> pendiente
+        <span class="ok">${moneyShort(cobradoDia)}</span> recibido ·
+        <span class="neg">${moneyShort(ingresoDia - cobradoDia)}</span> pendiente
       </p>
     </div>
 
@@ -109,12 +114,7 @@ export function viewReservas(main) {
         </div>
       </div>
     </div>
-    <p class="legend legend--flat">
-      <span><i class="dot is-paid"></i> pagada</span>
-      <span><i class="dot is-part"></i> con adelanto</span>
-      <span><i class="dot is-due"></i> sin abonar</span>
-      <span class="legend-note">WA e IA marcan las que entraron solas por Neo AI</span>
-    </p>`;
+`;
 
   $$('[data-day]', main).forEach(b => b.addEventListener('click', () => {
     agendaDate = b.dataset.day; viewReservas(main);
@@ -133,7 +133,42 @@ export function viewReservas(main) {
   const strip = $('#daystrip');
   const on = $('.day.is-on', strip);
   if (on) strip.scrollLeft = on.offsetLeft - strip.clientWidth / 2 + on.clientWidth / 2;
+  avisarDeMasColumnas(main);
+  alaHoraDeAhora(main);
   stagger($$('.ag-row', main).slice(0, 12), { y: 8, step: 18 });
+}
+
+/* Con más de ocho canchas la tabla no cabe en ninguna pantalla, y una columna
+   cortada limpia contra el borde no se lee como "sigue": se lee como el
+   final. El velo de la derecha solo se enciende cuando queda algo por ver.
+   Va aquí y no en CSS porque depende de cuánto se haya scrolleado. */
+/* Un día empieza a las 6 de la mañana y la primera reserva rara vez es antes
+   de las 4 de la tarde: abrir la agenda mirando fijamente tres filas vacías
+   es empezar a media página. Si el día es hoy, la tabla arranca una hora
+   antes de la actual, que es donde está la información. */
+function alaHoraDeAhora(main) {
+  const ag = $('.agenda', main);
+  if (!ag || agendaDate !== iso(today())) return;
+  const fila = $$('.ag-row', ag)[Math.max(0, new Date().getHours() - openHour() - 1)];
+  if (fila) ag.scrollTop = fila.offsetTop - $('.agenda-head', ag).offsetHeight;
+}
+
+let avisoVivo = null;   // el oyente de `resize` de la agenda anterior
+
+function avisarDeMasColumnas(main) {
+  const wrap = $('.agenda-wrap', main);
+  const ag = $('.agenda', main);
+  avisoVivo?.abort();     // la vista se repinta en cada día y filtro
+  avisoVivo = null;
+  if (!wrap || !ag) return;
+
+  const ctrl = new AbortController();
+  avisoVivo = ctrl;
+  const sync = () => wrap.classList.toggle('has-more',
+    ag.scrollWidth - ag.clientWidth - ag.scrollLeft > 8);
+  ag.addEventListener('scroll', sync, { passive: true, signal: ctrl.signal });
+  addEventListener('resize', sync, { passive: true, signal: ctrl.signal });
+  sync();
 }
 
 /* ── Alta ────────────────────────────────────────────────────────────────── */
