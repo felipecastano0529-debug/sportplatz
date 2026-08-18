@@ -49,7 +49,7 @@ function botScript() {
 
 export function viewBot(main) {
   const script = botScript();
-  const entran = S.bookings.filter(b => b.source === 'bot').length;
+  const entran = S.bookings.filter(b => b.source === 'bot' || b.source === 'neo').length;
   const pct = S.bookings.length ? Math.round(entran / S.bookings.length * 100) : 0;
 
   main.innerHTML = `
@@ -95,7 +95,7 @@ export function viewBot(main) {
         <article class="card card-quiet" data-anim>
           <header class="card-head"><h2>Lo que te ahorra</h2></header>
           <ul class="mini-stats">
-            <li><b>${pct}%</b><em>de tus reservas ya entran por aquí</em></li>
+            <li><b>${pct}%</b><em>de tus reservas ya entran por Neo AI</em></li>
             <li><b>0</b><em>llamadas para preguntar horarios</em></li>
             <li><b>24/7</b><em>contesta a las 2 de la mañana también</em></li>
           </ul>

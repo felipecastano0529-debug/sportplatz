@@ -26,6 +26,17 @@ import { phone as randomPhone } from '../core/seed.js';
 let agendaDate = iso(today());
 let agendaSport = 'all';
 
+/* De dónde salió cada reserva. 'bot' es Neo por WhatsApp y 'neo' es Neo
+   dentro de la app: el mismo asistente por dos puertas, y al dueño le importa
+   cuál — no es lo mismo un cliente que escribió al celular del negocio que
+   uno que ya estaba adentro. */
+const SRC = {
+  bot:       { tag: 'WA', title: 'Reservó por WhatsApp con Neo AI', label: 'Neo AI en WhatsApp' },
+  neo:       { tag: 'IA', title: 'Reservó hablando con Neo AI en la app', label: 'Neo AI en la app' },
+  app:       { tag: '',   title: '', label: 'La app del jugador' },
+  mostrador: { tag: '',   title: '', label: 'Mostrador' }
+};
+
 export function viewReservas(main) {
   const t = today();
   const days = Array.from({ length: 14 }, (_, i) => addDays(t, i - 2));
@@ -90,7 +101,7 @@ export function viewReservas(main) {
                 return `<button class="ag-cell ${cls}" data-open="${b.id}">
                   <b>${esc(b.customer.split(' ').slice(0, 2).join(' '))}</b>
                   <em>${money(b.total)}${saldo > 0 ? ` · debe ${moneyShort(saldo)}` : ''}</em>
-                  ${b.source === 'bot' ? '<i class="src" title="Reservó por WhatsApp con Neo AI">WA</i>' : ''}
+                  ${SRC[b.source]?.tag ? `<i class="src" title="${SRC[b.source].title}">${SRC[b.source].tag}</i>` : ''}
                 </button>`;
               }).join('')}
             </div>`;
@@ -210,7 +221,7 @@ export function openBookingDetail(id) {
         <li><span>Cancha</span><b>${esc(c?.name || '—')}</b></li>
         <li><span>Cuándo</span><b>${fmtDateLong(b.date)} · ${fmtHour(b.start)} a ${fmtHour(b.end)}</b></li>
         <li><span>Celular</span><b>${esc(b.phone)}</b></li>
-        <li><span>Reservó por</span><b>${b.source === 'bot' ? 'Neo AI en WhatsApp' : 'Mostrador'}</b></li>
+        <li><span>Reservó por</span><b>${SRC[b.source]?.label || SRC.mostrador.label}</b></li>
         <li><span>Total</span><b>${money(b.total)}</b></li>
         <li><span>Adelanto</span><b class="ok">${money(b.deposit)}</b></li>
         <li class="kv-strong"><span>Saldo</span><b class="${saldo ? 'neg' : 'ok'}">${saldo ? money(saldo) : 'Pagada'}</b></li>

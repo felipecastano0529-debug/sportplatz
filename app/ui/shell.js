@@ -31,6 +31,7 @@ import { viewReservar }  from '../player/reservar.js';
 import { viewMiEquipo }  from '../player/equipo.js';
 import { viewPlayerTorneos } from '../player/torneos.js';
 import { viewHistorial } from '../player/historial.js';
+import { viewNeo, stopNeo }  from '../player/neo.js';
 
 export const OWNER_NAV = [
   { id: 'panel',    label: 'Panel',    hint: 'Cuánto entra',      icon: 'panel' },
@@ -47,14 +48,15 @@ export const PLAYER_NAV = [
   { id: 'reservar',  label: 'Reservar',    hint: 'Cancha y hora',      icon: 'reservas' },
   { id: 'miequipo',  label: 'Mi equipo',   hint: 'Plantilla y escudo',  icon: 'shield' },
   { id: 'ptorneos',  label: 'Torneos',     hint: 'Inscríbete',         icon: 'torneos' },
-  { id: 'historial', label: 'Mi histórico',hint: 'Partidos y números',  icon: 'history' }
+  { id: 'historial', label: 'Mi histórico',hint: 'Partidos y números',  icon: 'history' },
+  { id: 'neo',       label: 'Neo AI',      hint: 'Pídela hablando',    icon: 'bot' }
 ];
 
 const VIEWS = {
   panel: viewPanel, canchas: viewCanchas, reservas: viewReservas,
   torneos: viewTorneos, equipos: viewEquipos, bot: viewBot, ajustes: viewAjustes,
   inicio: viewInicio, reservar: viewReservar, miequipo: viewMiEquipo,
-  ptorneos: viewPlayerTorneos, historial: viewHistorial
+  ptorneos: viewPlayerTorneos, historial: viewHistorial, neo: viewNeo
 };
 
 export let VIEW = 'panel';
@@ -74,6 +76,7 @@ export function renderApp(view = VIEW, { intro = false } = {}) {
   // corta al cambiar de vista sigue corriendo sobre un nodo ya desprendido.
   // Hay que leer la vista ANTERIOR, así que va antes de reasignar VIEW.
   if (VIEW === 'bot' && view !== 'bot') stopChat();
+  if (VIEW === 'neo' && view !== 'neo') stopNeo();
 
   VIEW = view;
 
@@ -211,7 +214,7 @@ export function paintViewBg(view) {
    cambia en cada sección deja de significar algo. */
 const STADIUM_VIEWS = new Set([
   'panel', 'reservas', 'torneos', 'equipos', 'bot', 'ajustes',
-  'inicio', 'reservar', 'miequipo', 'ptorneos', 'historial'
+  'inicio', 'reservar', 'miequipo', 'ptorneos', 'historial', 'neo'
 ]);
 
 /** Qué deporte manda el fondo. Solo Canchas retinta la sección entera. */
