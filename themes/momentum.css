@@ -243,8 +243,8 @@
    al revés, en escritorio el estadio se recorta a una franja y se pierden
    las gradas y los reflectores, que es lo que hace la foto.               */
 
-  --bg-estadio:        url('../assets/fondos/estadio-desktop.jpg?v=5');
-  --bg-estadio-movil:  url('../assets/fondos/estadio-mobile.jpg?v=5');
+  --bg-estadio:        url('../assets/fondos/estadio-desktop.jpg?v=6');
+  --bg-estadio-movil:  url('../assets/fondos/estadio-mobile.jpg?v=6');
 
 /* ── 8. HALOS DEL FONDO POR DEPORTE ────────────────────────────────────── */
 
@@ -253,4 +253,24 @@
   --halo-tenis:     rgba(80,210,160,.28);
   --halo-voleibol:  rgba(220,160,80,.26);
   --halo-paintball: rgba(229,35,31,.24);
+}
+
+/* El original de la foto son 736 px de ancho: todo lo que se sirve es un
+   escalado. Se entrega a 2560 para que la pantalla retina no vuelva a
+   escalar encima con un filtro bilineal tonto —eso es la mitad de la
+   sensación de "poco HD"—, y en WebP porque a esa resolución el JPEG pesa
+   413 KB y el WebP 262 KB por la misma imagen.
+
+   Va en @supports y NO dentro del token directamente: si un navegador no
+   entiende `image-set`, un `var()` inválido no cae al valor anterior —
+   computa a `none` y el fondo desaparece entero. Así el respaldo JPEG de
+   arriba se queda intacto para quien no llegue aquí. */
+@supports (background-image: image-set(url('a.webp') type('image/webp') 1x)) {
+  :root {
+    --bg-estadio: image-set(
+      url('../assets/fondos/estadio-desktop.webp?v=6')    type('image/webp') 1x,
+      url('../assets/fondos/estadio-desktop@2x.webp?v=6') type('image/webp') 2x);
+    --bg-estadio-movil: image-set(
+      url('../assets/fondos/estadio-mobile.webp?v=6') type('image/webp') 1x);
+  }
 }

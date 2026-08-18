@@ -282,22 +282,30 @@ Sobre la foto del estadio hay exactamente **tres** textos sin superficie propia
 debajo, y los tres viven en los 130 px de arriba: el rótulo, el titular y la
 línea de resumen. Todo lo demás llega con su vidrio oscuro puesto.
 
-Por eso el velo es un escalón y no una lámina: **60 % en la cabecera, 24 % en el
+Por eso el velo es un escalón y no una lámina: **64 % en la cabecera, 24 % en el
 cuenco, 62 % al pie.** El perfil anterior hacía justo lo contrario —46 % arriba
 y 88 % abajo— porque estaba calibrado contra un encuadre que terminaba en
 césped quemado. Con el actual apagaba la grada entera y dejaba el titular a
 `3.21:1`.
 
+**Móvil lleva su propio perfil: 78 % / 24 % / 62 %.** No es capricho. Ahí la
+cabecera va de y=109 a y=195 —el doble de proporción de pantalla que en
+escritorio— y el recorte vertical le pone los reflectores justo detrás. Con el
+perfil de escritorio el rótulo caía a `3.12:1`.
+
 Medido en el punto más claro de cada banda, sobre la composición completa
 (foto → haces en `screen` → velo):
 
-| Texto | Contraste | Mínimo |
-|---|---|---|
-| Rótulo `#34d399` 11 px | 8.03:1 | 4.5 |
-| Titular 34 px blanco | 8.29:1 | 3.0 |
-| Resumen 13 px al `.74` | 4.92:1 | 4.5 |
+| Texto | Escritorio | Móvil | Mínimo |
+|---|---|---|---|
+| Rótulo `#34d399` 11 px | 6.87:1 | 5.64:1 | 4.5 |
+| Titular blanco | 8.83:1 | 7.85:1 | 3.0 |
+| Resumen 13 px al `.74` | 5.27:1 | 4.46:1 | 4.5 |
+| Cualquier texto al `.74`, en **cualquier** punto de la franja | 5.15:1 | 5.25:1 | 4.5 |
 
-En móvil el mismo perfil da 5.35:1 y 5.56:1 — no hace falta una versión aparte.
+> La última fila es la que de verdad protege: las tres primeras miden cada
+> texto donde está hoy, y un titular más largo o una vista con otra línea de
+> resumen se mueve. La franja entera aguanta.
 
 **Los haces sintéticos bajaron a la mitad.** Existían porque el encuadre viejo
 era casi todo cielo y no había luz propia arriba que dibujara volumen. El
@@ -307,10 +315,21 @@ las esquinas superiores y casar la foto con la marca.
 
 ### Las fotos de fondo
 
-`assets/fondos/estadio-desktop.jpg` (horizontal) y `estadio-mobile.jpg`
-(vertical). La horizontal va a escritorio y la vertical a móvil: al revés, en
-escritorio el estadio se recorta a una franja y se pierden las gradas y los
-reflectores, que es lo que hace la foto.
+La horizontal va a escritorio y la vertical a móvil: al revés, en escritorio el
+estadio se recorta a una franja y se pierden las gradas y los reflectores, que
+es lo que hace la foto.
+
+| Archivo | Tamaño | Peso | Para |
+|---|---|---|---|
+| `estadio-desktop.jpg` | 1800×1013 | 285 KB | Respaldo: navegador sin WebP o sin `image-set` |
+| `estadio-desktop.webp` | 1800×1013 | 180 KB | Escritorio 1x |
+| `estadio-desktop@2x.webp` | 2560×1440 | 262 KB | Escritorio retina |
+| `estadio-mobile.jpg` | 1200×1920 | 349 KB | Respaldo móvil |
+| `estadio-mobile.webp` | 1200×1920 | 241 KB | Móvil |
+
+Se descarga **una sola**: la precarga de `index.html` lleva `imagesrcset` con
+las mismas dos densidades y el mismo `?v=`, así que pide exactamente lo que
+después pedirá la hoja de estilos.
 
 Las dos se llevan a **luminancia media ~67** antes de entrar al repo. Es el
 número donde el vidrio oscuro de las tarjetas todavía se despega del fondo y la
@@ -325,12 +344,27 @@ techo con los reflectores— y bajan hacia el césped:
 
 | | Recorte del original (736×1308) | Sale a |
 |---|---|---|
-| Horizontal | `0,470 → 736,884` (banda 16:9) | 1800×1013 |
-| Vertical | `106,470 → 630,1308` | 900×1440 |
+| Horizontal | `0,470 → 736,884` (banda 16:9) | 1800 y 2560 de ancho |
+| Vertical | `106,470 → 630,1308` | 1200×1920 |
 
-> Las dos son un escalado de ×2,45 y ×1,72 sobre un original pequeño. Se
-> asume: el fondo va velado y desenfocado 1,2 px, y un escalado suave miente
-> menos que un recorte duro.
+### Sacarle nitidez a un original de 736 px
+
+No hay más información que la que trae el archivo; lo que sí se puede es dejar
+de tirarla por el camino. Tres cosas lo hacían:
+
+1. **Un solo salto de Lanczos** hasta el destino disuelve el detalle. Ahora el
+   escalado va **por pasos de ×1,5 con máscara de enfoque en cada uno**
+   (`radius 1.1, percent 55, threshold 2`). La estructura del techo, la letra
+   del cartel y el grano de la grada sobreviven.
+2. **Entregar 1800 px a una pantalla retina** obliga al navegador a escalar
+   otra vez encima, con un filtro bilineal tonto. Por eso existe el `@2x`.
+   Media sensación de "poco HD" era esto.
+3. **`blur(1.2px)` en el CSS.** Estaba para tapar el escalado duro del punto 1.
+   Arreglado el escalado, ese píxel y pico solo estaba borrando trabajo.
+   Ahora **`.35px`**: sigue apartando la foto del contenido sin emborronarla.
+
+> WebP y no JPEG a partir de aquí: a 2560 px el mismo fotograma pesa 413 KB en
+> JPEG y 262 KB en WebP. El JPEG de 1800 se queda como respaldo.
 
 > Reemplazar una foto **conservando el nombre** obliga a subir `ASSET_V` en
 > `app/core/sports.js`. Sin build no hay hash en el nombre, y sin versión

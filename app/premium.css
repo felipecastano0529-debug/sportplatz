@@ -58,11 +58,13 @@ h2, .card-head h2, .br-title, .fx-date {
   position: absolute; inset: -1.5%;
   background-image: var(--bg-estadio);
   background-size: cover; background-position: 50% 38%;
-  /* El original es pequeño: un desenfoque mínimo es más honesto que un
-     escalado duro, y de paso lo aparta del contenido. */
+  /* El desenfoque estaba en 1.2px para tapar un escalado duro. Ahora el
+     escalado se hace por pasos con máscara de enfoque y se entrega a 2560,
+     así que ese px y pico de desenfoque ya solo estaba tirando detalle a la
+     basura. A .35 sigue apartando la foto del contenido sin emborronarla. */
   /* `brightness` domada: la foto trae un estallido de luz arriba al centro y
      sin bajarlo las fichas de vidrio que caen ahí se lavaban a blanco. */
-  filter: saturate(.92) contrast(1.1) brightness(.98) blur(1.2px);
+  filter: saturate(.92) contrast(1.1) brightness(.98) blur(.35px);
 }
 @media (max-width: 48rem) {
   .vb-photo { background-image: var(--bg-estadio-movil); background-position: 50% 30%; }
@@ -95,18 +97,31 @@ h2, .card-head h2, .br-title, .fx-date {
    abajo. El perfil viejo hacía lo contrario de lo que hace falta: 46 % arriba,
    donde va el titular, y 88 % al final, donde no hay nada que leer.
 
-   Los números salen de medir, no de tantear. Con el encuadre nuevo el borde
-   del techo y los reflectores caen justo detrás del subtítulo, y a 46 % el
-   texto secundario daba 3.21:1 — por debajo de AA. El 60 % de la primera
-   parada lo sube a 4.68:1. La rampa larga hasta el 34 % es para que el corte
-   no se vea: 150 px para bajar .31 de alfa. */
+   Los números salen de medir, no de tantear: el borde del techo y los
+   reflectores caen justo detrás del subtítulo. La rampa larga es para que el
+   escalón no se vea — unos 140 px para bajar .35 de alfa.
+
+   Móvil lleva su propio perfil, más abajo, y no por capricho: ahí la cabecera
+   empieza en y=109 y termina en y=195, o sea que ocupa el doble de proporción
+   de pantalla que en escritorio, y el recorte vertical pone los reflectores
+   justo detrás. Con el perfil de escritorio el rótulo daba 3.12:1. */
 .view-bg.is-stadium .vb-scrim {
   background:
     radial-gradient(90% 60% at 50% 0%, rgba(var(--accent-rgb), .14), transparent 62%),
     linear-gradient(180deg,
-      rgba(4,8,16,.60) 0%,  rgba(4,8,16,.55) 14%,
-      rgba(4,8,16,.24) 34%, rgba(4,8,16,.30) 58%,
+      rgba(4,8,16,.64) 0%,  rgba(4,8,16,.59) 16%,
+      rgba(4,8,16,.24) 36%, rgba(4,8,16,.30) 58%,
       rgba(4,8,16,.62) 100%);
+}
+@media (max-width: 48rem) {
+  .view-bg.is-stadium .vb-scrim {
+    background:
+      radial-gradient(90% 60% at 50% 0%, rgba(var(--accent-rgb), .14), transparent 62%),
+      linear-gradient(180deg,
+        rgba(4,8,16,.78) 0%,  rgba(4,8,16,.73) 22%,
+        rgba(4,8,16,.24) 44%, rgba(4,8,16,.30) 62%,
+        rgba(4,8,16,.62) 100%);
+  }
 }
 
 /* La cancha a sangre también recibe grano, por coherencia de material. */

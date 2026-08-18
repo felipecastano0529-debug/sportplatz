@@ -10,7 +10,7 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Sportplatz — reservas, torneos y Neo AI para canchas">
 <meta property="og:description" content="Configura tu complejo deportivo en cuatro preguntas y entra a la plataforma: agenda por hora, torneos con llaves que avanzan solas, equipos con su histórico y un bot que reserva por WhatsApp.">
-<meta property="og:image" content="assets/fondos/estadio-desktop.jpg?v=5">
+<meta property="og:image" content="assets/fondos/estadio-desktop.jpg?v=6">
 <meta name="theme-color" content="#0a0c0b">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -24,10 +24,15 @@
 <link rel="stylesheet" href="app/base.css">
 <link rel="stylesheet" href="app/premium.css">
 
-<!-- La versión tiene que coincidir con la de momentum.css: sin ella el
-     navegador precarga una URL y la hoja pide otra — dos descargas, cero
-     beneficio. -->
-<link rel="preload" as="image" href="assets/fondos/estadio-desktop.jpg?v=5" media="(min-width: 48rem)">
+<!-- La precarga tiene que pedir EXACTAMENTE lo que va a pedir la hoja de
+     estilos, versión incluida, o son dos descargas y cero beneficio. Como el
+     fondo se sirve por `image-set`, aquí va `imagesrcset` con las mismas dos
+     densidades: el navegador precarga una sola, la que le toca. El atributo
+     `type` hace que quien no entienda WebP se salte la precarga y se quede
+     con el JPEG que pide la hoja. -->
+<link rel="preload" as="image" type="image/webp" media="(min-width: 48rem)"
+      imagesrcset="assets/fondos/estadio-desktop.webp?v=6 1x,
+                   assets/fondos/estadio-desktop@2x.webp?v=6 2x">
 
 <link rel="icon" type="image/png" href="assets/marca/favicon.png">
 <link rel="apple-touch-icon" href="assets/marca/favicon.png">
