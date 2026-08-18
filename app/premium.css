@@ -769,39 +769,41 @@ tr.is-mine { background: var(--brand-tint); }
 body[data-bleed] .auth-error { color: var(--band-neg);
   background: rgba(229,35,31,.16); border-color: rgba(255,157,150,.3); }
 
-/* ── 22. Rail de vidrio ───────────────────────────────────────────────────
-   El rail deja de ser una superficie y pasa a ser una lámina: el fondo de la
-   vista corre por detrás y se ve a través. Eso es lo que le da presencia al
-   escenario — el estadio ya no queda partido en dos por una barra opaca,
-   sigue de lado a lado y el menú flota encima.
+/* ── 22. Rail de metal ────────────────────────────────────────────────────
+   Una placa de acero cepillado con su propio brillo. El rail deja de ser
+   vidrio: no enseña la foto de la vista, tiene material propio. El contenido
+   es el escenario; el rail es el chasis que lo sostiene.
 
-   La opacidad del vidrio no es libre. Por debajo de ~.70 el estadio se cuela
-   con luz suficiente para que la pista secundaria baje de 4.5:1, que es donde
-   deja de ser legible. Está en .74 con margen.                            */
+   El rail es una franja muy alta y estrecha —del orden de 1:5,6— así que de
+   la textura solo se ve una rebanada vertical. Por eso el archivo ya viene
+   recortado por la banda donde cruza el brillo diagonal, en vez de estampar
+   la foto entera y confiar en el `cover`.                                  */
 
 .nav {
-  background-color: var(--rail-glass);
-  background-image: var(--g-rail);
-  backdrop-filter: blur(22px) saturate(130%);
-  -webkit-backdrop-filter: blur(22px) saturate(130%);
-  /* Un filo de luz a la derecha en vez de una sombra: sobre foto, una sombra
-     difusa se lee como suciedad; una línea se lee como canto de cristal. */
-  box-shadow: inset -1px 0 0 rgba(255,255,255,.10),
-              inset 0 1px 0 rgba(255,255,255,.14),
-              26px 0 60px -34px rgba(0,0,0,.7);
+  background-color: var(--rail-base);
+  background-image: var(--g-rail), var(--tex-metal);
+  background-size: auto, cover;
+  background-position: center, center top;
+  background-repeat: no-repeat, no-repeat;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: inset -1px 0 0 rgba(255,255,255,.09),
+              inset 0 1px 0 rgba(255,255,255,.13),
+              26px 0 60px -34px rgba(0,0,0,.75);
 }
 
-/* La veladura diagonal vuelve, que sobre vidrio oscuro sí se ve. */
-.nav::after { background-image: var(--g-sheen-v); }
+/* La veladura diagonal del sistema se retira aquí: el metal ya trae la suya,
+   y dos brillos cruzados se leen como suciedad. */
+.nav::after { background-image: none; }
 
-/* Los estados vuelven a ser luz, no sombra. */
+/* Los estados son luz sobre metal. */
 .nav-brand:hover { background: rgba(255,255,255,.08); }
 .nav-item { color: var(--rail-dim); }
 .nav-item:hover { background: rgba(255,255,255,.08); color: #fff; }
-.nav-item.is-on { background: rgba(255,255,255,.13); color: #fff;
+.nav-item.is-on { background: rgba(255,255,255,.12); color: #fff;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.14); }
 
-.nav-ic { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.09);
+.nav-ic { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.09);
   color: var(--rail-dim); }
 .nav-item:hover .nav-ic { color: #fff; }
 .nav-item.is-on .nav-ic { color: #fff; }
@@ -811,17 +813,21 @@ body[data-bleed] .auth-error { color: var(--band-neg);
 .nav-user:hover, .cuenta:hover { background: rgba(255,255,255,.12); }
 .brand-logo { background: rgba(255,255,255,.08); }
 
-/* La pista secundaria: sin opacidad y con su propio tono. `opacity: .72` sobre
-   vidrio la dejaba en 3.1:1 según lo que hubiera detrás; fijarla la vuelve
-   predecible pase lo que pase por el fondo. */
+/* Sin `opacity` en el texto secundario: con una textura variable detrás, una
+   opacidad hace que el contraste dependa de si cae sobre el brillo o sobre la
+   sombra. El tono se fija y es predecible en toda la altura del rail. */
 .nav-txt em, .nav-brand-txt em, .nav-user-txt em, .cuenta-txt em {
   opacity: 1; color: var(--rail-dim); }
 .nav-user-swap { color: var(--rail-dim); }
 
-/* El onboarding no tiene fondo de vista detrás, así que ahí el rail se queda
-   sólido. Un vidrio sin nada que dejar ver es solo un gris. */
-.ob-rail { background-color: #0a1310; background-image: var(--g-sheen-v),
-  linear-gradient(170deg, #16211a 0%, #040806 100%); }
+/* El onboarding usa el mismo chasis. */
+.ob-rail {
+  background-color: var(--rail-base);
+  background-image: var(--g-rail), var(--tex-metal);
+  background-size: auto, cover;
+  background-position: center, center top;
+}
+.ob-rail::after { background-image: none; }
 
 /* El logo pasó de SVG a PNG con alfa. `object-fit: contain` para que nunca se
    deforme, y la sombra proyectada se recorta a la silueta —no a la caja— por

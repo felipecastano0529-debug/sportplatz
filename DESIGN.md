@@ -172,37 +172,43 @@ a la curva — un error que solo se ve cuando ya está publicado.
 La curva es Catmull-Rom convertida a béziers: una polilínea recta parece un
 electrocardiograma, la curva parece una tendencia.
 
-### 3c-bis. El rail es vidrio, no una superficie
+### 3c-bis. El rail es metal
 
-El fondo de la vista ocupa **toda la pantalla, también por debajo del rail**, y
-el rail es una lámina translúcida encima. El estadio ya no queda partido en dos
-por una barra opaca: sigue de lado a lado y el menú flota sobre él.
+Una placa de acero cepillado con su propio brillo. El contenido es el escenario;
+el rail es el chasis que lo sostiene.
 
-Se probó antes en blanco hueso. Se descartó: una superficie clara y maciza a la
-izquierda robaba protagonismo a la foto en vez de dárselo, que era justo lo
-contrario de lo que la sección tenía que hacer.
+Se probaron antes dos caminos y los dos se descartaron por lo mismo — no le daban
+identidad propia: el **blanco hueso** robaba protagonismo a la foto en vez de
+dárselo, y el **vidrio** dejaba pasar la foto de la vista, que detrás de un menú
+llega desenfocada y no aporta.
 
-**La opacidad del vidrio no es libre.** Compuesto el peor caso —el cielo claro
-de la foto de voleibol, en la banda alta donde el velo es más flojo— la pista
-secundaria del menú da:
+**El rail es una franja muy alta y estrecha**, del orden de 1:5,6. De cualquier
+textura solo se ve una rebanada vertical, así que el archivo viene ya recortado
+por la banda donde cruza el brillo diagonal, en vez de estampar la foto entera
+y confiar en el `cover`.
 
-| Opacidad del vidrio | Contraste de la pista |
-|---|---|
-| `.55` | 4.25:1 ✗ |
-| `.62` | 4.89:1 ✓ |
-| `.64` (elegida) | ~5.0:1 ✓ |
-| `.74` | 6.02:1 ✓ pero apenas deja ver la foto |
+**Dos correcciones de legibilidad, ambas calculadas:**
 
-Se queda en `.64`: con margen sobre AA y dejando pasar bastante más fondo. Es
-un cálculo analítico sobre las capas (foto → velo → vidrio), no una medición
-del píxel compuesto: `backdrop-filter` no es inspeccionable desde el DOM.
+| | Antes | Después |
+|---|---|---|
+| Especular de la textura | 253 (blanco puro) | 168 |
+| Pista secundaria sobre el brillo | 2.13:1 ✗ | 4.91:1 ✓ |
 
-**La pista secundaria no lleva `opacity`.** Con un fondo variable detrás, una
-opacidad hace que el contraste dependa de la foto. El tono se fija en
-`--rail-dim` y así es predecible pase lo que pase por detrás.
+La textura se sirve con la parte alta de la curva comprimida: por debajo de 96
+no se toca y de ahí arriba se dobla hacia un techo de 168. Así conserva el
+brillo sin llegar a blanco.
 
-**El onboarding es la excepción:** ahí no hay fondo de vista, así que su rail es
-sólido. Un vidrio sin nada que dejar ver es solo un gris.
+Aun así, un gris medio detrás de texto es el peor caso posible para el
+contraste. El velo `--g-rail` se cierra a `.54` en la banda del brillo y el tono
+de `--rail-dim` sube: el peor punto del rail da 4.91:1 y el resto, mucho más
+oscuro, pasa de 10:1.
+
+**Sin `opacity` en el texto secundario.** Con una textura variable detrás, una
+opacidad hace que el contraste dependa de si el texto cae sobre el brillo o
+sobre la sombra. El tono se fija y es predecible en toda la altura.
+
+**La veladura diagonal del sistema se retira del rail:** el metal ya trae la
+suya, y dos brillos cruzados se leen como suciedad.
 
 ### 3d. Superficies de énfasis
 
