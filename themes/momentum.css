@@ -231,8 +231,8 @@
    al revés, en escritorio el estadio se recorta a una franja y se pierden
    las gradas y los reflectores, que es lo que hace la foto.               */
 
-  --bg-estadio:        url('../assets/fondos/estadio-desktop.jpg');
-  --bg-estadio-movil:  url('../assets/fondos/estadio-mobile.jpg');
+  --bg-estadio:        url('../assets/fondos/estadio-desktop.jpg?v=3');
+  --bg-estadio-movil:  url('../assets/fondos/estadio-mobile.jpg?v=3');
 
 /* ── 8. HALOS DEL FONDO POR DEPORTE ────────────────────────────────────── */
 

@@ -7,7 +7,7 @@
 
 import { $, $$, esc, iso, today, thousands, readNum, hhmm, fmtHour } from '../core/util.js';
 import { S, setS, save } from '../core/store.js';
-import { SPORTS, SPORT_LIST, ballSVG } from '../core/sports.js';
+import { SPORTS, SPORT_LIST, ballSVG, conVersion } from '../core/sports.js';
 import {
   makeCourts, seedBookings, seedPlayers, seedTeams, demoTournament, openTournament
 } from '../core/seed.js';
@@ -85,7 +85,7 @@ function step1() {
     <div class="sport-grid" data-anim>
       ${SPORT_LIST.map(s => {
         const on = OB.sports.includes(s.id);
-        const src = OB.photos[s.id] || s.photo;
+        const src = OB.photos[s.id] || conVersion(s.photo);
         return `<div class="sport-card ${on ? 'is-on' : ''}" data-sport="${s.id}"
                      role="checkbox" aria-checked="${on}" tabindex="0">
           ${mediaBlock(s.id, src, { drop: `sport:${s.id}`, label: s.name })}

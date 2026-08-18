@@ -125,6 +125,15 @@ export const SPORTS = {
 
 export const SPORT_LIST = Object.values(SPORTS);
 
+/* Versión de los assets empaquetados. Sin build no hay nombres con hash, así
+   que esto hace de hash a mano: cambiar la foto y NO cambiar la URL deja a
+   quien ya la tenía en caché mirando la vieja. Peor aún, una respuesta 404 de
+   cuando el archivo no existía se queda igual de pegada — que es exactamente
+   lo que pasó con la de tenis.
+   SUBE ESTE NÚMERO cada vez que reemplaces una imagen conservando el nombre. */
+export const ASSET_V = '3';
+export const conVersion = (ruta) => ruta ? `${ruta}?v=${ASSET_V}` : ruta;
+
 export const ballSVG = (sport, cls = '') =>
   `<svg class="ball ball--${sport} ${cls}" viewBox="0 0 100 100" aria-hidden="true">${BALLS[sport] || BALLS.futbol}</svg>`;
 

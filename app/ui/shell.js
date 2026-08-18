@@ -10,7 +10,7 @@
 
 import { $, $$, esc, initials } from '../core/util.js';
 import { S, save } from '../core/store.js';
-import { SPORTS, courtSVG } from '../core/sports.js';
+import { SPORTS, courtSVG, conVersion } from '../core/sports.js';
 import { icon } from './icons.js';
 import { enter } from './motion.js';
 import { openModal, toast } from './modal.js';
@@ -157,7 +157,10 @@ export function paintViewBg(view) {
   const sport = bgSportFor(view);
 
   if (sport) {
-    const src = S.photos.sports[sport] || SPORTS[sport].photo;
+    // La foto propia del dueño es un data: URL y no se versiona; la del
+    // proyecto sí, para saltar cachés envenenadas.
+    const propia = S.photos.sports[sport];
+    const src = propia || conVersion(SPORTS[sport].photo);
     host.className = `view-bg is-court media--${sport}`;
     host.innerHTML = `
       <span class="media-wash"></span>

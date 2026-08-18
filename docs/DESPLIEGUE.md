@@ -43,3 +43,24 @@ No hay backend. Todo el estado vive en el IndexedDB del visitante: cada persona
 que abra el link configura su propio complejo y no ve el de nadie más. Eso es lo
 correcto para un demo, y es exactamente lo que habría que cambiar para un
 producto real.
+
+## Al reemplazar una imagen: sube `ASSET_V`
+
+En `app/core/sports.js` hay una constante:
+
+```js
+export const ASSET_V = '3';
+```
+
+Se anexa como `?v=N` a las fotos del proyecto. **Súbela cada vez que reemplaces
+una imagen conservando el nombre.**
+
+Sin build no hay nombres con hash, así que esto hace de hash a mano. Sin ello,
+un navegador que ya tenga la URL cacheada sigue mostrando la vieja — y, peor, si
+guardó un **404** de cuando el archivo aún no existía, se queda mostrando el
+respaldo dibujado para siempre. Pasó de verdad con la foto de tenis: cambiar la
+cabecera de caché no rescata a quien ya está envenenado, porque la cabecera
+nueva solo se aplica a respuestas nuevas. Lo único que lo cura es cambiar la URL.
+
+Los fondos de estadio llevan su `?v=` escrito a mano en `themes/momentum.css`,
+porque salen de CSS y no de JavaScript. Súbelos a la vez.
