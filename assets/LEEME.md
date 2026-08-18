@@ -46,14 +46,21 @@ el archivo.
 **Deportes** — `assets/deportes/`, proporción 16:10, mínimo 800×500:
 
 ```
-futbol.jpg   ← ya está
-padel.jpg   tenis.jpg   voleibol.jpg   paintball.jpg   ← faltan
+futbol.jpg   padel.jpg   voleibol.jpg   paintball.jpg   ← ya están
+tenis.jpg                                               ← falta
 ```
 
-`futbol.jpg` sale de recortar el césped de la misma foto de estadio que usa el
-Panel. Se recortó a propósito la franja inferior: con el cielo dentro, el Panel
-y la sección de Sintética enseñarían la misma imagen y el ojo lo nota. Así son
-dos lugares distintos sacados de una sola foto.
+Las cuatro que están se recortaron a 16:10 con un punto de interés elegido a
+mano —centrado a ciegas se perdían el balón del voleibol y la red del pádel— y
+después se **igualaron a la misma luminancia media (~92)**. Eso último importa:
+la de voleibol es diurna y las otras tres nocturnas o de interior, y sin igualar
+el rango haría falta una regla CSS por deporte para que el velo funcionara en
+todas. Con el rango igualado, un solo tratamiento vale para las cinco.
+
+Si reemplazas una, no hace falta que la iguales tú: el filtro de
+`app/premium.css` también doma una foto sin graduar. Solo que el resultado es
+más predecible si la media ronda 90.
+
 
 **Canchas** — `assets/canchas/`, proporción 16:10, mínimo 960×600. El nombre se arma
 solo: `<deporte>-<número>.jpg`. Con 3 sintéticas y 2 de pádel busca:

@@ -98,6 +98,35 @@ h2, .card-head h2, .br-title, .fx-date {
 /* La cancha a sangre también recibe grano, por coherencia de material. */
 .view-bg.is-court .vb-grain { opacity: .14; }
 
+/* ── 2b. Domar la foto de cancha ──────────────────────────────────────────
+   El velo original se calibró contra el campo DIBUJADO, que ya nace oscuro.
+   Con fotos reales el rango es otro: la arena a mediodía y una pista de pádel
+   iluminada llegan casi a blanco, y ahí el vidrio oscuro de las tarjetas
+   compone claro y la sección entera se lava.
+
+   Se baja la foto en vez de subir el velo: así la cancha conserva su color y
+   su textura —que es lo que hace la sección— y no queda una lámina gris.
+
+   Las cuatro fotos que vienen con el proyecto ya salen igualadas a la misma
+   luminancia media (~92) en el propio archivo. Sin eso haría falta una regla
+   por deporte —la de voleibol es diurna y las otras tres nocturnas—, que es
+   exactamente lo que este sistema rechaza. Este filtro las lleva a ~63, el
+   mismo rango que la foto de estadio, y de paso doma cualquier foto que suba
+   el dueño, que llega sin igualar.                                         */
+
+.view-bg.is-court .media-img {
+  filter: saturate(.9) brightness(.68) contrast(1.06);
+}
+
+/* Y el velo se refuerza en la banda donde caen las tarjetas. */
+.view-bg.is-court .vb-scrim {
+  background:
+    radial-gradient(120% 80% at 50% -20%, rgba(255,255,255,.1), transparent 55%),
+    linear-gradient(180deg,
+      rgba(4,8,16,.3) 0%, rgba(4,8,16,.4) 22%,
+      rgba(4,8,16,.68) 52%, rgba(4,8,16,.9) 100%);
+}
+
 /* ── 3. Sección de escenario ──────────────────────────────────────────────
    Un solo bloque retinta la sección entera. No hay una regla por componente:
    se redefinen los tokens y las tarjetas, listas, tablas, chips y campos se

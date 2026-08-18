@@ -160,10 +160,17 @@ export function paintViewBg(view) {
     host.innerHTML = `
       <span class="media-wash"></span>
       ${courtSVG(sport)}
-      <img class="media-img" src="${esc(src)}" alt="" loading="lazy"
+      <img class="media-img" src="${esc(src)}" alt=""
+           loading="eager" fetchpriority="high" decoding="async"
            onload="this.classList.add('ok')" onerror="this.remove()">
       <span class="vb-grain"></span>
       <span class="vb-scrim"></span>`;
+  /* `loading="eager"` a propósito. Esta imagen es el fondo a sangre: es el
+     elemento más grande de la vista y está sobre el pliegue por definición.
+     Con `lazy` el navegador la difería —a veces indefinidamente si la pestaña
+     no estaba visible— y la sección se quedaba con el campo dibujado. El
+     `lazy` sigue siendo correcto en las miniaturas de cada cancha, que sí
+     están más abajo. */
     document.body.dataset.sport = sport;
     document.body.dataset.bleed = 'court';
     return;
