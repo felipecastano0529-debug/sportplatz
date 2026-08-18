@@ -727,3 +727,44 @@ tr.is-mine { background: var(--brand-tint); }
   .spin { animation-duration: 2s; }
   .ring-v { transition: none; }
 }
+
+/* ── 21. Cuenta ───────────────────────────────────────────────────────────
+   En modo demo tiene que quedar claro que los datos son locales, sin
+   estorbar a quien solo entró a mirar: es una fila del rail, no un cartel
+   a media pantalla. Si la nube no está configurada, no se pinta nada — un
+   botón que no lleva a ningún sitio es peor que no tener botón.          */
+
+.cuenta { display: flex; align-items: center; gap: .5rem; width: 100%;
+  text-align: left; padding: .5rem .625rem; margin-bottom: .375rem;
+  border-radius: var(--r2); border: 1px solid var(--band-line);
+  background: rgba(255,255,255,.04);
+  transition: background var(--t-hover) var(--ease-out),
+              border-color var(--t-hover) var(--ease-out),
+              transform var(--t-press) var(--ease-out); }
+.cuenta:active { transform: scale(.98); }
+.cuenta:hover { background: rgba(255,255,255,.09); }
+.cuenta .ic { flex: none; }
+.cuenta-txt { display: grid; min-width: 0; }
+.cuenta-txt b { font-size: var(--fs-xs); font-weight: 700; color: #fff; }
+.cuenta-txt em { font-style: normal; font-size: var(--fs-micro); color: var(--band-dim);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Modo demo: el acento llama la atención sin gritar. */
+.cuenta--demo { border-color: rgba(var(--accent-rgb), .45);
+  background: rgba(var(--accent-rgb), .14); }
+.cuenta--demo:hover { background: rgba(var(--accent-rgb), .22); }
+.cuenta--demo .ic { color: var(--accent-hi); }
+.cuenta--demo .cuenta-txt em { color: var(--accent-hi); }
+
+/* Con cuenta: confirmación tranquila, nada que reclamar. */
+.cuenta--dentro .ic { color: var(--band-ok); }
+
+.seg--wide { width: 100%; margin-bottom: .75rem; }
+.seg--wide .seg-b { flex: 1; }
+
+.auth-error { margin-top: .75rem; padding: .5rem .75rem; border-radius: var(--r2);
+  font-size: var(--fs-sm); font-weight: 600;
+  color: var(--red-deep); background: var(--red-tint);
+  border: 1px solid rgba(229,35,31,.24); }
+body[data-bleed] .auth-error { color: var(--band-neg);
+  background: rgba(229,35,31,.16); border-color: rgba(255,157,150,.3); }

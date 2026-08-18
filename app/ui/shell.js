@@ -15,6 +15,7 @@ import { icon } from './icons.js';
 import { enter } from './motion.js';
 import { openModal, toast } from './modal.js';
 import { me, myTeams } from '../core/teams.js';
+import { filaCuentaHTML, wireCuenta } from './cuenta.js';
 
 import { viewPanel }    from '../views/panel.js';
 import { viewCanchas, getCanchaSport } from '../views/canchas.js';
@@ -93,6 +94,7 @@ export function renderApp(view = VIEW, { intro = false } = {}) {
     e.preventDefault(); renderApp(b.dataset.go);
   }));
   $('#roleSwap')?.addEventListener('click', openRoleSwap);
+  wireCuenta(() => renderApp(homeOf(role()), { intro: true }));
 
   const main = $('.main-inner', root);
   VIEWS[view](main);
@@ -127,6 +129,7 @@ function railHTML(nav, view, r) {
         </button>`).join('')}
     </nav>
     <div class="nav-foot">
+      ${filaCuentaHTML()}
       <button class="nav-user" id="roleSwap" title="Cambiar de rol">
         ${av}
         <span class="nav-user-txt"><b>${esc(name)}</b><em>${r === 'player' ? 'Viendo como jugador' : 'Viendo como dueño'}</em></span>

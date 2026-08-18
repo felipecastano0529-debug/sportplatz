@@ -7,7 +7,8 @@
    ========================================================================== */
 
 import { $ } from './core/util.js';
-import { Store, S, setS, save, saveNow } from './core/store.js';
+import { Store, S, setS, save, saveNow, setConflictHandler } from './core/store.js';
+import * as nube from './core/nube.js';
 import { SP_DEFS } from './core/sports.js';
 import { initSpotlight } from './ui/motion.js';
 import { setPhotoHandler } from './ui/photo.js';
@@ -30,6 +31,11 @@ async function boot() {
   document.body.insertAdjacentHTML('afterbegin', SP_DEFS);
   initSpotlight();
   wirePhotos();
+  wireConflictos();
+
+  // Si hay sesión guardada, se recupera ANTES de leer: así el primer render
+  // ya sale de la nube y no parpadea del demo local a la cuenta.
+  await nube.recuperarSesion();
 
   const saved = await Store.read();
 
@@ -95,8 +101,21 @@ function wirePhotos() {
   });
 }
 
-/* Al cerrar la pestaña se fuerza el guardado: el freno de 120 ms del store
-   podría estar esperando justo en ese momento. */
+/* Dos dispositivos con la misma cuenta pueden guardar a la vez. La base
+   rechaza el segundo en vez de dejar que pise al primero; aquí se decide qué
+   hacer. No se intenta fusionar dos documentos JSON automáticamente: eso
+   corrompe en silencio. Se adopta lo que hay en el servidor y se avisa. */
+function wireConflictos() {
+  setConflictHandler((remoto) => {
+    if (!remoto) return;
+    setS(migrate(remoto));
+    renderApp();
+    toast('Tu complejo cambió desde otro dispositivo · se actualizó', 'warn');
+  });
+}
+
+/* Al cerrar la pestaña se fuerza el guardado: el freno del store podría estar
+   esperando justo en ese momento. */
 addEventListener('pagehide', () => { if (S) saveNow(); });
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);

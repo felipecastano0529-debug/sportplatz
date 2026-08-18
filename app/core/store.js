@@ -3,16 +3,20 @@
    El estado vivo es `S`, un objeto plano en memoria. Todo lo demás lo lee
    síncrono. Este módulo es lo único que sabe DÓNDE se guarda.
 
-   Va a IndexedDB, no a localStorage. Medido en el navegador: el estado de un
-   negocio de 2 canchas ya pesa 721 KB y localStorage se llena a los ~4 MB.
-   Un complejo de 12 canchas genera ~5.600 reservas de semilla y se pasa del
-   cupo: `setItem` lanza, no persiste nada, y al recargar se pierde el
-   negocio entero. IndexedDB no tiene ese techo.
+   Dos destinos, y el usuario elige sin saberlo:
 
-   localStorage queda de respaldo por si IndexedDB está bloqueado (Safari en
-   navegación privada), y la memoria de respaldo del respaldo para que la
-   sesión funcione aunque no se pueda escribir en ningún sitio.
+   · SIN cuenta — modo demo. Va a IndexedDB, en su navegador. Cualquiera abre
+     el link y juega sin registrarse ni ensuciarle los datos a nadie.
+   · CON cuenta — va a Supabase. Sus datos son suyos, los ve desde cualquier
+     dispositivo, y no se pierden si borra el navegador.
+
+   Por qué IndexedDB y no localStorage en el modo demo: medido, el estado de
+   un negocio de 40 canchas pesa 3,7 MB y localStorage se llena a los ~4 MB.
+   Al pasarse, `setItem` lanza, no persiste nada, y al recargar se pierde el
+   negocio entero. IndexedDB no tiene ese techo.
    ========================================================================== */
+
+import * as nube from './nube.js';
 
 const THEME = document.body.dataset.theme || 'momentum';
 export const KEY = 'sportplatz.v2.' + THEME;
@@ -25,6 +29,8 @@ const SHELF = 'estado';
 let db = null;
 let memory = null;      // respaldo del respaldo: la sesión siempre funciona
 let idbBroken = false;
+
+/* ── IndexedDB ───────────────────────────────────────────────────────────── */
 
 function openDB() {
   return new Promise((resolve) => {
@@ -89,37 +95,75 @@ function lite(data) {
   return out;
 }
 
+/* ── Lectura y escritura locales ─────────────────────────────────────────── */
+
+async function leerLocal() {
+  const fromIdb = await idbGet(KEY);
+  if (fromIdb) return fromIdb;
+  for (const k of [KEY, LEGACY_KEY]) {
+    try {
+      const raw = localStorage.getItem(k);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed?.courts?.length) { await idbPut(KEY, parsed); return parsed; }
+      }
+    } catch { /* sin permiso o JSON roto */ }
+  }
+  return memory;
+}
+
+async function escribirLocal(data) {
+  memory = data;
+  const ok = await idbPut(KEY, data);
+  if (ok) return true;
+  try { localStorage.setItem(KEY, JSON.stringify(lite(data))); return 'lite'; }
+  catch { return false; }
+}
+
+/* ── El Store ────────────────────────────────────────────────────────────── */
+
+export const enLaNube = () => nube.haySesion();
+
 export const Store = {
+  /** Lee de donde toque: la nube si hay cuenta, el navegador si no. */
   async read() {
-    const fromIdb = await idbGet(KEY);
-    if (fromIdb) return fromIdb;
-    // migración desde la versión que guardaba en localStorage
-    for (const k of [KEY, LEGACY_KEY]) {
-      try {
-        const raw = localStorage.getItem(k);
-        if (raw) {
-          const parsed = JSON.parse(raw);
-          if (parsed?.courts?.length) { await idbPut(KEY, parsed); return parsed; }
-        }
-      } catch { /* sin permiso o JSON roto */ }
+    if (nube.haySesion()) {
+      const remoto = await nube.leerEspacio();
+      if (remoto) return remoto;
+      // Cuenta recién creada y todavía sin negocio: se sube lo que haya
+      // hecho en el demo, para que no pierda el trabajo al registrarse.
+      const local = await leerLocal();
+      if (local?.courts?.length) {
+        try { await nube.crearEspacio(local); return local; }
+        catch (e) { console.warn('[store] no se pudo migrar el demo:', e.message); }
+      }
+      return null;
     }
-    return memory;
+    return leerLocal();
   },
 
-  /** Devuelve una promesa, pero nadie tiene que esperarla: `S` ya cambió. */
   async write(data) {
-    memory = data;
-    const ok = await idbPut(KEY, data);
-    if (ok) return true;
-    try { localStorage.setItem(KEY, JSON.stringify(lite(data))); return 'lite'; }
-    catch { return false; }
+    if (nube.haySesion()) {
+      const r = await nube.guardarEspacio(data);
+      if (r.ok) return true;
+      if (r.motivo === 'conflicto') return r;   // quien llama decide
+      // Falló la red o el servidor: no se pierde el trabajo, se deja local.
+      await escribirLocal(data);
+      return false;
+    }
+    return escribirLocal(data);
   },
 
   async clear() {
     memory = null;
+    if (nube.haySesion()) { try { await nube.borrarEspacio(); } catch { /* da igual */ } }
     await idbDel(KEY);
     try { localStorage.removeItem(KEY); localStorage.removeItem(LEGACY_KEY); } catch { /* sin permiso */ }
-  }
+  },
+
+  /** El demo local, independientemente de si hay sesión. */
+  leerLocal,
+  escribirLocal
 };
 
 /* ── El estado vivo ──────────────────────────────────────────────────────── */
@@ -128,12 +172,20 @@ export let S = null;
 export const setS = (next) => { S = next; };
 
 /* Guardado con freno: la app llama a save() en cada tecla del formulario de
-   precio. Sin esto, cada pulsación abre una transacción de IndexedDB. */
+   precio. Sin esto, cada pulsación abre una transacción o una petición. */
 let pending = null;
+let alConflicto = null;
+
+/** Quien renderiza decide qué hacer si otro dispositivo escribió antes. */
+export const setConflictHandler = (fn) => { alConflicto = fn; };
+
 export function save() {
   if (!S) return;
   clearTimeout(pending);
-  pending = setTimeout(() => Store.write(S), 120);
+  pending = setTimeout(async () => {
+    const r = await Store.write(S);
+    if (r && r.motivo === 'conflicto' && alConflicto) alConflicto(r.estado);
+  }, 250);
   return true;
 }
 
