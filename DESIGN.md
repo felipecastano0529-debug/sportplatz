@@ -51,7 +51,7 @@ retintan solos, sin una regla nueva por componente.
 |---|---|---|
 | Sintética | `#16a34a` | Verde hierba, más claro y amarillo que la marca |
 | Pádel | `#0e9aa7` | Turquesa de la pista de cristal |
-| Tenis | `#4a7c4e` | Musgo apagado de la pista, como en su foto |
+| Tenis | `#2f5cbf` | Azul real de la moqueta, como en su foto |
 | Voleibol | `#c48633` | Arena |
 | Paintball | `#d0392f` | Rojo del campo |
 
@@ -61,9 +61,17 @@ retintan solos, sin una regla nueva por componente.
 > azul. La regla es siempre la misma: **el color de un deporte tiene que
 > distinguirse del color de la interfaz**, o el retinte deja de comunicar.
 
-> La cancha DIBUJADA de tenis también pasó de azul a verde. Es el respaldo de
-> una cancha cuya foto real es verde musgo: una tarjeta azul junto a un fondo
-> verde se leía como dos deportes distintos.
+> La cancha DIBUJADA de tenis sigue a su foto: estuvo en verde mientras la foto
+> era una pista de musgo, y volvió al azul al cambiar la foto por una de moqueta
+> azul. La regla no cambió —el respaldo se parece a la cancha de la que es
+> respaldo—, cambió la foto.
+
+> **Cómo se gradúan las fotos de fondo.** Para OSCURECER una foto clara se
+> multiplica linealmente, que es bajar la exposición y conserva la relación
+> entre tonos. Para LEVANTAR una oscura se usa gamma, que sube el medio tono
+> sin quemar los claros. Hacerlo al revés se nota: la primera versión del
+> estadio nuevo se oscureció con gamma y salió con las sombras machacadas y el
+> cielo saturado, como un cartel.
 
 ---
 

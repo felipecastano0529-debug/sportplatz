@@ -216,12 +216,12 @@ code { font-family: var(--mono); font-size: .84em; letter-spacing: 0; }
     radial-gradient(120% 60% at 50% 114%, rgba(126,196,72,.42), transparent 60%),
     linear-gradient(158deg, #1c766e 0%, #0f474e 54%, #072832 100%);
 }
-/* Pista de tenis en verde, no en azul: la foto real de este complejo es una
-   superficie verde musgo, y una tarjeta azul al lado del fondo verde se leía
-   como si fueran dos deportes distintos. El campo dibujado tiene que parecerse
-   a la cancha de la que es el respaldo. */
+/* El campo dibujado tiene que parecerse a la cancha de la que es respaldo.
+   Estuvo en verde mientras la foto de tenis era una pista de musgo; con la
+   foto nueva —moqueta azul real— vuelve al azul. La regla no cambió, cambió
+   la foto. */
 .media--tenis .media-wash {
-  background: linear-gradient(158deg, #5f9463 0%, #3c6b45 52%, #1f3d2a 100%);
+  background: linear-gradient(158deg, #4f7fd4 0%, #2f5cbf 52%, #17306b 100%);
 }
 .media--voleibol .media-wash {
   background: linear-gradient(158deg, #e5b976 0%, #c48f48 50%, #8b5f2c 100%);
@@ -889,7 +889,7 @@ body[data-bleed] .kicker::before { background: var(--sport-lit, var(--accent-hi)
    al musgo apagado de su propia pista, que es lo que muestra su foto. */
 body[data-sport="futbol"]    { --sport: #16a34a; --sport-lit: #4ade80; --sport-rgb: 40,205,110; }
 body[data-sport="padel"]     { --sport: #0e9aa7; --sport-lit: #48dbe8; --sport-rgb: 30,190,205; }
-body[data-sport="tenis"]     { --sport: #4a7c4e; --sport-lit: #9ed49f; --sport-rgb: 130,195,130; }
+body[data-sport="tenis"]     { --sport: #2f5cbf; --sport-lit: #8fb4ff; --sport-rgb: 90,140,240; }
 body[data-sport="voleibol"]  { --sport: #c48633; --sport-lit: #f5c877; --sport-rgb: 220,160,80; }
 body[data-sport="paintball"] { --sport: #d0392f; --sport-lit: #ff8a80; --sport-rgb: 226,80,70; }
 
