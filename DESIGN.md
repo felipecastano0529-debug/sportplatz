@@ -190,12 +190,26 @@ conviene, el fondo se mantiene siempre oscuro y no hay archivo que descargar.
 **En el punto más claro del rail —base más el destello más fuerte— el texto
 secundario da 8.34:1.** Antes había que pelear por llegar a 4.9.
 
-**Mate no es negro plano.** Lleva grano finísimo en `::after`. Sin él, una
-superficie oscura grande forma bandas en el degradado y se lee a plástico; con
-él, a metal anodizado.
+**Mate no es negro plano.** Lleva grano finísimo en la textura de fondo. Sin
+él, una superficie oscura grande forma bandas en el degradado y se lee a
+plástico; con él, a metal anodizado.
 
-**Los reflejos son anchos y muy tenues** (7,5 % y 4,2 % de blanco). Un reflejo
-estrecho y marcado es brillo de plástico; el metal mate devuelve la luz difusa.
+**Cinco capas modelan la placa**, en orden de arriba abajo en `--g-rail`. La
+primera versión llevaba dos y el resultado se leía a negro plano: una superficie
+sin sombra no tiene volumen, por muy metálico que sea el color.
+
+| Capa | Qué hace |
+|---|---|
+| Radial en la esquina superior izquierda | La luz ambiente que entra por arriba. Es lo que le da un **origen** al reflejo |
+| Diagonal principal a 156° | El especular largo del metal. Ancho y tenue: 8,5 % de blanco cayendo a 2,6 % |
+| Diagonal secundaria a 198° | El rebote de la parte baja, casi imperceptible (5 %) — sin él la mitad inferior se muere |
+| Sombra del filo derecho | 26 % → 40 % de negro en el último 7 %. Le da **espesor de placa**, no de papel |
+| Caída vertical | Filo de luz de 1 px arriba, negro asentado abajo (46 %) |
+
+**Los reflejos son anchos y muy tenues.** Un reflejo estrecho y marcado es
+brillo de plástico; el metal mate devuelve la luz difusa. El tono base sigue
+siendo `--rail-base: #06080a` y el texto secundario mantiene sus 8.34:1: las
+capas nuevas suman luz por debajo del 9 %, muy lejos de tocar el contraste.
 
 **Sin `opacity` en el texto secundario**, aquí y en cualquier superficie con
 algo variable detrás: el tono se fija y no depende de qué caiga debajo.
@@ -269,6 +283,17 @@ fondo efectivo queda en L≈0.06. Ahí, un rótulo micro a `.50` de blanco daba
 escritorio el estadio se recorta a una franja y se pierden las gradas y los
 reflectores, que es lo que hace la foto.
 
+Las dos se llevan a **luminancia media ~67** antes de entrar al repo. Es el
+número donde el vidrio oscuro de las tarjetas todavía se despega del fondo y la
+foto no se ha convertido en una mancha negra. La actual —estadio al anochecer,
+reflectores encendidos, cielo de tormenta— entró a 99,2 en horizontal y bajó
+×0,69; la vertical ya venía a 70,7 y solo necesitó ×0,96. Siempre por
+multiplicación lineal, nunca por gamma (ver §1).
+
+> Reemplazar una foto **conservando el nombre** obliga a subir `ASSET_V` en
+> `app/core/sports.js`. Sin build no hay hash en el nombre, y sin versión
+> el navegador de quien ya la tenía sigue mostrando la vieja.
+
 ---
 
 ## 5. Materiales
@@ -319,6 +344,12 @@ Reglas sin excepción:
 - **Hover detrás de `@media (hover: hover) and (pointer: fine)`**, porque en
   táctil el hover se dispara al tocar y deja el estado pegado.
 - **Stagger de 38–55 ms** entre elementos de una lista.
+- **El barrido de luz del rail** (`railBrillo`, 640 ms) es una *animación*, no
+  una transición: una transición sobre `:hover` volvería atrás al salir el
+  cursor y el destello se leería como un yo-yo. La animación recorre la placa
+  una vez y termina. Va sobre un `::after` con `overflow: hidden` en el
+  contenedor, mueve solo `transform` y `opacity`, y el texto va en `z-index: 1`
+  para que la luz pase **por debajo**, no por encima.
 - `prefers-reduced-motion` corta la animación pero **conserva** los cambios de
   opacidad y color, que ayudan a entender.
 

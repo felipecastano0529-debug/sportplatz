@@ -192,17 +192,24 @@
   /* Velo sobre el metal: se abre en la banda del brillo para dejarlo lucir y
      se cierra arriba y abajo, que es donde viven la marca y la ficha de
      usuario y hace falta contraste. */
-  /* Los toques metalizados: dos reflejos anchos y muy tenues, uno alto y otro
-     bajo, más el asentamiento de sombra al pie. Anchos y suaves a propósito —
-     un reflejo estrecho y marcado es brillo de plástico; el metal mate
-     devuelve la luz difusa. */
+  /* El modelado del metal. Un negro plano se lee a cartulina; lo que lo
+     convierte en placa son las capas de luz y sombra, en este orden:
+       1. luz de ambiente entrando por el ángulo superior izquierdo
+       2. reflejo diagonal ancho — el principal
+       3. reflejo secundario, más abajo y más tenue
+       4. sombra en el canto derecho: le da grosor, deja de ser una lámina
+       5. modelado vertical, con filo de luz arriba y asiento oscuro al pie
+     Todos anchos y muy tenues: un reflejo estrecho es brillo de plástico, el
+     metal mate devuelve la luz difusa. */
   --g-rail:
-    linear-gradient(158deg, rgba(214,232,226,.075) 0%, rgba(214,232,226,.022) 17%,
-                    transparent 34%),
-    linear-gradient(200deg, transparent 52%, rgba(200,220,214,.042) 68%,
-                    rgba(200,220,214,.012) 78%, transparent 88%),
-    linear-gradient(180deg, rgba(255,255,255,.05) 0%, transparent 9%,
-                    transparent 74%, rgba(0,0,0,.42) 100%);
+    radial-gradient(130% 48% at 14% -6%, rgba(226,240,235,.11) 0%, transparent 64%),
+    linear-gradient(156deg, rgba(214,232,226,.085) 0%, rgba(214,232,226,.026) 15%,
+                    transparent 33%),
+    linear-gradient(198deg, transparent 46%, rgba(198,220,214,.05) 63%,
+                    rgba(198,220,214,.014) 75%, transparent 87%),
+    linear-gradient(90deg, transparent 74%, rgba(0,0,0,.26) 93%, rgba(0,0,0,.4) 100%),
+    linear-gradient(180deg, rgba(255,255,255,.055) 0%, transparent 8%,
+                    transparent 72%, rgba(0,0,0,.46) 100%);
 
 /* Vidrio: la ficha flotante sobre foto. */
   --glass:       rgba(255,255,255,.13);
@@ -236,8 +243,8 @@
    al revés, en escritorio el estadio se recorta a una franja y se pierden
    las gradas y los reflectores, que es lo que hace la foto.               */
 
-  --bg-estadio:        url('../assets/fondos/estadio-desktop.jpg?v=3');
-  --bg-estadio-movil:  url('../assets/fondos/estadio-mobile.jpg?v=3');
+  --bg-estadio:        url('../assets/fondos/estadio-desktop.jpg?v=4');
+  --bg-estadio-movil:  url('../assets/fondos/estadio-mobile.jpg?v=4');
 
 /* ── 8. HALOS DEL FONDO POR DEPORTE ────────────────────────────────────── */
 

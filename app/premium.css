@@ -816,6 +816,57 @@ body[data-bleed] .auth-error { color: var(--band-neg);
 .nav-user:hover, .cuenta:hover { background: rgba(255,255,255,.11); }
 .brand-logo { background: rgba(255,255,255,.07); }
 
+/* ── Barrido de luz al pasar el ratón ─────────────────────────────────────
+   Una banda de luz cruza la pieza, como cuando giras una placa de metal y el
+   reflejo la recorre. Es lo que hace que el menú se sienta material y no
+   pintado.
+
+   Se anima `transform` y `opacity`, nunca layout, así que corre en la GPU y no
+   provoca ni un reflow. Va en `::after` porque `::before` ya es la barra del
+   activo. Y solo con puntero fino: en táctil el hover se dispara al tocar y
+   dejaría el destello pegado.                                              */
+
+.nav-item { overflow: hidden; }
+.nav-item::after {
+  content: ''; position: absolute; inset: 0; z-index: 0;
+  border-radius: inherit; pointer-events: none; opacity: 0;
+  background: linear-gradient(104deg,
+    transparent 34%, rgba(255,255,255,.13) 47%,
+    rgba(255,255,255,.05) 55%, transparent 68%);
+  transform: translateX(-115%);
+}
+/* El contenido sube por encima del destello. */
+.nav-ic, .nav-txt { position: relative; z-index: 1; }
+
+@media (hover: hover) and (pointer: fine) {
+  .nav-item:hover::after { animation: railBrillo 640ms var(--ease-out); }
+  .nav-user:hover::after, .cuenta:hover::after { animation: railBrillo 640ms var(--ease-out); }
+  .nav-user, .cuenta { overflow: hidden; }
+  .nav-user::after, .cuenta::after {
+    content: ''; position: absolute; inset: 0; z-index: 0;
+    border-radius: inherit; pointer-events: none; opacity: 0;
+    background: linear-gradient(104deg,
+      transparent 34%, rgba(255,255,255,.11) 47%, transparent 66%);
+    transform: translateX(-115%);
+  }
+  .nav-user > *, .cuenta > * { position: relative; z-index: 1; }
+}
+
+@keyframes railBrillo {
+  from { transform: translateX(-115%); opacity: 0; }
+  22%  { opacity: 1; }
+  78%  { opacity: 1; }
+  to   { transform: translateX(115%); opacity: 0; }
+}
+
+/* Con reduced-motion el destello no se arrastra: aparece y se va. El cambio
+   de luz sigue comunicando "esto responde", que es lo que aporta. */
+@media (prefers-reduced-motion: reduce) {
+  .nav-item:hover::after, .nav-user:hover::after, .cuenta:hover::after {
+    animation: none; opacity: .5; transform: none;
+  }
+}
+
 /* Sin `opacity` en el texto secundario: el tono se fija y no depende de qué
    haya detrás en cada punto de la altura del rail. */
 .nav-txt em, .nav-brand-txt em, .nav-user-txt em, .cuenta-txt em {
