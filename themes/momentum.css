@@ -243,8 +243,8 @@
    al revés, en escritorio el estadio se recorta a una franja y se pierden
    las gradas y los reflectores, que es lo que hace la foto.               */
 
-  --bg-estadio:        url('../assets/fondos/estadio-desktop.jpg?v=6');
-  --bg-estadio-movil:  url('../assets/fondos/estadio-mobile.jpg?v=6');
+  --bg-estadio:        url('../assets/fondos/estadio-desktop.jpg?v=7');
+  --bg-estadio-movil:  url('../assets/fondos/estadio-mobile.jpg?v=7');
 
 /* ── 8. HALOS DEL FONDO POR DEPORTE ────────────────────────────────────── */
 
@@ -268,9 +268,9 @@
 @supports (background-image: image-set(url('a.webp') type('image/webp') 1x)) {
   :root {
     --bg-estadio: image-set(
-      url('../assets/fondos/estadio-desktop.webp?v=6')    type('image/webp') 1x,
-      url('../assets/fondos/estadio-desktop@2x.webp?v=6') type('image/webp') 2x);
+      url('../assets/fondos/estadio-desktop.webp?v=7')    type('image/webp') 1x,
+      url('../assets/fondos/estadio-desktop@2x.webp?v=7') type('image/webp') 2x);
     --bg-estadio-movil: image-set(
-      url('../assets/fondos/estadio-mobile.webp?v=6') type('image/webp') 1x);
+      url('../assets/fondos/estadio-mobile.webp?v=7') type('image/webp') 1x);
   }
 }

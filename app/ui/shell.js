@@ -16,6 +16,7 @@ import { enter } from './motion.js';
 import { openModal, toast } from './modal.js';
 import { me } from '../core/teams.js';
 import { filaCuentaHTML, wireCuenta } from './cuenta.js';
+import { videoFondoVisible } from './vfondo.js';
 
 import { viewPanel }    from '../views/panel.js';
 import { viewCanchas, getCanchaSport } from '../views/canchas.js';
@@ -178,6 +179,7 @@ export function paintViewBg(view) {
      están más abajo. */
     document.body.dataset.sport = sport;
     document.body.dataset.bleed = 'court';
+    videoFondoVisible(false);
     return;
   }
 
@@ -190,6 +192,7 @@ export function paintViewBg(view) {
       <span class="vb-scrim"></span>`;
     delete document.body.dataset.sport;
     document.body.dataset.bleed = 'stadium';
+    videoFondoVisible(true);
     return;
   }
 
@@ -199,6 +202,7 @@ export function paintViewBg(view) {
   // Sin fondo a sangre: superficie sobria. Es lo que le da respiro al ojo
   // entre una sección de escenario y la siguiente.
   delete document.body.dataset.bleed;
+  videoFondoVisible(false);
 }
 
 /* La noche de estadio es el fondo por defecto de TODA la app. Canchas es la

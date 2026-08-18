@@ -15,6 +15,7 @@ import { setPhotoHandler } from './ui/photo.js';
 import { toast } from './ui/modal.js';
 import { paintBackdrop } from './ui/backdrop.js';
 import { renderApp } from './ui/shell.js';
+import { initVideoFondo } from './ui/vfondo.js';
 import { renderOnboarding, renderStep, OB } from './views/onboarding.js';
 import { readPhoto } from './ui/photo.js';
 import { courtById } from './core/calc.js';
@@ -49,6 +50,10 @@ async function boot() {
   }
 
   document.body.classList.add('is-ready');
+
+  // Va al final a propósito: el vídeo es un adorno de 5 MB y no puede competir
+  // por el ancho de banda con lo que hace falta para que la app se vea.
+  initVideoFondo();
 }
 
 /**

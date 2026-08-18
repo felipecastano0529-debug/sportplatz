@@ -131,7 +131,7 @@ export const SPORT_LIST = Object.values(SPORTS);
    cuando el archivo no existía se queda igual de pegada — que es exactamente
    lo que pasó con la de tenis.
    SUBE ESTE NÚMERO cada vez que reemplaces una imagen conservando el nombre. */
-export const ASSET_V = '6';
+export const ASSET_V = '7';
 export const conVersion = (ruta) => ruta ? `${ruta}?v=${ASSET_V}` : ruta;
 
 export const ballSVG = (sport, cls = '') =>

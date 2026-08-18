@@ -282,7 +282,7 @@ Sobre la foto del estadio hay exactamente **tres** textos sin superficie propia
 debajo, y los tres viven en los 130 px de arriba: el rótulo, el titular y la
 línea de resumen. Todo lo demás llega con su vidrio oscuro puesto.
 
-Por eso el velo es un escalón y no una lámina: **64 % en la cabecera, 24 % en el
+Por eso el velo es un escalón y no una lámina: **72 % en la cabecera, 24 % en el
 cuenco, 62 % al pie.** El perfil anterior hacía justo lo contrario —46 % arriba
 y 88 % abajo— porque estaba calibrado contra un encuadre que terminaba en
 césped quemado. Con el actual apagaba la grada entera y dejaba el titular a
@@ -298,14 +298,20 @@ Medido en el punto más claro de cada banda, sobre la composición completa
 
 | Texto | Escritorio | Móvil | Mínimo |
 |---|---|---|---|
-| Rótulo `#34d399` 11 px | 6.87:1 | 5.64:1 | 4.5 |
-| Titular blanco | 8.83:1 | 7.85:1 | 3.0 |
-| Resumen 13 px al `.74` | 5.27:1 | 4.46:1 | 4.5 |
-| Cualquier texto al `.74`, en **cualquier** punto de la franja | 5.15:1 | 5.25:1 | 4.5 |
+| Rótulo `#34d399` 11 px | 7.88:1 | 8.26:1 | 4.5 |
+| Titular blanco | 14.56:1 | 16.18:1 | 3.0 |
+| Resumen 13 px al `.74` | 5.58:1 | — | 4.5 |
+| Cualquier texto al `.74`, en **cualquier** punto de la franja | 4.67:1 | 8.93:1 | 4.5 |
 
 > La última fila es la que de verdad protege: las tres primeras miden cada
 > texto donde está hoy, y un titular más largo o una vista con otra línea de
-> resumen se mueve. La franja entera aguanta.
+> resumen se mueve. La franja entera aguanta. De hecho es la que mandó: con el
+> velo al 64 % los tres textos pasaban y la franja se quedaba en `4.09:1`.
+
+**El fondo se mueve, así que el peor caso ya no es una imagen.** Se midió el
+pico de luminancia de la franja de cabecera en los 25 s del vídeo y se comparó
+con el mismo pico del póster: vídeo 188, póster 191,7. El póster es el peor
+caso, y por eso verificarlo a él cubre también al vídeo.
 
 **Los haces sintéticos bajaron a la mitad.** Existían porque el encuadre viejo
 era casi todo cielo y no había luz propia arriba que dibujara volumen. El
@@ -321,11 +327,12 @@ es lo que hace la foto.
 
 | Archivo | Tamaño | Peso | Para |
 |---|---|---|---|
-| `estadio-desktop.jpg` | 1800×1013 | 285 KB | Respaldo: navegador sin WebP o sin `image-set` |
-| `estadio-desktop.webp` | 1800×1013 | 180 KB | Escritorio 1x |
-| `estadio-desktop@2x.webp` | 2560×1440 | 262 KB | Escritorio retina |
-| `estadio-mobile.jpg` | 1200×1920 | 349 KB | Respaldo móvil |
-| `estadio-mobile.webp` | 1200×1920 | 241 KB | Móvil |
+| `estadio-desktop.jpg` | 1800×1013 | 223 KB | Respaldo: navegador sin WebP o sin `image-set` |
+| `estadio-desktop.webp` | 1800×1013 | 123 KB | Escritorio 1x |
+| `estadio-desktop@2x.webp` | 2560×1440 | 201 KB | Escritorio retina |
+| `estadio-mobile.jpg` | 900×1440 | 116 KB | Respaldo móvil |
+| `estadio-mobile.webp` | 900×1440 | 57 KB | Móvil |
+| `estadio.mp4` | 1280×720, 25 s | 5,2 MB | El escenario en movimiento (§4b) |
 
 Se descarga **una sola**: la precarga de `index.html` lleva `imagesrcset` con
 las mismas dos densidades y el mismo `?v=`, así que pide exactamente lo que
@@ -342,29 +349,92 @@ del fondo es cielo, porque el contenido tapa el resto y la franja que queda
 libre es justo la de arriba. Las dos versiones arrancan en el mismo punto —el
 techo con los reflectores— y bajan hacia el césped:
 
-| | Recorte del original (736×1308) | Sale a |
-|---|---|---|
-| Horizontal | `0,470 → 736,884` (banda 16:9) | 1800 y 2560 de ancho |
-| Vertical | `106,470 → 630,1308` | 1200×1920 |
+El origen ya no es una foto de móvil: es el **fotograma 0 del vídeo, a
+1920×1080**. Eso cambia el signo del problema. La versión de escritorio se
+**reduce** desde 1920 —que es lo que uno quiere— y solo la retina agranda, y
+apenas ×1,33. La vertical sale de una ventana `622,0 → 1297,1080` centrada.
 
-### Sacarle nitidez a un original de 736 px
+| | Recorte del original (1920×1080) | Sale a | Factor |
+|---|---|---|---|
+| Horizontal 1x | completo | 1800×1013 | ×0,94 (reduce) |
+| Horizontal 2x | completo | 2560×1440 | ×1,33 |
+| Vertical | `622,0 → 1297,1080` | 900×1440 | ×1,33 |
 
-No hay más información que la que trae el archivo; lo que sí se puede es dejar
-de tirarla por el camino. Tres cosas lo hacían:
+## 4b. El estadio se mueve
 
-1. **Un solo salto de Lanczos** hasta el destino disuelve el detalle. Ahora el
-   escalado va **por pasos de ×1,5 con máscara de enfoque en cada uno**
-   (`radius 1.1, percent 55, threshold 2`). La estructura del techo, la letra
-   del cartel y el grano de la grada sobreviven.
-2. **Entregar 1800 px a una pantalla retina** obliga al navegador a escalar
-   otra vez encima, con un filtro bilineal tonto. Por eso existe el `@2x`.
-   Media sensación de "poco HD" era esto.
-3. **`blur(1.2px)` en el CSS.** Estaba para tapar el escalado duro del punto 1.
-   Arreglado el escalado, ese píxel y pico solo estaba borrando trabajo.
-   Ahora **`.35px`**: sigue apartando la foto del contenido sin emborronarla.
+El fondo por defecto es un vídeo de 25 s en bucle: 1280×720, H.264, 5,2 MB.
+La foto fija no se retira — es el póster, y hace tres trabajos.
 
-> WebP y no JPEG a partir de aquí: a 2560 px el mismo fotograma pesa 413 KB en
-> JPEG y 262 KB en WebP. El JPEG de 1800 se queda como respaldo.
+**Vive fuera de `#app`.** `renderApp` reasigna el `innerHTML` de `#app` entero
+en cada navegación. Un `<video>` ahí dentro sería un nodo nuevo en cada clic
+del menú: vuelta a pedir 5 MB y vuelta a empezar el clip. Fuera, atraviesa las
+doce vistas sin una sola petición nueva.
+
+**Se cuela entre el fondo y la app.** `#backdrop` va en z-index 0 y `.shell`
+en 1, así que un fijo en z-index 0 colocado después en el DOM queda justo en
+medio. Importa: los haces, el grano y el velo viven dentro de `.shell` y
+tienen que seguir cayendo encima del vídeo igual que caían encima de la foto.
+
+**Cuándo NO corre**, y la foto se queda:
+
+| Condición | Por qué |
+|---|---|
+| `prefers-reduced-motion: reduce` | Regla de la casa, sin excepciones |
+| Ancho < 48rem | El clip es horizontal: en vertical `cover` se queda con la franja central, ~22 % del ancho. Y son 5 MB por datos |
+| `navigator.connection.saveData` | Lo ha pedido el usuario |
+| Autoplay bloqueado | No se insiste; la foto ya es un fondo completo |
+| Vista de Canchas | Tiene su propio fondo y tapa el vídeo entero: decodificar 720p para nadie es gastar batería |
+
+**El fundido entra con `playing`, no con `canplay`.** `canplay` significa que
+el navegador *cree* que podría reproducir; con él la foto se apartaba antes de
+que hubiera imagen y se veía el parpadeo.
+
+### La costura del bucle
+
+El clip no cierra sobre sí mismo. Entre el último fotograma y el primero hay
+una distancia media de **30** sobre 255, tanto como entre el principio y la
+mitad del clip, y unas tres veces lo que cambia la imagen en un tercio de
+segundo. Se buscó un par de puntos que enlazara limpio recorriendo las 50
+combinaciones útiles del clip: el mejor daba **27,3**, o sea que no lo hay —
+la cámara se mueve durante los 25 s enteros.
+
+La salida fue disolver la costura, y **el puente ya estaba puesto: la foto fija
+es el fotograma 0**. Está por encima del vídeo, así que subirla lo tapa. Justo
+antes del final sube a opacidad 1, el vídeo vuelve a empezar por detrás, y
+cuando la foto se retira lo que aparece es la misma imagen que ella.
+
+> Solo se cruza la ida. La vuelta es exacta, porque las dos son el mismo
+> fotograma. Y están igualadas en luminancia —el vídeo llega a 87 y aterriza
+> en ~56 por CSS, la foto sale a 67 del repo y aterriza en ~58—, así que no
+> hay escalón de brillo: se lee como un cambio de plano, no como un fallo.
+
+La vigilancia va con `requestVideoFrameCallback`, no con `timeupdate`:
+`timeupdate` llega cada ~250 ms y la ventana entera son 600, así que a veces
+la disolvencia habría empezado tarde y no le habría dado tiempo a llegar.
+Firefox, que no lo tiene, cae a `timeupdate`.
+
+---
+
+### Cómo se escala sin perder nitidez
+
+La regla salió de una tanda de fondos anteriores que se veían blandos, y sigue
+valiendo aunque el origen actual sea grande:
+
+1. **Reducir es Lanczos directo.** Cuando el destino cabe en el origen no hay
+   nada que inventar, y enfocar encima solo mete halos.
+2. **Agrandar va por pasos de ×1,5 con máscara de enfoque en cada uno**
+   (`radius 1.1, percent 50, threshold 2`). De una sola zancada Lanczos
+   disuelve el detalle; por pasos sobreviven la estructura del techo y el
+   grano de la grada. Hoy solo lo necesita el `@2x`, y por ×1,33.
+3. **Entregar 1800 px a una pantalla retina** obliga al navegador a escalar
+   otra vez encima con un filtro bilineal tonto. Por eso existe el `@2x`. La
+   mitad de la sensación de "poco HD" era esto, no el archivo.
+4. **El desenfoque del CSS es `.35px`, no `1.2px`.** El grande estaba para
+   tapar un escalado duro; arreglado el escalado, solo borraba trabajo.
+
+> WebP y no JPEG a partir de 1800 px: a 2560 el mismo fotograma pesa 413 KB en
+> JPEG y 201 KB en WebP. El JPEG de 1800 se queda como respaldo para quien no
+> entienda `image-set`.
 
 > Reemplazar una foto **conservando el nombre** obliga a subir `ASSET_V` en
 > `app/core/sports.js`. Sin build no hay hash en el nombre, y sin versión

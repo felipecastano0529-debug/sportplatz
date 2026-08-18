@@ -54,6 +54,49 @@ h2, .card-head h2, .br-title, .fx-date {
 
 .view-bg.is-stadium { position: fixed; }
 
+/* ── 2a. El estadio en movimiento ─────────────────────────────────────────
+   El vídeo se cuela ENTRE el backdrop y la app: `#backdrop` va en z-index 0
+   y `.shell` en z-index 1, así que un fijo en z-index 0 que aparece después
+   en el DOM queda justo en medio. Eso importa: los haces, el grano y el velo
+   viven dentro de `.shell`, y tienen que seguir cayendo encima del vídeo
+   igual que caían encima de la foto.                                       */
+
+#vfondo {
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none; overflow: hidden;
+  opacity: 0; transition: opacity 700ms var(--ease-out);
+}
+#vfondo video {
+  display: block; width: 100%; height: 100%; object-fit: cover;
+  /* La misma gradación que la foto, y con el mismo destino: la fija sale del
+     repo a luminancia 67 y `.vb-photo` la deja en ~60 en pantalla. El vídeo
+     llega a 87 y tiene que aterrizar en ese mismo ~60, o el fundido de
+     entrada se ve como un escalón de brillo. Sin `blur`: la foto se
+     desenfoca .35px para disimular su escalado, el vídeo no lo necesita. */
+  filter: saturate(.92) contrast(1.1) brightness(.74);
+}
+
+/* Solo se ve en el escenario de estadio, y solo cuando hay imagen de verdad.
+   `.vfondo-ok` la pone el evento `playing`, no `canplay`. */
+body.vfondo-ok[data-bleed="stadium"] #vfondo { opacity: 1; }
+
+/* La foto fija es el póster: se aparta cuando el vídeo ya está corriendo, y
+   vuelve sola en cuanto no lo está. Está POR ENCIMA del vídeo —vive dentro de
+   `.shell`, que es z-index 1— y de ahí sale su segundo trabajo: tapar la
+   costura del bucle. Ver `vigilarCostura` en vfondo.js. */
+.vb-photo { transition: opacity 700ms var(--ease-out); }
+body.vfondo-ok[data-bleed="stadium"] .vb-photo { opacity: 0; }
+body.vfondo-ok.vfondo-costura[data-bleed="stadium"] .vb-photo {
+  opacity: 1; transition-duration: 600ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Cinturón y tirantes: vfondo.js ya no lo monta, pero si el ajuste cambia
+     a mitad de sesión esto lo apaga sin esperar a nada. */
+  #vfondo { display: none; }
+  body.vfondo-ok[data-bleed="stadium"] .vb-photo { opacity: 1; }
+}
+
 .vb-photo {
   position: absolute; inset: -1.5%;
   background-image: var(--bg-estadio);
@@ -109,7 +152,7 @@ h2, .card-head h2, .br-title, .fx-date {
   background:
     radial-gradient(90% 60% at 50% 0%, rgba(var(--accent-rgb), .14), transparent 62%),
     linear-gradient(180deg,
-      rgba(4,8,16,.64) 0%,  rgba(4,8,16,.59) 16%,
+      rgba(4,8,16,.72) 0%,  rgba(4,8,16,.67) 16%,
       rgba(4,8,16,.24) 36%, rgba(4,8,16,.30) 58%,
       rgba(4,8,16,.62) 100%);
 }

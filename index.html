@@ -10,7 +10,7 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Sportplatz — reservas, torneos y Neo AI para canchas">
 <meta property="og:description" content="Configura tu complejo deportivo en cuatro preguntas y entra a la plataforma: agenda por hora, torneos con llaves que avanzan solas, equipos con su histórico y un bot que reserva por WhatsApp.">
-<meta property="og:image" content="assets/fondos/estadio-desktop.jpg?v=6">
+<meta property="og:image" content="assets/fondos/estadio-desktop.jpg?v=7">
 <meta name="theme-color" content="#0a0c0b">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -31,8 +31,8 @@
      `type` hace que quien no entienda WebP se salte la precarga y se quede
      con el JPEG que pide la hoja. -->
 <link rel="preload" as="image" type="image/webp" media="(min-width: 48rem)"
-      imagesrcset="assets/fondos/estadio-desktop.webp?v=6 1x,
-                   assets/fondos/estadio-desktop@2x.webp?v=6 2x">
+      imagesrcset="assets/fondos/estadio-desktop.webp?v=7 1x,
+                   assets/fondos/estadio-desktop@2x.webp?v=7 2x">
 
 <link rel="icon" type="image/png" href="assets/marca/favicon.png">
 <link rel="apple-touch-icon" href="assets/marca/favicon.png">
@@ -40,6 +40,9 @@
 <body data-theme="momentum">
 
 <div id="backdrop" aria-hidden="true"></div>
+<!-- El vídeo de fondo va aquí, fuera de #app, porque renderApp reconstruye
+     todo el HTML de #app en cada navegación. Ver app/ui/vfondo.js. -->
+<div id="vfondo" aria-hidden="true"></div>
 <div id="app"></div>
 
 <script>
