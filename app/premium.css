@@ -68,16 +68,20 @@ h2, .card-head h2, .br-title, .fx-date {
   .vb-photo { background-image: var(--bg-estadio-movil); background-position: 50% 30%; }
 }
 
-/* Los haces suman luz volumétrica sobre la que ya trae la foto, y el tinte
-   azul es lo que casa el estadio con el acento de marca. */
+/* Los haces existían porque el encuadre anterior era casi todo cielo: sin luz
+   propia arriba, había que inventarla. El recorte actual entra por el borde
+   del techo y trae los reflectores de verdad, así que el haz sintético ya no
+   añade volumen — se suma a una luz que existe y sale neblina sobre el cuenco.
+   Se quedan a media fuerza: lo justo para teñir de esmeralda las esquinas
+   superiores y casar la foto con la marca. */
 .view-bg.is-stadium .vb-beams {
   position: absolute; inset: 0;
   background:
-    radial-gradient(46rem 30rem at 50% -12%, rgba(255,255,255,.16), transparent 58%),
-    radial-gradient(40rem 30rem at 12% 4%,  rgba(var(--accent-rgb), .30), transparent 62%),
-    radial-gradient(38rem 28rem at 88% 6%,  rgba(var(--accent-rgb), .22), transparent 60%),
-    conic-gradient(from 196deg at 26% -8%, transparent 0deg, rgba(255,255,255,.06) 9deg, transparent 20deg),
-    conic-gradient(from 148deg at 76% -8%, transparent 0deg, rgba(255,255,255,.05) 9deg, transparent 20deg);
+    radial-gradient(46rem 30rem at 50% -12%, rgba(255,255,255,.07), transparent 58%),
+    radial-gradient(40rem 30rem at 12% 4%,  rgba(var(--accent-rgb), .16), transparent 62%),
+    radial-gradient(38rem 28rem at 88% 6%,  rgba(var(--accent-rgb), .12), transparent 60%),
+    conic-gradient(from 196deg at 26% -8%, transparent 0deg, rgba(255,255,255,.03) 9deg, transparent 20deg),
+    conic-gradient(from 148deg at 76% -8%, transparent 0deg, rgba(255,255,255,.025) 9deg, transparent 20deg);
   mix-blend-mode: screen;
 }
 
@@ -85,14 +89,24 @@ h2, .card-head h2, .br-title, .fx-date {
 .vb-grain { position: absolute; inset: 0; opacity: .3; mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E"); }
 
-/* El velo es lo que permite leer encima. La foto tiene el césped muy
-   iluminado abajo: ahí es donde más hay que bajar. */
+/* El velo es lo que permite leer encima, y por eso está escalonado y no plano:
+   cae donde hay texto suelto sobre la foto —la cabecera, arriba— y se aparta
+   donde el contenido trae su propio vidrio oscuro, que es de la mitad para
+   abajo. El perfil viejo hacía lo contrario de lo que hace falta: 46 % arriba,
+   donde va el titular, y 88 % al final, donde no hay nada que leer.
+
+   Los números salen de medir, no de tantear. Con el encuadre nuevo el borde
+   del techo y los reflectores caen justo detrás del subtítulo, y a 46 % el
+   texto secundario daba 3.21:1 — por debajo de AA. El 60 % de la primera
+   parada lo sube a 4.68:1. La rampa larga hasta el 34 % es para que el corte
+   no se vea: 150 px para bajar .31 de alfa. */
 .view-bg.is-stadium .vb-scrim {
   background:
-    radial-gradient(90% 60% at 50% 0%, rgba(var(--accent-rgb), .16), transparent 62%),
+    radial-gradient(90% 60% at 50% 0%, rgba(var(--accent-rgb), .14), transparent 62%),
     linear-gradient(180deg,
-      rgba(4,8,16,.42) 0%, rgba(4,8,16,.24) 22%,
-      rgba(4,8,16,.46) 54%, rgba(4,8,16,.88) 100%);
+      rgba(4,8,16,.60) 0%,  rgba(4,8,16,.55) 14%,
+      rgba(4,8,16,.24) 34%, rgba(4,8,16,.30) 58%,
+      rgba(4,8,16,.62) 100%);
 }
 
 /* La cancha a sangre también recibe grano, por coherencia de material. */

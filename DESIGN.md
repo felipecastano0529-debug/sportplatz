@@ -276,6 +276,35 @@ fondo efectivo queda en L≈0.06. Ahí, un rótulo micro a `.50` de blanco daba
 **3.85:1** y no pasa AA para texto pequeño; a `.62` sube a **4.86:1**. Por eso
 `--ink-4` es `.62` y no menos.
 
+### El velo cae donde hay texto suelto, no en todas partes
+
+Sobre la foto del estadio hay exactamente **tres** textos sin superficie propia
+debajo, y los tres viven en los 130 px de arriba: el rótulo, el titular y la
+línea de resumen. Todo lo demás llega con su vidrio oscuro puesto.
+
+Por eso el velo es un escalón y no una lámina: **60 % en la cabecera, 24 % en el
+cuenco, 62 % al pie.** El perfil anterior hacía justo lo contrario —46 % arriba
+y 88 % abajo— porque estaba calibrado contra un encuadre que terminaba en
+césped quemado. Con el actual apagaba la grada entera y dejaba el titular a
+`3.21:1`.
+
+Medido en el punto más claro de cada banda, sobre la composición completa
+(foto → haces en `screen` → velo):
+
+| Texto | Contraste | Mínimo |
+|---|---|---|
+| Rótulo `#34d399` 11 px | 8.03:1 | 4.5 |
+| Titular 34 px blanco | 8.29:1 | 3.0 |
+| Resumen 13 px al `.74` | 4.92:1 | 4.5 |
+
+En móvil el mismo perfil da 5.35:1 y 5.56:1 — no hace falta una versión aparte.
+
+**Los haces sintéticos bajaron a la mitad.** Existían porque el encuadre viejo
+era casi todo cielo y no había luz propia arriba que dibujara volumen. El
+actual entra por los reflectores de verdad, y un haz inventado encima de una
+luz real no suma volumen: suma neblina. Se quedan solo para teñir de esmeralda
+las esquinas superiores y casar la foto con la marca.
+
 ### Las fotos de fondo
 
 `assets/fondos/estadio-desktop.jpg` (horizontal) y `estadio-mobile.jpg`
@@ -285,10 +314,23 @@ reflectores, que es lo que hace la foto.
 
 Las dos se llevan a **luminancia media ~67** antes de entrar al repo. Es el
 número donde el vidrio oscuro de las tarjetas todavía se despega del fondo y la
-foto no se ha convertido en una mancha negra. La actual —estadio al anochecer,
-reflectores encendidos, cielo de tormenta— entró a 99,2 en horizontal y bajó
-×0,69; la vertical ya venía a 70,7 y solo necesitó ×0,96. Siempre por
-multiplicación lineal, nunca por gamma (ver §1).
+foto no se ha convertido en una mancha negra. Siempre por multiplicación
+lineal, nunca por gamma (ver §1).
+
+**El encuadre entra por el borde del techo, no por el cielo.** El original es
+vertical y dedica el 36 % de su alto a nubes; centrado ahí, lo único que se ve
+del fondo es cielo, porque el contenido tapa el resto y la franja que queda
+libre es justo la de arriba. Las dos versiones arrancan en el mismo punto —el
+techo con los reflectores— y bajan hacia el césped:
+
+| | Recorte del original (736×1308) | Sale a |
+|---|---|---|
+| Horizontal | `0,470 → 736,884` (banda 16:9) | 1800×1013 |
+| Vertical | `106,470 → 630,1308` | 900×1440 |
+
+> Las dos son un escalado de ×2,45 y ×1,72 sobre un original pequeño. Se
+> asume: el fondo va velado y desenfocado 1,2 px, y un escalado suave miente
+> menos que un recorte duro.
 
 > Reemplazar una foto **conservando el nombre** obliga a subir `ASSET_V` en
 > `app/core/sports.js`. Sin build no hay hash en el nombre, y sin versión
