@@ -7,28 +7,29 @@ solo los consumen. Si algo no se puede expresar con un token, falta un token.
 
 ## 1. Color
 
-**Azul eléctrico sobre noche de estadio, blanco para respirar.** El acento es el
-azul del propio logo, así que la marca por fin se habla consigo misma.
+**Verde esmeralda sobre noche de estadio, blanco para respirar.**
 
-La elección no fue de gusto, fue medida. La lima anterior daba **1.6:1** sobre
-blanco: no se podía usar como texto, hacía falta un token aparte (`#5b7a12`)
-solo para eso, y sobre el relleno lima el texto tenía que ir en negro. El azul
-da **6.83:1** sobre blanco, así que **el mismo color sirve de relleno y de
-texto**, y encima lleva blanco. Un color, un rol, una regla menos que recordar.
+Da **5.48:1** sobre blanco, así que **el mismo color sirve de relleno y de
+texto**, y encima lleva blanco. Un color, un rol.
+
+**El verde también significa "pagado" y "positivo" en esta interfaz.** No es un
+descuido: verde es bueno y la marca es verde. Lo que los separa no es el tono
+sino la **forma** — la marca siempre es relleno sólido (botón, pastilla), el
+estado siempre es tinte de fondo con su etiqueta al lado. Nunca compiten por el
+mismo sitio.
 
 | Rol | Token | Valor | Contraste | Uso |
 |---|---|---|---|---|
-| Acento | `--accent` / `--brand` | `#1447e6` | 6.83:1 sobre blanco | Botón primario, pill activa, texto de marca |
-| Acento sobre negro | `--accent-hi` | `#4d8bff` | 6.12:1 sobre `#070b13` | Dato titular sobre superficie oscura |
-| Texto sobre el acento | `--on-accent` | `#ffffff` | 6.83:1 | Nunca negro |
+| Acento | `--accent` / `--brand` | `#047857` | 5.48:1 sobre blanco | Botón primario, pill activa, texto de marca |
+| Acento sobre negro | `--accent-hi` | `#34d399` | 10.1:1 sobre `#070b13` | Dato titular sobre superficie oscura |
+| Texto sobre el acento | `--on-accent` | `#ffffff` | 5.48:1 | Nunca negro |
 | Rojo | `--red` | `#e5231f` | — | Del logo. "Sin abonar", deltas negativos, filo del rail |
 | Ámbar | `--amber` | `#f5a300` | — | Del logo. "Con adelanto" |
 | Verde | `--green` | `#0d9c5f` | — | Pagado, positivo |
 | Oro | `--gold` | `#c98a00` | — | Solo el número del campeón |
 
-**Rampa neutra fría, con un punto de azul.** Los grises cálidos leen a papel
-viejo; los verdosos peleaban con el acento anterior. Estos acompañan al azul y
-dejan que el verde sea del deporte, no de la interfaz.
+**Rampa neutra fría con un punto de verde.** Los grises cálidos leen a papel
+viejo; estos acompañan al esmeralda sin robarle saturación.
 
 **Regla de superficie oscura:** sobre el negro los estados suben de luminancia
 (`--band-ok`, `--band-neg`). El mismo verde que funciona sobre blanco desaparece
@@ -48,14 +49,21 @@ retintan solos, sin una regla nueva por componente.
 
 | Deporte | Color | De dónde sale |
 |---|---|---|
-| Sintética | `#10a05e` | Verde esmeralda de la grama |
+| Sintética | `#16a34a` | Verde hierba, más claro y amarillo que la marca |
 | Pádel | `#0e9aa7` | Turquesa de la pista de cristal |
-| Tenis | `#17795a` | Verde hondo de la superficie |
+| Tenis | `#4a7c4e` | Musgo apagado de la pista, como en su foto |
 | Voleibol | `#c48633` | Arena |
 | Paintball | `#d0392f` | Rojo del campo |
 
-> El pádel se movió del azul al turquesa cuando el acento de marca pasó a azul:
-> con los dos en azul, esa sección quedaba sin retinte visible.
+> Dos deportes tuvieron que separarse del acento cuando la marca pasó a
+> esmeralda, o su sección se leería como si no estuviera retintada. El pádel ya
+> se había movido del azul al turquesa por la misma razón, cuando la marca era
+> azul. La regla es siempre la misma: **el color de un deporte tiene que
+> distinguirse del color de la interfaz**, o el retinte deja de comunicar.
+
+> La cancha DIBUJADA de tenis también pasó de azul a verde. Es el respaldo de
+> una cancha cuya foto real es verde musgo: una tarjeta azul junto a un fondo
+> verde se leía como dos deportes distintos.
 
 ---
 
@@ -103,7 +111,7 @@ siempre `tabular-nums` para que las columnas no bailen al actualizarse.
 ## 3. Elevación
 
 Cada nivel son **dos sombras**: una de contacto (corta, opaca) y una ambiental
-(larga, difusa). Ambas teñidas de azul muy oscuro (`--shadow-rgb`) — una sombra
+(larga, difusa). Ambas teñidas de verde-azul muy oscuro (`--shadow-rgb`) — una sombra
 gris pura sobre este blanco se ve sucia. Nunca una sola sombra gigante.
 
 ```
@@ -159,9 +167,9 @@ electrocardiograma, la curva parece una tendencia.
 ### 3d. Superficies de énfasis
 
 Rail, primera métrica, cabeceras de tabla y agenda, chip de día activo y toast
-son **azul-negro de noche**, nunca gris. Cada uno monta tres capas: `--g-ink`
-(o `--g-rail`), `--g-sheen`, y `--hi-dark`. Sobre ellas el azul claro es el color
-del dato titular; el rojo del logo entra como **acento estructural**, nunca como
+son **verde-negro de noche**, nunca gris. Cada uno monta tres capas: `--g-ink`
+(o `--g-rail`), `--g-sheen`, y `--hi-dark`. Sobre ellas el esmeralda claro es el
+color del dato titular; el rojo del logo entra como **acento estructural**, nunca como
 relleno.
 
 ### 3e. Filo con degradado
@@ -184,14 +192,18 @@ con el scroll y las tarjetas flotan encima.
 
 | Tratamiento | `data-bleed` | Dónde | Qué es |
 |---|---|---|---|
-| **Cancha** | `court` | Canchas, Reservas filtradas, Torneo abierto, vistas del jugador | La foto del deporte a sangre, el campo de color debajo y el plano encima |
-| **Estadio** | `stadium` | Panel, Equipos, Inicio, Mi histórico, Neo AI | La foto de noche del complejo, con haces y grano |
-| **Sobrio** | *(sin atributo)* | Ajustes, y el cuerpo de la agenda | Superficie lisa |
+| **Cancha** | `court` | **Solo Canchas** | La foto del deporte a sangre, el campo de color debajo y el plano encima |
+| **Estadio** | `stadium` | Todo lo demás, en los dos roles | La foto de noche del complejo, con haces y grano |
+| **Sobrio** | *(sin atributo)* | Ninguna vista hoy; queda de reserva | Superficie lisa |
 
-**El tercero es tan importante como los otros dos.** Si las seis secciones son
-foto a sangre, se pierde el contraste entre *escenario* y *mesa de trabajo*, y a
-los diez minutos cansa. Ajustes se queda liso a propósito, y la cuadrícula de la
-agenda también: son 17 filas de datos seguidas y en vidrio oscuro se leen mal.
+**La noche de estadio es el fondo por defecto de toda la app, y Canchas es la
+única excepción. Por eso funciona:** cuando el fondo cambia, cambia porque estás
+mirando otro deporte, no porque cambiaste de pestaña. Un fondo que cambia en
+cada sección deja de significar algo.
+
+Dentro del escenario sigue habiendo una excepción: **la cuadrícula de la agenda
+se re-aclara**. Son 17 filas de datos seguidas y en vidrio oscuro se leen mal.
+El escenario es el marco; la mesa de trabajo se queda siendo mesa de trabajo.
 
 ### El retinte va por tokens, no por componente
 
@@ -227,7 +239,7 @@ reflectores, que es lo que hace la foto.
 
 | Material | Dónde | Cómo |
 |---|---|---|
-| **Azul-negro de noche** | Rail, primera métrica, cabeceras, día activo, toast | `--g-ink`/`--g-rail` + `--g-sheen` + `--hi-dark` + `--edge-lit` |
+| **Verde-negro de noche** | Rail, primera métrica, cabeceras, día activo, toast | `--g-ink`/`--g-rail` + `--g-sheen` + `--hi-dark` + `--edge-lit` |
 | **Vidrio claro** | Selector del hero, chips de dato, subir foto | `backdrop-filter` sobre translúcido, borde claro |
 | **Vidrio oscuro** | Toda tarjeta sobre fondo a sangre | `--glass-dark` + `--glass-blur` + `--glass-dark-line` |
 | **Degradado de marca** | Botón primario, barra de hoy, progreso | `--g-brand` + filo interior + glow |

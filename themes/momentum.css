@@ -3,19 +3,22 @@
    Tokens: color, tipografía, forma, elevación, material y movimiento.
    base.css solo consume esto; aquí no hay ni un componente.
 
-   El acento es el azul eléctrico del logo. Se eligió sobre la lima anterior
-   por una razón medible: #1447e6 da 6.83:1 sobre blanco, así que el MISMO
-   color sirve de relleno y de texto. La lima obligaba a un token aparte para
-   texto (#5b7a12) y a poner el texto en negro sobre el relleno. Un color, un
-   rol. Sobre superficie oscura sube a #4d8bff (6.12:1 sobre el negro).
+   El acento es verde esmeralda. Da 5.48:1 sobre blanco, así que el MISMO
+   color sirve de relleno y de texto, y encima lleva blanco. Sobre superficie
+   oscura sube a #34d399 (10.1:1 sobre el negro).
+
+   Nota honesta: el verde también significa "pagado" y "positivo" en esta
+   interfaz. No es un descuido — verde es bueno y la marca es verde. Lo que
+   los separa no es el tono sino la FORMA: la marca siempre es relleno sólido
+   (botón, pastilla), el estado siempre es tinte de fondo con su etiqueta al
+   lado. Nunca compiten por el mismo sitio.
    ========================================================================== */
 
 :root {
 
 /* ── 1. COLOR ──────────────────────────────────────────────────────────────
-   Rampa neutra fría, con un punto de azul. Los grises cálidos leen a papel
-   viejo y los verdosos peleaban con el acento anterior; estos acompañan al
-   azul y dejan que el verde de la grama sea del deporte, no de la interfaz. */
+   Rampa neutra fría con un punto de verde. Los grises cálidos leen a papel
+   viejo; estos acompañan al esmeralda sin robarle saturación. */
 
   --n-0:  #ffffff;
   --n-25: #fcfdfe;
@@ -46,18 +49,18 @@
   --ink-3: var(--n-500);
   --ink-4: var(--n-400);
 
-/* Azul eléctrico. `--accent-rgb` alimenta glows, focos y sombras de color. */
-  --accent-rgb:  45, 106, 240;
-  --accent:      #1447e6;   /* relleno Y texto: 6.83:1 sobre blanco */
-  --accent-hi:   #4d8bff;   /* la forma legible sobre negro: 6.12:1 */
-  --accent-deep: #0b2f9e;
+/* Verde esmeralda. `--accent-rgb` alimenta glows, focos y sombras de color. */
+  --accent-rgb:  16, 150, 105;
+  --accent:      #047857;   /* relleno Y texto: 5.48:1 sobre blanco */
+  --accent-hi:   #34d399;   /* la forma legible sobre negro: 10.1:1 */
+  --accent-deep: #03543f;
 
-  --brand:      #1447e6;   /* mismo color: ya no hace falta un token aparte */
-  --brand-2:    #2f5fef;   /* borde de foco */
-  --brand-3:    #4d8bff;   /* borde en hover */
-  --brand-deep: #0b2f9e;
-  --brand-tint: #e9efff;
-  --on-accent:  #ffffff;   /* texto sobre el relleno azul: blanco, ya sí */
+  --brand:      #047857;   /* mismo color: no hace falta un token aparte */
+  --brand-2:    #059669;   /* borde de foco */
+  --brand-3:    #34d399;   /* borde en hover */
+  --brand-deep: #03543f;
+  --brand-tint: #e6f7f0;
+  --on-accent:  #ffffff;   /* texto sobre el relleno esmeralda */
 
   --red:   #e5231f;   --red-tint:   #ffecea;   --red-deep:   #a5120f;
   --amber: #f5a300;   --amber-tint: #fff4e0;   --amber-deep: #a86a00;
@@ -66,7 +69,7 @@
   --ok: var(--green); --warn: var(--amber-deep); --neg: var(--red);
   --gold: #c98a00;   /* el oro del podio, sólido: un degradado sobre texto no es luz */
 
-/* Superficies de énfasis: azul-negro de noche de estadio, no gris.
+/* Superficies de énfasis: verde-negro de noche de estadio, no gris.
    Sobre ellas los estados suben de luminancia — el mismo verde que funciona
    en blanco ahí desaparece. */
   --band-bg-a:  #17233b;
@@ -76,14 +79,14 @@
   --band-line:  rgba(255,255,255,.14);
   --band-ok:    #5ee6a0;
   --band-neg:   #ff9d96;
-  --band-amber: var(--accent-hi);   /* el dato titular sobre negro va en azul */
+  --band-amber: var(--accent-hi);   /* el dato titular sobre negro va en esmeralda */
 
   --rail-bg-a:  #131e33;
   --rail-bg-b:  #03060c;
   --rail-text:  #ffffff;
   --rail-dim:   #8d99ae;
   --rail-line:  rgba(255,255,255,.12);
-  --nav-on-bg:  rgba(77,139,255,.16);
+  --nav-on-bg:  rgba(52,211,153,.16);
 
 /* Sombras: azul muy oscuro. Un gris puro sobre este blanco se ve sucio. */
   --shadow-rgb: 11, 20, 38;
@@ -93,7 +96,7 @@
    distingan también en escala de grises y para un daltónico. El rojo va al
    final a propósito — en la interfaz significa "sin abonar" y "cae", así que
    ponerlo en el puesto 2 de un ranking lo lee como una alarma que no es. */
-  --d1: #2d6af0;  --d2: #0891b2;  --d3: #7c5cf0;
+  --d1: #10a06e;  --d2: #0891b2;  --d3: #7c5cf0;
   --d4: #f5a300;  --d5: #0d9c5f;  --d6: #e5231f;
 
 /* ── 2. TIPOGRAFÍA ─────────────────────────────────────────────────────────
@@ -173,9 +176,9 @@
 
 /* ── 5. MATERIALES ─────────────────────────────────────────────────────── */
 
-  --g-brand:      linear-gradient(180deg, #2f6bf5 0%, #1240d4 100%);
-  --g-brand-hov:  linear-gradient(180deg, #4d8bff 0%, #1a52ea 100%);
-  --g-brand-soft: linear-gradient(140deg, #f4f8ff 0%, #e6eeff 100%);
+  --g-brand:      linear-gradient(180deg, #0aa06d 0%, #047857 100%);
+  --g-brand-hov:  linear-gradient(180deg, #14b981 0%, #059669 100%);
+  --g-brand-soft: linear-gradient(140deg, #f1fbf7 0%, #e2f6ee 100%);
   --g-red:        linear-gradient(180deg, #f4453f 0%, #d21b17 100%);
 
   --g-ink:   linear-gradient(158deg, var(--band-bg-a) 0%, var(--band-bg-b) 100%);

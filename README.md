@@ -133,17 +133,17 @@ copia sin fotos en `localStorage`, y memoria para que la sesión funcione igual.
 
 El detalle está en **[DESIGN.md](DESIGN.md)**. El resumen:
 
-**Color** — azul eléctrico del logo sobre noche de estadio. Da 6.83:1 sobre
-blanco, así que el mismo color sirve de relleno y de texto, y encima lleva
-blanco. Cada sección se retinta con el color real de su deporte, por tokens.
+**Color** — verde esmeralda sobre noche de estadio. Da 5.48:1 sobre blanco, así
+que el mismo color sirve de relleno y de texto, y encima lleva blanco. Canchas
+es la única sección que se retinta, con el color real de cada deporte.
 
 **Tipografía** — Archivo variable con eje de ancho: de una sola familia salen el
 titular ancho de gráfico deportivo y el texto normal. IBM Plex Mono solo para
 dato técnico. Cada paso trae su propio tracking e interlínea.
 
-**Fondo** — tres tratamientos: la cancha a sangre, la noche de estadio, y
-superficie sobria. El tercero importa tanto como los otros dos: si todo es foto,
-se pierde el contraste entre escenario y mesa de trabajo.
+**Fondo** — la noche de estadio en toda la app, y la cancha a sangre solo en
+Canchas. Por eso funciona: cuando el fondo cambia, cambia porque estás mirando
+otro deporte, no porque cambiaste de pestaña.
 
 **Movimiento** — curvas fuertes, nunca `ease-in`, nunca `transition: all`, todo
 bajo 300 ms, solo `transform` y `opacity`, presión en todo lo pulsable.
@@ -163,10 +163,10 @@ Ver **[docs/DESPLIEGUE.md](docs/DESPLIEGUE.md)**. En corto: `vercel deploy --pro
 
 ## Lo que falta y no es código
 
-- **Fotos propias de cada deporte y cada cancha.** Las de estadio ya están. Las
-  demás se suben desde la propia app en segundos, arrastrándolas encima; mientras
-  tanto se dibuja el campo del deporte con el plano de la cancha, que se lee como
-  una decisión y no como un hueco.
+- **Fotos de cada cancha concreta.** Las de los cinco deportes y las de estadio
+  ya están. Las de cada cancha se suben desde la propia app en segundos,
+  arrastrándolas encima; mientras tanto se dibuja el campo del deporte con el
+  plano encima, que se lee como una decisión y no como un hueco.
 - **Backend real**: usuarios y sesiones de verdad, pagos del adelanto, y conectar
   Neo AI a la API de WhatsApp. Hoy el rol se cambia con un conmutador, sin
   autenticación — que para un demo es una ventaja, no una carencia.

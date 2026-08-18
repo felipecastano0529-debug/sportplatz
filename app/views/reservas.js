@@ -26,8 +26,6 @@ import { phone as randomPhone } from '../core/seed.js';
 let agendaDate = iso(today());
 let agendaSport = 'all';
 
-export const getAgendaSport = () => agendaSport;
-
 export function viewReservas(main) {
   const t = today();
   const days = Array.from({ length: 14 }, (_, i) => addDays(t, i - 2));

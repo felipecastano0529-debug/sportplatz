@@ -46,8 +46,7 @@ el archivo.
 **Deportes** — `assets/deportes/`, proporción 16:10, mínimo 800×500:
 
 ```
-futbol.jpg   padel.jpg   voleibol.jpg   paintball.jpg   ← ya están
-tenis.jpg                                               ← falta
+futbol.jpg   padel.jpg   tenis.jpg   voleibol.jpg   paintball.jpg   ← las cinco
 ```
 
 Las cuatro que están se recortaron a 16:10 con un punto de interés elegido a

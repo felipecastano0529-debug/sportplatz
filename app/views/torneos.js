@@ -21,7 +21,6 @@ import { pageHead, renderApp } from '../ui/shell.js';
 let openTn = null;
 let tnTab = 'llaves';
 
-export const getOpenTn = () => openTn ? S.tournaments.find(t => t.id === openTn) || null : null;
 
 export function viewTorneos(main) {
   if (openTn && S.tournaments.some(t => t.id === openTn)) return viewTorneoDetail(main);

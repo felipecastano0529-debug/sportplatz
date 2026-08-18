@@ -14,13 +14,13 @@ import { SPORTS, courtSVG } from '../core/sports.js';
 import { icon } from './icons.js';
 import { enter } from './motion.js';
 import { openModal, toast } from './modal.js';
-import { me, myTeams } from '../core/teams.js';
+import { me } from '../core/teams.js';
 import { filaCuentaHTML, wireCuenta } from './cuenta.js';
 
 import { viewPanel }    from '../views/panel.js';
 import { viewCanchas, getCanchaSport } from '../views/canchas.js';
-import { viewReservas, getAgendaSport } from '../views/reservas.js';
-import { viewTorneos, getOpenTn } from '../views/torneos.js';
+import { viewReservas } from '../views/reservas.js';
+import { viewTorneos } from '../views/torneos.js';
 import { viewEquipos }  from '../views/equipos.js';
 import { viewBot, stopChat } from '../views/bot.js';
 import { viewAjustes }  from '../views/ajustes.js';
@@ -147,9 +147,8 @@ function railHTML(nav, view, r) {
  *                   si existe y, si no, el campo de color con el plano.
  *  · `is-stadium` — la foto de estadio del cliente. Horizontal en escritorio,
  *                   vertical en móvil (lo resuelve el CSS, no este módulo).
- *  · sin clase    — superficie sobria. Ajustes y las vistas de trabajo puro
- *                   la usan: si TODO es foto a sangre, se pierde el contraste
- *                   entre escenario y mesa de trabajo.
+ *  · sin clase    — superficie sobria. Queda como reserva para vistas
+ *                   futuras de trabajo puro; hoy no la usa ninguna.
  */
 export function paintViewBg(view) {
   const host = $('#viewBg');
@@ -199,24 +198,18 @@ export function paintViewBg(view) {
   delete document.body.dataset.bleed;
 }
 
-const STADIUM_VIEWS = new Set(['panel', 'equipos', 'inicio', 'historial', 'bot']);
+/* La noche de estadio es el fondo por defecto de TODA la app. Canchas es la
+   única excepción, y por eso funciona: cuando el fondo cambia, cambia porque
+   estás mirando otro deporte, no porque cambiaste de pestaña. Un fondo que
+   cambia en cada sección deja de significar algo. */
+const STADIUM_VIEWS = new Set([
+  'panel', 'reservas', 'torneos', 'equipos', 'bot', 'ajustes',
+  'inicio', 'reservar', 'miequipo', 'ptorneos', 'historial'
+]);
 
-/** Qué deporte manda el fondo de cada vista, si es que alguno lo hace. */
+/** Qué deporte manda el fondo. Solo Canchas retinta la sección entera. */
 function bgSportFor(view) {
-  if (view === 'canchas')  return getCanchaSport();
-  if (view === 'reservas') {
-    const f = getAgendaSport();
-    return f && f !== 'all' ? f : null;
-  }
-  if (view === 'torneos') {
-    const tn = getOpenTn();
-    return tn ? tn.sport : null;
-  }
-  if (view === 'reservar' || view === 'miequipo' || view === 'ptorneos') {
-    const t = myTeams()[0];
-    return t?.sport || S.business.sports[0] || null;
-  }
-  return null;
+  return view === 'canchas' ? getCanchaSport() : null;
 }
 
 /* ── Cabecera de página ──────────────────────────────────────────────────── */

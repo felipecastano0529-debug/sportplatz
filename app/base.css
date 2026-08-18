@@ -216,8 +216,12 @@ code { font-family: var(--mono); font-size: .84em; letter-spacing: 0; }
     radial-gradient(120% 60% at 50% 114%, rgba(126,196,72,.42), transparent 60%),
     linear-gradient(158deg, #1c766e 0%, #0f474e 54%, #072832 100%);
 }
+/* Pista de tenis en verde, no en azul: la foto real de este complejo es una
+   superficie verde musgo, y una tarjeta azul al lado del fondo verde se leía
+   como si fueran dos deportes distintos. El campo dibujado tiene que parecerse
+   a la cancha de la que es el respaldo. */
 .media--tenis .media-wash {
-  background: linear-gradient(158deg, #3f92dc 0%, #2467ad 52%, #123f74 100%);
+  background: linear-gradient(158deg, #5f9463 0%, #3c6b45 52%, #1f3d2a 100%);
 }
 .media--voleibol .media-wash {
   background: linear-gradient(158deg, #e5b976 0%, #c48f48 50%, #8b5f2c 100%);
@@ -876,9 +880,13 @@ body[data-bleed] .kicker::before { background: var(--sport-lit, var(--accent-hi)
    acento dentro de la vista: botones, pills, focos y anillos se retintan
    solos, sin una sola regla nueva por componente.                        */
 
-body[data-sport="futbol"]    { --sport: #10a05e; --sport-lit: #4ee39b; --sport-rgb: 30,190,116; }
+/* Con el acento de marca en esmeralda, dos deportes verdes tenían que
+   separarse de él o la sección se leería como si no estuviera retintada:
+   la sintética se va al verde hierba —más claro y más amarillo— y el tenis
+   al musgo apagado de su propia pista, que es lo que muestra su foto. */
+body[data-sport="futbol"]    { --sport: #16a34a; --sport-lit: #4ade80; --sport-rgb: 40,205,110; }
 body[data-sport="padel"]     { --sport: #0e9aa7; --sport-lit: #48dbe8; --sport-rgb: 30,190,205; }
-body[data-sport="tenis"]     { --sport: #17795a; --sport-lit: #52d8a8; --sport-rgb: 34,160,120; }
+body[data-sport="tenis"]     { --sport: #4a7c4e; --sport-lit: #9ed49f; --sport-rgb: 130,195,130; }
 body[data-sport="voleibol"]  { --sport: #c48633; --sport-lit: #f5c877; --sport-rgb: 220,160,80; }
 body[data-sport="paintball"] { --sport: #d0392f; --sport-lit: #ff8a80; --sport-rgb: 226,80,70; }
 
