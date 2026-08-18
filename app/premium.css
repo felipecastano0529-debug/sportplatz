@@ -822,3 +822,8 @@ body[data-bleed] .auth-error { color: var(--band-neg);
    sólido. Un vidrio sin nada que dejar ver es solo un gris. */
 .ob-rail { background-color: #0a1310; background-image: var(--g-sheen-v),
   linear-gradient(170deg, #16211a 0%, #040806 100%); }
+
+/* El logo pasó de SVG a PNG con alfa. `object-fit: contain` para que nunca se
+   deforme, y la sombra proyectada se recorta a la silueta —no a la caja— por
+   ser `drop-shadow` sobre un PNG transparente. */
+.logo { object-fit: contain; }

@@ -11,6 +11,7 @@
 <meta property="og:title" content="Sportplatz — reservas, torneos y Neo AI para canchas">
 <meta property="og:description" content="Configura tu complejo deportivo en cuatro preguntas y entra a la plataforma: agenda por hora, torneos con llaves que avanzan solas, equipos con su histórico y un bot que reserva por WhatsApp.">
 <meta property="og:image" content="assets/fondos/estadio-desktop.jpg">
+<meta name="theme-color" content="#0a0c0b">
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -25,7 +26,8 @@
 
 <link rel="preload" as="image" href="assets/fondos/estadio-desktop.jpg" media="(min-width: 48rem)">
 
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230E1116'/><path d='M27 24H72' stroke='%23047857' stroke-width='22' stroke-linecap='round'/><path d='M60 51L29 79' stroke='%23e52521' stroke-width='22' stroke-linecap='round'/><circle cx='80' cy='50' r='10' fill='%23ffd400'/></svg>">
+<link rel="icon" type="image/png" href="assets/marca/favicon.png">
+<link rel="apple-touch-icon" href="assets/marca/favicon.png">
 </head>
 <body data-theme="momentum">
 
@@ -33,15 +35,12 @@
 <div id="app"></div>
 
 <script>
-/* La marca: el trazo que arranca. Dos golpes y un punto. */
-window.SP_LOGO = `
-<svg class="logo" viewBox="0 0 100 100" role="img" aria-label="Sportplatz">
-  <g fill="none" stroke-linecap="round" stroke-width="23">
-    <path d="M27 23H72" stroke="#047857"/>
-    <path d="M60 51L29 79" stroke="#e52521"/>
-  </g>
-  <circle cx="80" cy="50" r="10" fill="#ffd400"/>
-</svg>`;
+/* La marca. El archivo llega en JPEG sobre negro; el que se sirve aquí lleva
+   el fondo extraído por luminancia, porque el rail es vidrio y un cuadrado
+   negro se recortaría encima de la foto. */
+window.SP_LOGO =
+  '<img class="logo" src="assets/marca/logo.png" alt="Sportplatz" ' +
+  'width="256" height="256" decoding="async">';
 </script>
 <script type="module" src="app/main.js"></script>
 <noscript>

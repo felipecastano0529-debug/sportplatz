@@ -72,3 +72,21 @@ La lista exacta según tu configuración aparece en **Ajustes → Fotos de las c
 
 > Los 404 en la consola de esos archivos son esperados: cada imagen lleva un `onerror`
 > que la retira y deja ver el campo dibujado.
+
+## La marca
+
+`assets/marca/logo.png` — el logo con **fondo transparente**. El original llegó
+en JPEG sobre negro; el fondo se extrajo con alfa por luminancia (rampa suave
+entre 5% y 26%) en vez de un recorte duro, para conservar el brillo del borde y
+el sombreado 3D sin dejar halo.
+
+Se sirve a 256 px y se muestra a 36 como máximo — 22 en el avatar de Neo AI.
+A 3x de densidad son 108 px, así que 256 sobra y pesa una fracción de lo que
+pesaba el original.
+
+`assets/marca/favicon.png` — el mismo logo pero **conservando el negro**. En la
+pestaña, un icono con fondo se lee mejor que uno recortado; es lo que hace
+cualquier app.
+
+Si cambias el logo, reemplaza los dos archivos conservando el nombre. El de la
+app necesita transparencia; el de la pestaña, no.
