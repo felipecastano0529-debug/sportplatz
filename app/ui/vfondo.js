@@ -57,9 +57,17 @@ function montar() {
   host.appendChild(video);
   vigilarCostura();
 
-  // Si el navegador bloquea el arranque automático no se insiste: la foto fija
-  // ya está puesta y es un fondo completo por sí sola.
-  video.play().catch(desmontar);
+  /* Un `play()` lanzado antes de que llegue el primer fotograma se rechaza
+     con AbortError, y eso no es "el navegador no me deja": es "todavía no".
+     Se desmontaba al primer rechazo, así que el visitante nuevo —el que no
+     tiene nada en caché, o sea justo el que estrena la demo— se quedaba con
+     la foto fija para siempre. Solo el rechazo por política es definitivo;
+     los demás esperan a que haya datos y vuelven a intentarlo. */
+  const arrancar = () => video && video.play().catch((e) => {
+    if (e.name === 'NotAllowedError') desmontar();
+  });
+  video.addEventListener('canplay', arrancar);
+  arrancar();
 }
 
 /* El clip no cierra sobre sí mismo: la cámara se mueve durante los 25 s, y
