@@ -60,8 +60,12 @@ export function openModal({ title, body, confirm, danger, extra, wide, onConfirm
   ok && ok.addEventListener('click', () => { if (onConfirm && onConfirm() === false) return; close(); });
   const dg = $('[data-danger]', modalEl);
   dg && dg.addEventListener('click', () => { onDanger && onDanger(); close(); });
+  /* Cerrar ANTES de ejecutar. Casi todos los `extra` abren otro diálogo
+     —cambiar de rol, editar el equipo, editar al jugador— y al revés el que
+     se cerraba era el recién abierto: se veía parpadear y volver. En el
+     celular eso significaba que el conmutador de rol no se podía usar. */
   const ex = $('[data-extra]', modalEl);
-  ex && ex.addEventListener('click', () => { extra.run(); close(); });
+  ex && ex.addEventListener('click', () => { close(); extra.run(); });
 
   /* El primer campo del formulario si lo hay; si no, el botón principal.
      Nunca el botón de cerrar: enfocar "Cancelar" al abrir invita a cancelar. */

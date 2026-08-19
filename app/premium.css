@@ -883,6 +883,13 @@ body[data-bleed] .tag-cap { color: var(--accent-hi); }
 .mas-go { color: var(--ink-4); }
 .mas-foot { margin-top: .875rem; padding-top: .875rem; border-top: 1px solid var(--line); }
 
+/* El conmutador no es una sección más: es la pieza que enseña las dos caras
+   del negocio. Se separa del resto y lleva el acento. */
+.mas-item--rol { margin-top: .5rem; border-color: rgba(var(--accent-rgb), .35);
+  background: color-mix(in srgb, var(--accent) 10%, transparent); }
+.mas-item--rol .nav-ic { color: var(--accent-hi); }
+.mas-item--rol .mas-go { color: var(--accent-hi); }
+
 /* En el teléfono los diálogos suben desde abajo y se anclan al borde: es
    donde está el pulgar y es lo que la mano espera de una app. */
 @media (max-width: 62rem) {

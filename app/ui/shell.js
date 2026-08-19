@@ -290,16 +290,32 @@ function abrirMas(nav, view, r) {
             <span class="mas-txt"><b>${esc(n.label)}</b><em>${esc(n.hint)}</em></span>
             ${icon('right', 'ic ic-sm mas-go')}
           </button>`).join('')}
+
+        <!-- El conmutador va en la lista y no en el pie: es lo que hace de
+             esto un demo y en el celular tiene que verse, no adivinarse. -->
+        <button class="mas-item mas-item--rol" id="masRol">
+          <span class="nav-ic">${icon('swap')}</span>
+          <span class="mas-txt">
+            <b>${r === 'player' ? 'Ver como dueño' : 'Ver como jugador'}</b>
+            <em>${r === 'player'
+              ? 'El panel, la agenda y los torneos'
+              : 'Reservar, tu equipo y tu histórico'}</em>
+          </span>
+          ${icon('right', 'ic ic-sm mas-go')}
+        </button>
       </nav>
       ${filaCuentaHTML() ? `<div class="mas-foot">${filaCuentaHTML()}</div>` : ''}`,
-    confirm: null,
-    extra: { label: r === 'player' ? 'Ver como dueño' : 'Ver como jugador', run: openRoleSwap }
+    confirm: null
   });
 
   $$('[data-mas]', document).forEach(b => b.addEventListener('click', () => {
     $('.modal-x')?.click();
     renderApp(b.dataset.mas);
   }));
+  $('#masRol')?.addEventListener('click', () => {
+    $('.modal-x')?.click();
+    openRoleSwap();
+  });
   wireCuenta(() => renderApp(homeOf(role()), { intro: true }));
 }
 
