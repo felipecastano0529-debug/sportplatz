@@ -18,16 +18,33 @@ export const SPRING = {
   snap: 'cubic-bezier(.34,1.12,.48,1)'
 };
 
+/* `fill: 'both'` es necesario mientras la animación corre —sin él el elemento
+   parpadea en su estado final antes de empezar— pero al terminar hay que
+   soltarlo: un `transform` retenido, aunque sea la identidad, convierte al
+   elemento en el contenedor de bloque de todo `position: fixed` que tenga
+   dentro. La barra de navegación del celular se anclaba al `.shell` y
+   terminaba a 2.400 px del viewport en vez de pegada abajo. */
+function soltarAlTerminar(anim) {
+  /* Cancelar, no fijar. Nada en el CSS oculta lo que entra —el estado de
+     reposo de una tarjeta ya es visible—, así que soltar la animación la
+     devuelve exactamente a donde tiene que estar. `commitStyles` haría lo
+     contrario de lo que se busca: escribe `translate3d(0,0,0)` inline, y un
+     transform inline, aunque sea la identidad, vuelve a crear el contenedor
+     de bloque que rompía la barra fija del celular. */
+  anim?.finished.then(() => anim.cancel()).catch(() => {});
+}
+
 export function enter(node, { y = 10, delay = 0, dur = 420, bounce = false } = {}) {
   if (!node) return;
   if (REDUCED) {
-    node.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 160, fill: 'both', delay });
+    soltarAlTerminar(node.animate([{ opacity: 0 }, { opacity: 1 }],
+      { duration: 160, fill: 'both', delay }));
     return;
   }
-  node.animate(
+  soltarAlTerminar(node.animate(
     [{ opacity: 0, transform: `translate3d(0,${y}px,0)` }, { opacity: 1, transform: 'none' }],
     { duration: dur, delay, easing: bounce ? SPRING.snap : SPRING.soft, fill: 'both' }
-  );
+  ));
 }
 
 /* 38–55 ms entre elementos. Más lento se siente lento, no elegante. */

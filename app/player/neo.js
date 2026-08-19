@@ -21,6 +21,7 @@ import { icon } from '../ui/icons.js';
 import { REDUCED, enter, stagger } from '../ui/motion.js';
 import { toast } from '../ui/modal.js';
 import { pageHead, renderApp } from '../ui/shell.js';
+import { filyLead } from '../core/lead.js';
 
 let ctx = null;
 let log = [];        // lo ya dicho: [{ who:'yo'|'neo', msg }]
@@ -133,6 +134,7 @@ function enviar(texto) {
   quick = [];
   pintarQuick();
 
+  filyLead.senal('uso_asistente');
   const r = responder(ctx, texto);
   quick = r.quick || [];
   cola.push(...r.msgs);
@@ -140,6 +142,7 @@ function enviar(texto) {
   // La reserva ya está en el estado cuando llega esta burbuja: el aviso va
   // aquí y no dentro del cerebro, que no sabe de pantallas.
   const hecha = r.msgs.find(m => m.t === 'ok');
+  if (hecha) filyLead.senal('reservo');
   if (hecha) toast(`Reserva confirmada · ${hecha.b.courtName} ${fmtDate(hecha.b.date)} ${fmtHour(hecha.b.start)}`);
 
   bombear();

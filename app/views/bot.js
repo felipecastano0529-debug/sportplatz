@@ -11,6 +11,7 @@ import { SPORTS } from '../core/sports.js';
 import { icon } from '../ui/icons.js';
 import { REDUCED, SPRING, stagger } from '../ui/motion.js';
 import { pageHead } from '../ui/shell.js';
+import { esWhatsapp, waBonito } from '../core/util.js';
 
 let botTimer = null;
 let liveBody = null;   // el <div> de mensajes de la sesión viva
@@ -43,7 +44,9 @@ function botScript() {
       }, delay: 1200 },
     { who: 'out', text: `Te mando el recordatorio mañana a las 4:00 p.m.\nSi te toca cancelar, escríbeme *cancelar ${code}* y te devuelvo el adelanto hasta 4 horas antes.`, delay: 1100 },
     { who: 'in',  text: `Gracias, muy amable` },
-    { who: 'sys', text: `Reserva ${code} creada sola en el panel · el dueño no tocó el celular` }
+    { who: 'sys', text: S.business.whatsapp
+        ? `Reserva ${code} creada sola en el panel · a ti te llega el aviso a ${waBonito(S.business.whatsapp)}`
+        : `Reserva ${code} creada sola en el panel · el dueño no tocó el celular` }
   ];
 }
 
@@ -55,7 +58,9 @@ export function viewBot(main) {
   main.innerHTML = `
     ${pageHead('Automatización', 'Neo AI en WhatsApp',
       `<button class="btn btn-secondary btn-sm" id="botReplay">${icon('spark')}Reproducir</button>`,
-      'Contesta, cotiza, aparta y confirma sin que nadie del negocio toque el celular')}
+      S.business.whatsapp
+        ? `Contesta, cotiza, aparta y confirma en ${waBonito(S.business.whatsapp)} sin que toques el celular`
+        : 'Contesta, cotiza, aparta y confirma sin que nadie del negocio toque el celular')}
 
     <div class="bot-wrap">
       <div class="phone" data-anim>
@@ -64,7 +69,9 @@ export function viewBot(main) {
             <span class="wa-back">‹</span>
             <span class="wa-av">${window.SP_LOGO}</span>
             <span class="wa-who"><b>Neo AI · ${esc(S.business.name)}</b>
-              <em><i class="wa-live"></i>en línea · responde al instante</em></span>
+              <em><i class="wa-live"></i>${S.business.whatsapp
+                ? `contestando por ti en ${esc(waBonito(S.business.whatsapp))}`
+                : 'en línea · responde al instante'}</em></span>
             <span class="wa-icons"><i></i><i></i></span>
           </header>
           <div class="wa-body" id="waBody" role="log" aria-live="polite" aria-label="Conversación de ejemplo"></div>

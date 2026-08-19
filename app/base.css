@@ -1549,17 +1549,51 @@ body[data-bleed] .stat:first-child { border-color: rgba(255,255,255,.14); }
 
 /* ───────────────────────────────────────────────────────────── Responsive  */
 
+/* El acceso a "Más" pertenece a la barra del teléfono: en el rail de
+   escritorio caben las siete secciones y no hay nada que esconder. */
+.nav-more { display: none; }
+
+/* ── Celular: el rail baja al pulgar ──────────────────────────────────────
+   Era una barra horizontal arriba con scroll lateral: las últimas secciones
+   —y el conmutador de rol, que es la pieza que hace de esto un demo— vivían
+   detrás de un gesto que nadie descubre. Ahora es una barra fija abajo con
+   los cuatro destinos que se usan de verdad y una hoja para el resto, que es
+   lo que la mano espera en un teléfono.                                    */
+
 @media (max-width: 62rem) {
   .shell { grid-template-columns: 1fr; }
-  .nav { position: sticky; top: 0; height: auto; flex-direction: row; align-items: center;
-    gap: .75rem; padding: .625rem .875rem; overflow-x: auto; border-radius: 0; }
-  .nav-list { flex-direction: row; gap: .25rem; }
-  .nav-item { padding: .4375rem .625rem; white-space: nowrap; }
+
+  .nav {
+    position: fixed; top: auto; left: 0; right: 0; bottom: 0; height: auto;
+    flex-direction: row; align-items: stretch; justify-content: center;
+    gap: 0; padding: .375rem .5rem calc(.375rem + env(safe-area-inset-bottom, 0px));
+    overflow: visible; border-radius: 0; z-index: 40;
+    box-shadow: 0 -18px 40px -22px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.09);
+  }
+  .nav-brand, .nav-foot { display: none; }
+  .nav-list { flex-direction: row; gap: .125rem; width: 100%;
+    max-width: 32rem; margin: 0 auto; }
+
+  /* Solo los destinos marcados como pestaña y el botón "Más". */
+  .nav-item { display: none; }
+  .nav-item[data-tab], .nav-more { display: grid; }
+  .nav-item[data-tab], .nav-more {
+    flex: 1 1 0; min-width: 0; gap: .1875rem; justify-items: center;
+    padding: .5rem .25rem .4375rem; min-height: 3.25rem; border-radius: var(--r2); }
   .nav-item.is-on::before { display: none; }
-  .nav-txt em, .nav-user-txt, .nav-brand-txt em { display: none; }
-  .nav-foot { margin-top: 0; margin-left: auto; }
-  .nav-user { border: 0; background: none; padding: 0; }
-  .main { padding: var(--s5) var(--s4) var(--s9); }
+  .nav-txt em { display: none; }
+  .nav-txt b { font-size: 10.5px; font-weight: 700; letter-spacing: -.01em;
+    display: block; text-align: center; overflow: hidden; text-overflow: ellipsis;
+    white-space: nowrap; max-width: 100%; }
+  .nav-ic { width: 1.5rem; height: 1.5rem; background: none; border: 0; }
+  .nav-ic .ic { width: 1.25rem; height: 1.25rem; }
+  .nav-item.is-on .nav-ic { color: var(--accent-hi); }
+  .nav-item[aria-current="page"] .nav-txt b { color: #fff; }
+
+  /* El contenido deja sitio a la barra y a la franja del gesto. */
+  .main { padding: var(--s5) var(--s4)
+    calc(5.5rem + env(safe-area-inset-bottom, 0px)); }
+  .toast { bottom: calc(5.25rem + env(safe-area-inset-bottom, 0px)); }
   .view-bg { left: 0; }
   .ob { grid-template-columns: 1fr; }
   .ob-rail { flex-direction: row; align-items: center; gap: var(--s5); padding: .875rem 1rem;

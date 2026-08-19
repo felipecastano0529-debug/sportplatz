@@ -532,6 +532,40 @@ body[data-bleed] .ag-hour { background-color: #0d1219; }
    explican solos en cuanto ves una celda que dice "debe $60k". */
 @media (min-width: 62rem) and (max-width: 90rem) { .legend--inline { display: none; } }
 
+/* ── 4b. La agenda del celular ────────────────────────────────────────────
+   La misma información que la tabla, leída hacia abajo: la hora manda, la
+   cancha baja a ser un dato de la reserva, y las horas sin nada se apagan en
+   vez de ocupar el mismo peso que las llenas. */
+
+.agl { display: grid; gap: 0; }
+.agl-row { display: grid; grid-template-columns: 4.25rem minmax(0, 1fr); gap: .75rem;
+  align-items: start; padding: .5rem 0; border-top: 1px solid var(--line); }
+.agl-row:first-child { border-top: 0; }
+.agl-h { font-family: var(--mono); font-size: var(--fs-xs); font-weight: 500;
+  color: var(--ink-3); padding-top: .625rem; white-space: nowrap; }
+.agl-row.is-quiet .agl-h { color: var(--ink-4); }
+.agl-slots { display: grid; gap: .375rem; min-width: 0; }
+
+.agl-slot { position: relative; display: grid; gap: 2px; text-align: left;
+  min-height: 3.25rem; padding: .625rem .75rem; border-radius: var(--r2);
+  background: var(--surface); border: 1px solid var(--line);
+  transition: transform var(--t-press) var(--ease-out); }
+.agl-slot:active { transform: scale(.985); }
+.agl-slot b { font-size: var(--fs-sm); font-weight: 700; letter-spacing: -.014em;
+  padding-right: 1.75rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.agl-slot em { font-style: normal; font-size: var(--fs-xs); font-weight: 600;
+  color: var(--ink-3); font-variant-numeric: var(--num); }
+.agl-slot.is-paid { background: var(--green-tint); box-shadow: inset 3px 0 0 var(--green); }
+.agl-slot.is-part { background: var(--amber-tint); box-shadow: inset 3px 0 0 var(--amber); }
+.agl-slot.is-due  { background: var(--red-tint);   box-shadow: inset 3px 0 0 var(--red); }
+
+.agl-free { display: inline-flex; align-items: center; gap: .375rem; justify-self: start;
+  min-height: 2.75rem; padding: .5rem .75rem; border-radius: var(--r2);
+  font-size: var(--fs-xs); font-weight: 600; color: var(--ink-3);
+  background: var(--surface-2); border: 1px dashed var(--line-2); }
+.agl-free:active { background: var(--brand-tint); color: var(--ink); }
+.agl-row.is-quiet .agl-free { color: var(--ink-4); }
+
 /* ── 5. Escudos y avatares ────────────────────────────────────────────────
    Un equipo sin escudo no enseña un cuadro gris: enseña su inicial sobre su
    color, con el corte de escudo real. Se lee como identidad, no como hueco. */
@@ -831,6 +865,39 @@ body[data-bleed] .tag-cap { color: var(--accent-hi); }
   box-shadow: inset 0 0 0 1px var(--line-2), inset 0 0 0 2px transparent;
   border: 1px dashed var(--line-3); }
 
+/* ── 13c. La hoja "Más" ───────────────────────────────────────────────────
+   Segunda pantalla de navegación del celular, no un cajón de sastre: mismas
+   etiquetas y mismos iconos que el rail, en filas que se tocan cómodas. */
+
+.mas-list { display: grid; gap: .375rem; }
+.mas-item { display: grid; grid-template-columns: 2.25rem minmax(0, 1fr) auto;
+  align-items: center; gap: .75rem; min-height: 3.5rem; padding: .625rem .75rem;
+  text-align: left; border-radius: var(--r2);
+  background: var(--surface-2); border: 1px solid var(--line);
+  transition: border-color var(--t-hover) var(--ease-out), transform var(--t-press) var(--ease-out); }
+.mas-item:active { transform: scale(.985); }
+.mas-item.is-on { border-color: var(--brand-2); background: var(--brand-tint); }
+.mas-txt { display: grid; gap: 1px; min-width: 0; }
+.mas-txt b { font-size: var(--fs-sm); font-weight: 700; letter-spacing: -.012em; }
+.mas-txt em { font-style: normal; font-size: var(--fs-micro); letter-spacing: 0; color: var(--ink-3); }
+.mas-go { color: var(--ink-4); }
+.mas-foot { margin-top: .875rem; padding-top: .875rem; border-top: 1px solid var(--line); }
+
+/* En el teléfono los diálogos suben desde abajo y se anclan al borde: es
+   donde está el pulgar y es lo que la mano espera de una app. */
+@media (max-width: 62rem) {
+  .scrim { align-items: end; padding: 0; }
+  .modal { width: 100%; max-width: none; max-height: 88dvh;
+    border-radius: var(--r4) var(--r4) 0 0; }
+  .modal-foot { padding-bottom: calc(.875rem + env(safe-area-inset-bottom, 0px)); }
+  .modal-foot .btn { min-height: 2.75rem; }
+}
+
+/* El aviso de qué guardamos y para qué. Legible, no letra pequeña escondida:
+   si el trato no se puede decir en dos líneas claras, el trato está mal. */
+.ob-aviso { max-width: 34rem; margin-top: -.25rem; font-size: var(--fs-xs);
+  line-height: 1.55; color: var(--ink-3); }
+
 /* ── 14. Conmutador de rol ────────────────────────────────────────────────
    La pieza que convierte esto en un demo y no en una captura: se reserva
    como jugador, se cambia de lado y la reserva ya está en la agenda.     */
@@ -1125,9 +1192,32 @@ body[data-bleed] .neo-msg.is-yo .neo-b { background-image: none;
   background-color: rgba(var(--accent-rgb), .55); border-color: rgba(52,211,153,.35); color: #fff; }
 body[data-bleed] .neo-card.is-ok .neo-card-t { color: var(--band-ok); }
 
-@media (max-width: 44rem) {
-  .neo { height: clamp(24rem, 70vh, 34rem); border-radius: var(--r3); }
+@media (max-width: 62rem) {
+  /* Una conversación no es una tarjeta dentro de una página: en el teléfono
+     ocupa lo que queda de pantalla, con el campo de escritura al alcance del
+     pulgar y por encima de la barra de navegación.
+
+     El alto se mide, no se calcula a ojo: restando rems a `100dvh` el campo
+     de escritura acababa por debajo de la barra, tapado. La vista se vuelve
+     una columna de altura de pantalla y el chat toma lo que sobra. */
+  body[data-view="neo"] .main { height: 100dvh; overflow: hidden;
+    display: flex; flex-direction: column; }
+  body[data-view="neo"] .main-inner { display: flex; flex-direction: column;
+    flex: 1; min-height: 0; }
+  .neo { flex: 1; min-height: 16rem; height: auto; max-width: none; border-radius: var(--r3); }
   .neo-b { max-width: 92%; }
+  .neo-log { padding: .875rem; }
+  .neo-form { padding: .625rem .75rem; grid-template-columns: 1fr 2.75rem; }
+  .neo-in, .neo-send { height: 2.75rem; }
+  .neo-send { width: 2.75rem; }
+  .neo-hour, .neo-chip { min-height: 2.5rem; }
+  .neo-quick { padding: 0 .875rem .5rem; }
+  /* En una pantalla de 390 px la cabecera se comía dos tercios del chat: el
+     nombre del negocio ya está en el saludo de Neo y en el rótulo de la
+     sección, y ahí solo servía para partir el estado en dos líneas. */
+  .neo-tag { display: none; }
+  .neo-head { grid-template-columns: 2.25rem minmax(0, 1fr); }
+  body[data-view="neo"] .page-sub { display: none; }
 }
 
 /* ── 18. Detalles sueltos ────────────────────────────────────────────────── */
@@ -1153,6 +1243,48 @@ body[data-bleed] .neo-card.is-ok .neo-card-t { color: var(--band-ok); }
 /* ── 19. Responsive ──────────────────────────────────────────────────────── */
 
 @media (max-width: 62rem) {
+  /* El botón de acción no cabe al lado del título en 390 px: se salía de la
+     pantalla por la derecha. Baja a su propia línea, a ancho de contenido. */
+  .page-head { flex-direction: column; align-items: flex-start; gap: .75rem; }
+  .page-tools { width: 100%; flex-wrap: wrap; }
+  .page-title { font-size: clamp(1.75rem, 8vw, 2.5rem); }
+
+  /* Los filtros pasan a carril: cinco deportes en dos líneas empujaban la
+     agenda media pantalla hacia abajo. Con scroll lateral ocupan una. */
+  /* `min-width: 0` no es decorativo: un carril con scroll propio dentro de un
+     contenedor flex se niega a encogerse sin él, y en Equipos empujaba la
+     página entera 150 px a la derecha. */
+  .filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
+    min-width: 0; max-width: 100%; padding-bottom: .125rem; margin-bottom: 0; }
+  .filters::-webkit-scrollbar { display: none; }
+  .filters .pill { flex: none; }
+  .agenda-bar { gap: .5rem; }
+  /* La leyenda sobra donde cada reserva ya dice "debe $60k" con todas sus
+     letras, y el resumen del día cabe en una línea si no compite con ella. */
+  .legend--inline { display: none; }
+  /* Una sola línea: partido en dos, "pendiente" quedaba huérfano debajo y la
+     cifra que importa perdía su etiqueta. */
+  .agenda-sum { font-size: var(--fs-micro); letter-spacing: 0; white-space: nowrap;
+    overflow-x: auto; scrollbar-width: none; }
+  .agenda-sum::-webkit-scrollbar { display: none; }
+
+  /* La lista necesita el mismo suelo que las demás superficies: sin él las
+     horas y las reservas quedaban apoyadas directamente sobre las luces del
+     estadio. */
+  .agenda-wrap { background-color: var(--panel-base); background-image: var(--g-panel);
+    background-blend-mode: var(--blend-panel); border: 1px solid var(--panel-line);
+    border-radius: var(--r4); padding: .5rem .875rem; box-shadow: var(--float-dark), var(--hi-dark); }
+
+  /* Objetivo táctil: nada por debajo de 44 px en lo que se toca. La cruz de
+     quitar a un jugador medía 22 y estaba pegada a su nombre — en un dedo eso
+     es sacar del equipo al que querías abrir. */
+  .day { min-height: 3.25rem; }
+  .pill { min-height: 2.75rem; }
+  .hslot { min-height: 3.5rem; }
+  .mini--x { min-width: 2.75rem; min-height: 2.75rem; display: grid; place-items: center;
+    margin: -.5rem -.5rem -.5rem 0; }
+  .swatch, .bg-pick, .mas-item, .media-drop { min-height: 2.75rem; }
+
   .view-bg { left: 0; }
   .next-match { grid-template-columns: 1fr; gap: .75rem; }
   .next-vs { justify-self: center; }

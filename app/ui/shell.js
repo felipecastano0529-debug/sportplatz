@@ -17,6 +17,7 @@ import { openModal, toast } from './modal.js';
 import { me } from '../core/teams.js';
 import { filaCuentaHTML, wireCuenta } from './cuenta.js';
 import { videoFondoVisible } from './vfondo.js';
+import { filyLead } from '../core/lead.js';
 import { modoFondo } from './tema.js';
 
 import { viewPanel }    from '../views/panel.js';
@@ -52,6 +53,15 @@ export const PLAYER_NAV = [
   { id: 'historial', label: 'Mi histórico',hint: 'Partidos y números',  icon: 'history' },
   { id: 'neo',       label: 'Neo AI',      hint: 'Pídela hablando',    icon: 'bot' }
 ];
+
+/* Los cuatro destinos que se tocan de verdad desde un celular. El resto vive
+   en la hoja "Más", junto al conmutador de rol y la cuenta — que en la barra
+   horizontal de antes quedaban al final de un scroll lateral que nadie
+   descubre, y el conmutador es LA pieza de esta demo. */
+const TABS = {
+  owner:  ['panel', 'reservas', 'canchas', 'bot'],
+  player: ['inicio', 'reservar', 'neo', 'miequipo']
+};
 
 const VIEWS = {
   panel: viewPanel, canchas: viewCanchas, reservas: viewReservas,
@@ -94,11 +104,13 @@ export function renderApp(view = VIEW, { intro = false } = {}) {
 
   document.body.dataset.view = view;
   document.body.dataset.role = r;
+  filyLead.seccion(view);   // cuántas secciones distintas llegó a abrir
 
   $$('[data-go]', root).forEach(b => b.addEventListener('click', (e) => {
     e.preventDefault(); renderApp(b.dataset.go);
   }));
   $('#roleSwap')?.addEventListener('click', openRoleSwap);
+  $('#navMore')?.addEventListener('click', () => abrirMas(nav, view, r));
   wireCuenta(() => renderApp(homeOf(role()), { intro: true }));
 
   const main = $('.main-inner', root);
@@ -128,10 +140,16 @@ function railHTML(nav, view, r) {
     <nav class="nav-list" aria-label="Secciones">
       ${nav.map(n => `
         <button class="nav-item ${n.id === view ? 'is-on' : ''}" data-go="${n.id}"
+                ${TABS[r]?.includes(n.id) ? 'data-tab' : ''}
                 ${n.id === view ? 'aria-current="page"' : ''}>
           <span class="nav-ic">${icon(n.icon)}</span>
           <span class="nav-txt"><b>${n.label}</b><em>${n.hint}</em></span>
         </button>`).join('')}
+      <button class="nav-item nav-more" id="navMore" aria-haspopup="dialog"
+              ${TABS[r]?.includes(view) ? '' : 'aria-current="page"'}>
+        <span class="nav-ic">${icon('ajustes')}</span>
+        <span class="nav-txt"><b>Más</b><em>Todo lo demás</em></span>
+      </button>
     </nav>
     <div class="nav-foot">
       ${filaCuentaHTML()}
@@ -253,6 +271,37 @@ export const pageHead = (kicker, title, right = '', sub = '') => `
     </div>
     <div class="page-tools">${right}</div>
   </header>`;
+
+/* ── La hoja "Más" (solo celular) ────────────────────────────────────────── */
+
+/* Lo que no cabe en la barra inferior, en el orden en que se necesita: las
+   secciones restantes, quién eres, y la cuenta. No es un cajón de sastre —
+   es la segunda pantalla de navegación, y por eso lleva las mismas etiquetas
+   y los mismos iconos que el rail de escritorio. */
+function abrirMas(nav, view, r) {
+  const resto = nav.filter(n => !TABS[r]?.includes(n.id));
+  openModal({
+    title: 'Todo lo demás',
+    body: `
+      <nav class="mas-list" aria-label="Más secciones">
+        ${resto.map(n => `
+          <button class="mas-item ${n.id === view ? 'is-on' : ''}" data-mas="${n.id}">
+            <span class="nav-ic">${icon(n.icon)}</span>
+            <span class="mas-txt"><b>${esc(n.label)}</b><em>${esc(n.hint)}</em></span>
+            ${icon('right', 'ic ic-sm mas-go')}
+          </button>`).join('')}
+      </nav>
+      ${filaCuentaHTML() ? `<div class="mas-foot">${filaCuentaHTML()}</div>` : ''}`,
+    confirm: null,
+    extra: { label: r === 'player' ? 'Ver como dueño' : 'Ver como jugador', run: openRoleSwap }
+  });
+
+  $$('[data-mas]', document).forEach(b => b.addEventListener('click', () => {
+    $('.modal-x')?.click();
+    renderApp(b.dataset.mas);
+  }));
+  wireCuenta(() => renderApp(homeOf(role()), { intro: true }));
+}
 
 /* ── Conmutador de rol ───────────────────────────────────────────────────── */
 

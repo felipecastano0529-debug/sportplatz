@@ -18,6 +18,7 @@ import { openModal, toast } from '../ui/modal.js';
 import { mediaBlock, wireDrops, readPhoto } from '../ui/photo.js';
 import { pageHead, renderApp } from '../ui/shell.js';
 import { PALETAS, FONDOS, aplicarTema, derivar } from '../ui/tema.js';
+import { filyLead } from '../core/lead.js';
 import { openCourtForm } from './canchas.js';
 
 export function viewAjustes(main) {
@@ -183,6 +184,7 @@ export function viewAjustes(main) {
       if (!inp.files[0]) return;
       try {
         S.business.logo = await readPhoto(inp.files[0], { max: 240, q: 0.85 });
+        filyLead.senal('subio_logo');
         save(); renderApp('ajustes'); toast('Logo actualizado');
       } catch { toast('Esa imagen no se pudo leer', 'warn'); }
     });
@@ -196,6 +198,7 @@ export function viewAjustes(main) {
      pulsar "Guardar" para ver un color es pedirle al ojo que recuerde. */
   $$('[data-accent]', main).forEach(b => b.addEventListener('click', () => {
     S.business.theme = { ...tema, accent: b.dataset.accent };   // `custom` se conserva por si vuelve
+    filyLead.senal('cambio_color');
     save();
     aplicarTema(S.business, S.photos);
     renderApp('ajustes');

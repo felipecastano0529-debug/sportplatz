@@ -20,6 +20,7 @@ import { initVideoFondo } from './ui/vfondo.js';
 import { renderOnboarding, renderStep, OB } from './views/onboarding.js';
 import { readPhoto } from './ui/photo.js';
 import { courtById } from './core/calc.js';
+import { filyLead } from './core/lead.js';
 
 let booted = false;
 
@@ -31,6 +32,7 @@ async function boot() {
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
   document.body.insertAdjacentHTML('afterbegin', SP_DEFS);
+  filyLead.init('sportplatz');
   initSpotlight();
   wirePhotos();
   wireConflictos();
@@ -74,6 +76,7 @@ function migrate(s) {
   s.business.openHour ??= 6;
   s.business.closeHour ??= 23;
   s.business.logo ??= null;
+  s.business.whatsapp ??= '';
   s.business.theme ??= { accent: 'esmeralda', fondo: 'estadio' };
   s.business.theme.accent ??= 'esmeralda';
   s.business.theme.fondo ??= 'estadio';

@@ -17,6 +17,7 @@ import { icon } from '../ui/icons.js';
 import { stagger, enter } from '../ui/motion.js';
 import { openModal, toast } from '../ui/modal.js';
 import { pageHead, renderApp } from '../ui/shell.js';
+import { filyLead } from '../core/lead.js';
 
 let sel = { sport: null, date: iso(today()), courtId: null };
 
@@ -155,6 +156,7 @@ function confirmar(court, date, start, yo) {
         status: 'confirmada', note: ''
       });
       save();
+      filyLead.senal('reservo');
       renderApp('inicio');
       toast(`Listo · ${court.name} el ${fmtDate(date)} a las ${fmtHour(start)}`);
     }

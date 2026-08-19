@@ -64,3 +64,11 @@ export const initials = (name) => String(name || '')
   .split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
 
 export const firstName = (name) => String(name || '').split(' ')[0];
+
+/* '3001234567' -> '300 123 4567'. El número del negocio se enseña dentro de la
+   demo —es el que Neo usaría—, así que se lee como se lee un celular aquí. */
+export const waBonito = (n) => {
+  const d = String(n || '').replace(/\D/g, '').replace(/^57/, '');
+  return d.length === 10 ? `${d.slice(0, 3)} ${d.slice(3, 6)} ${d.slice(6)}` : String(n || '');
+};
+export const esWhatsapp = (n) => String(n || '').replace(/\D/g, '').length >= 10;

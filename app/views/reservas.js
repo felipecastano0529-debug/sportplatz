@@ -84,6 +84,7 @@ export function viewReservas(main) {
     </div>
 
     <div class="agenda-wrap">
+      ${enCelular() ? agendaLista(courts, dayBookings, hours) : `
       <div class="agenda" style="--cols:${courts.length}">
         <div class="agenda-head">
           <div class="ag-corner">${fmtDate(agendaDate)}</div>
@@ -112,7 +113,7 @@ export function viewReservas(main) {
             </div>`;
           }).join('')}
         </div>
-      </div>
+      </div>`}
     </div>
 `;
 
@@ -135,7 +136,44 @@ export function viewReservas(main) {
   if (on) strip.scrollLeft = on.offsetLeft - strip.clientWidth / 2 + on.clientWidth / 2;
   avisarDeMasColumnas(main);
   alaHoraDeAhora(main);
+  vigilarAncho(main);
   stagger($$('.ag-row', main).slice(0, 12), { y: 8, step: 18 });
+}
+
+/* En un teléfono una cuadrícula de diez canchas por diecisiete horas no es una
+   agenda: es un mapa que hay que recorrer con dos dedos. Lo que se mira en el
+   celular es el DÍA —qué entra ahora, quién viene, qué queda libre— así que la
+   tabla se convierte en la línea de tiempo del día y la cancha pasa de ser un
+   eje a ser un dato de cada reserva. Misma información, misma agenda, leída
+   como se lee un teléfono: hacia abajo. */
+const enCelular = () => matchMedia('(max-width: 62rem)').matches;
+
+function agendaLista(courts, dayBookings, hours) {
+  return `<ol class="agl">
+    ${hours.map(h => {
+      const hs = hhmm(h);
+      const tomadas = courts.map(c => ({ c, b: dayBookings.find(x => x.courtId === c.id && x.start === hs) }))
+                            .filter(x => x.b);
+      const libre = courts.find(c => !dayBookings.some(x => x.courtId === c.id && x.start === hs));
+      const nLibres = courts.length - tomadas.length;
+      return `<li class="agl-row ${tomadas.length ? '' : 'is-quiet'}">
+        <span class="agl-h">${fmtHour(hs)}</span>
+        <div class="agl-slots">
+          ${tomadas.map(({ c, b }) => {
+            const saldo = b.total - b.deposit;
+            const cls = saldo === 0 ? 'is-paid' : b.deposit > 0 ? 'is-part' : 'is-due';
+            return `<button class="agl-slot ${cls}" data-open="${b.id}">
+              <b>${esc(b.customer)}</b>
+              <em>${esc(c.name)} · ${saldo > 0 ? `${moneyShort(b.total)} · debe ${moneyShort(saldo)}` : money(b.total)}</em>
+              ${SRC[b.source]?.tag ? `<i class="src" title="${SRC[b.source].title}">${SRC[b.source].tag}</i>` : ''}
+            </button>`;
+          }).join('')}
+          ${nLibres && libre ? `<button class="agl-free" data-new="${libre.id}|${hs}">
+            ${icon('plus', 'ic ic-sm')}${nLibres} ${nLibres === 1 ? 'cancha libre' : 'canchas libres'}</button>` : ''}
+        </div>
+      </li>`;
+    }).join('')}
+  </ol>`;
 }
 
 /* Con más de ocho canchas la tabla no cabe en ninguna pantalla, y una columna
@@ -153,11 +191,22 @@ function alaHoraDeAhora(main) {
   if (fila) ag.scrollTop = fila.offsetTop - $('.agenda-head', ag).offsetHeight;
 }
 
+/* Girar el teléfono o abrir la ventana cruza el punto donde la agenda cambia
+   de forma, y quedarse con la anterior deja media vista rota. */
+let anchoVivo = null;
+function vigilarAncho(main) {
+  anchoVivo?.abort();
+  const ctrl = new AbortController();
+  anchoVivo = ctrl;
+  const mq = matchMedia('(max-width: 62rem)');
+  mq.addEventListener('change', () => { if (main.isConnected) viewReservas(main); }, { signal: ctrl.signal });
+}
+
 let avisoVivo = null;   // el oyente de `resize` de la agenda anterior
 
 function avisarDeMasColumnas(main) {
   const wrap = $('.agenda-wrap', main);
-  const ag = $('.agenda', main);
+  const ag = $('.agenda', main);   // en celular no hay tabla: no hay nada que avisar
   avisoVivo?.abort();     // la vista se repinta en cada día y filtro
   avisoVivo = null;
   if (!wrap || !ag) return;

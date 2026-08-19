@@ -17,8 +17,12 @@ import { mediaBlock, wireDrops } from '../ui/photo.js';
 import { toast } from '../ui/modal.js';
 import { renderApp } from '../ui/shell.js';
 import { paintBackdrop } from '../ui/backdrop.js';
+import { filyLead } from '../core/lead.js';
 
-export const OB = { step: 0, name: '', sports: [], counts: {}, prices: {}, photos: {} };
+/* $120.000 → $120k. El resumen del lead se lee en una tabla, no en la app. */
+const moneyCorto = (n) => '$' + Math.round((n || 0) / 1000) + 'k';
+
+export const OB = { step: 0, name: '', whatsapp: '', sports: [], counts: {}, prices: {}, photos: {} };
 
 export function renderOnboarding() {
   $('#app').innerHTML = `
@@ -63,6 +67,10 @@ const obHead = (kicker, title, sub) => `
     ${sub ? `<p class="ob-sub">${sub}</p>` : ''}
   </header>`;
 
+/* El WhatsApp se pide aquí y no al final, y no es un peaje: es el número al
+   que Neo le mandaría las reservas, y la demo se lo ENSEÑA funcionando con
+   su propio número. Pedirlo con su para qué a la vista es lo que separa un
+   dato que el prospecto entrega de uno que le sacan. */
 function step0() {
   return `<section class="ob-panel">
     ${obHead('Paso 01', '¿Cómo se llama tu <em>negocio</em>?',
@@ -72,6 +80,19 @@ function step0() {
         placeholder="Ej. Complejo Deportivo La 70" value="${esc(OB.name)}" maxlength="42">
       <p class="hint" id="obNameHint">Escribe el nombre para continuar</p>
     </div>
+
+    <div class="ob-field" data-anim>
+      <label class="field-label" for="obWa">¿A qué WhatsApp te llegarían las reservas?</label>
+      <input id="obWa" class="input input-xl" type="tel" inputmode="tel" autocomplete="tel"
+        placeholder="300 123 4567" value="${esc(OB.whatsapp)}" maxlength="20">
+      <p class="hint" id="obWaHint">Neo AI te va a mostrar cómo le llegan los pedidos a ese número.</p>
+    </div>
+
+    <p class="ob-aviso" data-anim>
+      Guardamos lo que configures aquí y tu WhatsApp para armar tu demo y, si te sirve,
+      escribirte por este mismo medio. Nada más. Escríbenos a ese chat y lo borramos.
+    </p>
+
     <div class="ob-actions" data-anim>
       <button class="btn btn-primary" id="obNext" disabled>Continuar</button>
     </div>
@@ -163,14 +184,26 @@ function wireStep() {
 
   if (OB.step === 0) {
     const input = $('#obName');
+    const wa = $('#obWa');
+    /* Diez dígitos es un celular colombiano; se aceptan más por si escriben
+       el 57 o el +57 delante. No se valida más que eso: rechazar un número
+       raro de alguien que sí quiere probar cuesta más que un dato imperfecto. */
+    const digitos = () => wa.value.replace(/\D/g, '');
     const sync = () => {
       OB.name = input.value.trim();
-      next.disabled = OB.name.length < 2;
-      $('#obNameHint').textContent = OB.name.length < 2
-        ? 'Escribe el nombre para continuar' : '¡Listo! Dale continuar';
+      OB.whatsapp = wa.value.trim();
+      const okNombre = OB.name.length >= 2;
+      const okWa = digitos().length >= 10;
+      next.disabled = !okNombre || !okWa;
+      $('#obNameHint').textContent = okNombre ? '¡Listo!' : 'Escribe el nombre para continuar';
+      $('#obWaHint').textContent = okWa
+        ? 'Perfecto. Ahí es donde te va a escribir Neo AI.'
+        : 'Neo AI te va a mostrar cómo le llegan los pedidos a ese número.';
     };
-    input.addEventListener('input', sync);
-    input.addEventListener('keydown', e => { if (e.key === 'Enter' && !next.disabled) next.click(); });
+    [input, wa].forEach(el => {
+      el.addEventListener('input', sync);
+      el.addEventListener('keydown', e => { if (e.key === 'Enter' && !next.disabled) next.click(); });
+    });
     sync(); setTimeout(() => input.focus(), 260);
     next.addEventListener('click', () => { OB.step = 1; renderStep(); });
   }
@@ -250,6 +283,7 @@ function build(btn) {
       name: OB.name,
       sports: OB.sports.slice(),
       created: iso(today()),
+      whatsapp: OB.whatsapp,
       openHour: 6,
       closeHour: 23,
       logo: null,
@@ -275,6 +309,33 @@ function build(btn) {
     next.tournaments.push(openTournament(business, teams));
 
     save();
+
+    /* El prospecto acaba de decirnos su negocio entero sin llenar un
+       formulario: qué deporte, cuántas canchas y a cuánto la hora. Eso viaja
+       con su nombre y su WhatsApp, y es lo que nos deja llegar a la
+       conversación sabiendo de qué hablamos. */
+    const precios = Object.values(OB.prices).filter(Boolean);
+    /* El perfil primero y el contacto después, no al revés: `contacto()`
+       dispara el envío inmediato —es el dato que no se puede perder— y si va
+       delante, se lleva la cola vacía y el perfil sale en una segunda
+       petición. Así viajan juntos. */
+    filyLead
+      .perfil({
+        resumen: `${courts.length} ${courts.length === 1 ? 'cancha' : 'canchas'} · ` +
+                 `${business.sports.map(id => SPORTS[id].short).join(', ')} · ` +
+                 (precios.length
+                    ? `${moneyCorto(Math.min(...precios))}–${moneyCorto(Math.max(...precios))}/h`
+                    : 'sin precios'),
+        datos: {
+          negocio: business.name,
+          deportes: business.sports,
+          canchas: courts.length,
+          por_deporte: { ...OB.counts },
+          precios: { ...OB.prices }
+        }
+      })
+      .contacto({ nombre: business.name, whatsapp: OB.whatsapp });
+
     document.body.dataset.sports = business.sports.join(' ');
     paintBackdrop();
     renderApp('panel', { intro: true });

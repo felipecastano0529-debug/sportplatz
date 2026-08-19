@@ -36,7 +36,7 @@ Cuatro preguntas para encontrarlo:
 
 ---
 
-## 2. Las siete decisiones que se heredan
+## 2. Las ocho decisiones que se heredan
 
 Ninguna es de canchas. Son la anatomía.
 
@@ -71,8 +71,8 @@ Nada de fechas fijas en el código. Nunca.
 
 ### Un onboarding que personaliza, no que da la bienvenida
 
-Cuatro preguntas: nombre del negocio, qué ofrece, cuántos, a qué precio
-(`app/views/onboarding.js`). Con eso se genera todo. El visitante deja de
+Cuatro preguntas: nombre del negocio y WhatsApp, qué ofrece, cuántos, a qué
+precio (`app/views/onboarding.js`). Con eso se genera todo. El visitante deja de
 mirar un producto ajeno y se ve a sí mismo adentro — su nombre en el rail, sus
 precios en la agenda, su negocio en boca del asistente.
 
@@ -96,6 +96,19 @@ color suelto en un componente.
 Por eso pasar de tarjetas de vidrio a placa negra mate fueron dos tokens y no
 cincuenta reglas. Un sistema donde retematizar cuesta caro es un sistema que
 no se va a retematizar.
+
+### Cada prueba deja constancia
+
+Una demo que nadie registra es una demo que solo sirvió para el que la vio.
+Lo que el prospecto configura —qué tiene, cuánto cobra, cuántos— es su perfil
+comercial entero, entregado sin llenar un formulario, y lo que hace dentro
+dice si le gustó: minutos, secciones, si habló con el asistente, si volvió.
+
+Va a la base común de `Fily Demos` con tres llamadas (`fily-lead.js`), y el
+contacto se pide DENTRO de la demo con su para qué a la vista: en Sportplatz
+es el WhatsApp al que Neo le mandaría las reservas, y la demo se lo enseña
+funcionando con su propio número. Un dato que se entrega porque sirve, no uno
+que se saca.
 
 ### Un asistente que trabaja sobre el mismo estado
 
@@ -162,6 +175,7 @@ no vende.
 4. Núcleo: estado, roles, semilla viva, onboarding.
 5. Las dos mitades: el lado del dueño y el lado del cliente.
 6. El momento "ajá", y probarlo con alguien que no sepa nada del proyecto.
-7. El asistente, si suma.
+7. El registro de leads: tres llamadas a `fily-lead.js`.
+8. El asistente, si suma.
 
 Los pasos 1 y 2 cuestan media hora y deciden si la demo convence.
