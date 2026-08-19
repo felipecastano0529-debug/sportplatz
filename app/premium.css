@@ -170,6 +170,32 @@ body.vfondo-ok.vfondo-costura[data-bleed="stadium"] .vb-photo {
 /* La cancha a sangre también recibe grano, por coherencia de material. */
 .view-bg.is-court .vb-grain { opacity: .14; }
 
+/* Sobrio: el escenario apagado. No es blanco ni es un rectángulo plano —es
+   la misma noche sin foto, con un halo del color del negocio arriba para que
+   la pantalla tenga un arriba y un abajo. El grano se queda: sin él, un
+   degradado oscuro a pantalla completa forma bandas. */
+.view-bg.is-plain {
+  position: fixed;
+  background-color: #05080d;
+  background-image:
+    radial-gradient(120% 70% at 50% -12%, rgba(var(--accent-rgb), .20), transparent 62%),
+    linear-gradient(180deg, #0b1119 0%, #05080d 62%, #04060a 100%);
+}
+.view-bg.is-plain .vb-grain { opacity: .18; }
+
+/* Y domar la foto AJENA. El velo del estadio está calibrado contra una noche
+   —una imagen que ya nace oscura—. La foto que suba el negocio puede ser un
+   mediodía a pleno sol, y con ese mismo velo la cabecera y el rótulo del día
+   se quedaban sin fondo contra el que leerse. Se baja la foto y se cierra el
+   velo por arriba, que es donde vive el titular. */
+body[data-fondo="propio"] .vb-photo { filter: saturate(.78) contrast(1.04) brightness(.6) blur(.35px); }
+body[data-fondo="propio"] .vb-scrim {
+  background:
+    linear-gradient(180deg, rgba(4,8,16,.62) 0%, rgba(4,8,16,.42) 26%,
+                    rgba(4,8,16,.58) 58%, rgba(4,8,16,.86) 100%);
+}
+body[data-fondo="propio"] .vb-beams { opacity: .35; }
+
 /* ── 2b. Domar la foto de cancha ──────────────────────────────────────────
    El velo original se calibró contra el campo DIBUJADO, que ya nace oscuro.
    Con fotos reales el rango es otro: la arena a mediodía y una pista de pádel
@@ -746,6 +772,64 @@ body[data-bleed] .tag-cap { color: var(--accent-hi); }
 .sw:hover { transform: scale(1.12); }
 .sw.is-on { border-color: var(--surface);
   box-shadow: 0 0 0 2px var(--sw), 0 2px 8px rgba(var(--shadow-rgb), .4); }
+
+/* ── 13b. Apariencia: color y fondo ───────────────────────────────────────
+   Las muestras enseñan el PAR de cada paleta —el relleno y su forma clara—
+   porque son los dos colores que el negocio va a ver: uno sobre las
+   superficies blancas y otro sobre la placa oscura. Una sola mancha de
+   color enseñaría media verdad. */
+
+.swatches { display: flex; flex-wrap: wrap; gap: .5rem; margin: .375rem 0 .875rem; }
+.card .swatches + .hint { margin-bottom: 1rem; }
+.swatch { display: flex; align-items: center; gap: .5rem; padding: .375rem .75rem .375rem .5rem;
+  border-radius: var(--rp); background: var(--surface-2); border: 1px solid var(--line);
+  font-size: var(--fs-xs); font-weight: 600; color: var(--ink-2);
+  transition: border-color var(--t-hover) var(--ease-out),
+              background var(--t-hover) var(--ease-out),
+              transform var(--t-press) var(--ease-out); }
+.swatch i { width: 1.125rem; height: 1.125rem; border-radius: 50%; flex: none;
+  background: linear-gradient(135deg, var(--sw-hi) 0 50%, var(--sw) 50% 100%);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.14); }
+.swatch:hover { border-color: var(--line-3); }
+.swatch:active { transform: scale(.97); }
+.swatch.is-on { color: var(--ink); border-color: var(--sw);
+  background: color-mix(in srgb, var(--sw) 12%, transparent);
+  box-shadow: 0 0 0 1px var(--sw); }
+
+/* El selector libre: la misma pastilla, pero el círculo es el disparador del
+   selector del sistema. El `input` va encima y transparente en vez de
+   escondido, porque un `input[type=color]` con `display:none` no abre en
+   Safari — hay que poder pulsarlo de verdad. */
+.swatch--pick { position: relative; cursor: pointer; border-style: dashed; }
+.swatch--pick i { background: conic-gradient(from .25turn,
+    #ef4444, #f59e0b, #eab308, #22c55e, #06b6d4, #3b82f6, #8b5cf6, #ec4899, #ef4444); }
+.swatch--pick.is-on { border-style: solid; }
+.swatch--pick.is-on i { background: linear-gradient(135deg, var(--sw-hi) 0 50%, var(--sw) 50% 100%); }
+.swatch--pick input { position: absolute; inset: 0; width: 100%; height: 100%;
+  opacity: 0; cursor: pointer; border: 0; padding: 0; }
+
+.bg-picks { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: .5rem; margin-bottom: .75rem; }
+.bg-pick { display: grid; gap: .1875rem; padding: .5rem; text-align: left;
+  border-radius: var(--r2); background: var(--surface-2); border: 1px solid var(--line);
+  transition: border-color var(--t-hover) var(--ease-out), transform var(--t-press) var(--ease-out); }
+.bg-pick:hover { border-color: var(--line-3); }
+.bg-pick:active { transform: scale(.985); }
+.bg-pick.is-on { border-color: var(--brand-2); box-shadow: 0 0 0 1px var(--brand-2); }
+.bg-pick b { font-size: var(--fs-xs); font-weight: 700; }
+.bg-pick em { font-style: normal; font-size: var(--fs-micro); letter-spacing: 0; color: var(--ink-3); }
+.bg-prev { display: block; height: 3.25rem; border-radius: var(--r1); margin-bottom: .3125rem;
+  background-size: cover; background-position: 50% 40%;
+  box-shadow: inset 0 0 0 1px rgba(var(--shadow-rgb), .12); }
+/* La miniatura del estadio apunta al archivo y no al token: si el negocio ya
+   subió su foto, el token trae SU imagen y esta muestra estaría enseñando la
+   opción equivocada. */
+.bg-prev--estadio { background-image: url('../assets/fondos/estadio-desktop.jpg?v=7'); }
+.bg-prev--sobrio { background-color: var(--panel-base); background-image: var(--g-panel);
+  background-blend-mode: var(--blend-panel); }
+.bg-prev--propio { background-color: var(--surface-3);
+  box-shadow: inset 0 0 0 1px var(--line-2), inset 0 0 0 2px transparent;
+  border: 1px dashed var(--line-3); }
 
 /* ── 14. Conmutador de rol ────────────────────────────────────────────────
    La pieza que convierte esto en un demo y no en una captura: se reserva

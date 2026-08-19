@@ -17,9 +17,12 @@ import { stagger } from '../ui/motion.js';
 import { openModal, toast } from '../ui/modal.js';
 import { mediaBlock, wireDrops, readPhoto } from '../ui/photo.js';
 import { pageHead, renderApp } from '../ui/shell.js';
+import { PALETAS, FONDOS, aplicarTema, derivar } from '../ui/tema.js';
 import { openCourtForm } from './canchas.js';
 
 export function viewAjustes(main) {
+  const tema = { accent: 'esmeralda', fondo: 'estadio', ...(S.business.theme || {}) };
+  const propio = derivar(tema.custom || '#7c3aed');
   const facturado = S.bookings.reduce((a, b) => a + b.total, 0);
   const cobrado = S.bookings.reduce((a, b) => a + b.deposit, 0);
 
@@ -48,6 +51,46 @@ export function viewAjustes(main) {
           ${S.business.sports.map(id => `<span class="pill is-on">${ballSVG(id, 'pill-ball')}${SPORTS[id].name}</span>`).join('')}
         </div>
         <button class="btn btn-primary btn-sm" id="setSave">${icon('check')}Guardar</button>
+      </article>
+
+      <article class="card card-wide" data-anim>
+        <header class="card-head"><h2>Apariencia</h2>
+          <p class="card-sub">El color de tu marca y lo que se ve detrás. Se aplica al instante.</p></header>
+
+        <span class="field-label">Color</span>
+        <div class="swatches" role="radiogroup" aria-label="Color de marca">
+          ${PALETAS.map(p => `
+            <button type="button" class="swatch ${p.id === tema.accent ? 'is-on' : ''}"
+                    data-accent="${p.id}" role="radio" aria-checked="${p.id === tema.accent}"
+                    style="--sw:${p.accent}; --sw-hi:${p.hi}">
+              <i></i><span>${p.name}</span>
+            </button>`).join('')}
+
+          <label class="swatch swatch--pick ${tema.accent === 'custom' ? 'is-on' : ''}"
+                 style="--sw:${esc(propio.accent)}; --sw-hi:${esc(propio.hi)}">
+            <i id="pickDot"></i><span>El tuyo</span>
+            <input type="color" id="pickColor" value="${esc(tema.custom || propio.accent)}"
+                   aria-label="Elegir el color de tu marca">
+          </label>
+        </div>
+        <p class="hint">Elige el que quieras: del color que pongas se calculan las dos versiones
+          que usa la interfaz —una para leerse sobre blanco y otra sobre la placa oscura— sin
+          cambiarle el tono. Evita el rojo: aquí significa "sin abonar".</p>
+
+        <span class="field-label">Fondo</span>
+        <div class="bg-picks" role="radiogroup" aria-label="Fondo de la aplicación">
+          ${FONDOS.map(f => `
+            <button type="button" class="bg-pick ${f.id === tema.fondo ? 'is-on' : ''}"
+                    data-fondo="${f.id}" role="radio" aria-checked="${f.id === tema.fondo}">
+              <span class="bg-prev bg-prev--${f.id}"
+                    ${f.id === 'propio' && S.photos.fondo ? `style="background-image:url('${esc(S.photos.fondo)}')"` : ''}></span>
+              <b>${f.name}</b><em>${f.hint}</em>
+            </button>`).join('')}
+        </div>
+        <div class="crest-tools">
+          <button type="button" class="btn btn-sm btn-secondary" id="bgUp">${icon('upload')}Subir foto de fondo</button>
+          ${S.photos.fondo ? '<button type="button" class="mini" id="bgDel">Quitar la foto</button>' : ''}
+        </div>
       </article>
 
       <article class="card" data-anim>
@@ -149,6 +192,54 @@ export function viewAjustes(main) {
     S.business.logo = null; save(); renderApp('ajustes'); toast('Logo quitado', 'warn');
   });
 
+  /* El color y el fondo se aplican en vivo y se guardan solos: obligar a
+     pulsar "Guardar" para ver un color es pedirle al ojo que recuerde. */
+  $$('[data-accent]', main).forEach(b => b.addEventListener('click', () => {
+    S.business.theme = { ...tema, accent: b.dataset.accent };   // `custom` se conserva por si vuelve
+    save();
+    aplicarTema(S.business, S.photos);
+    renderApp('ajustes');
+  }));
+
+  $$('[data-fondo]', main).forEach(b => b.addEventListener('click', () => {
+    const elegido = b.dataset.fondo;
+    if (elegido === 'propio' && !S.photos.fondo) { subirFondo(); return; }
+    S.business.theme = { ...tema, fondo: elegido };
+    save();
+    aplicarTema(S.business, S.photos);
+    renderApp('ajustes');
+  }));
+
+  /* El selector libre pinta mientras se arrastra por la rueda —`input`— y
+     solo guarda al soltar —`change`—. Guardar en cada cuadro sería escribir
+     el estado entero cien veces por gesto, y re-renderizar cerraría la rueda
+     del sistema en la primera. */
+  const pick = $('#pickColor');
+  pick.addEventListener('input', () => {
+    const d = derivar(pick.value);
+    const dot = $('#pickDot').parentElement;
+    dot.style.setProperty('--sw', d.accent);
+    dot.style.setProperty('--sw-hi', d.hi);
+    aplicarTema({ ...S.business, theme: { ...tema, accent: 'custom', custom: pick.value } }, S.photos);
+  });
+  pick.addEventListener('change', () => {
+    S.business.theme = { ...tema, accent: 'custom', custom: pick.value };
+    save();
+    aplicarTema(S.business, S.photos);
+    renderApp('ajustes');
+    toast('Ese es tu color');
+  });
+
+  $('#bgUp').addEventListener('click', subirFondo);
+  $('#bgDel')?.addEventListener('click', () => {
+    delete S.photos.fondo;
+    S.business.theme = { ...tema, fondo: 'estadio' };
+    save();
+    aplicarTema(S.business, S.photos);
+    renderApp('ajustes');
+    toast('Volvimos al estadio', 'warn');
+  });
+
   $$('[data-edit]', main).forEach(b => b.addEventListener('click', () => openCourtForm(b.dataset.edit)));
 
   $('#setReset').addEventListener('click', () => {
@@ -163,4 +254,24 @@ export function viewAjustes(main) {
   });
 
   stagger($$('[data-anim]', main), { y: 16, step: 60 });
+}
+
+/* 1920 de ancho y calidad .82: es una imagen a sangre y a pantalla completa,
+   así que aguanta menos compresión que un logo — pero sigue viviendo dentro
+   del estado, y el estado se guarda entero en cada `save()`. */
+function subirFondo() {
+  const inp = document.createElement('input');
+  inp.type = 'file'; inp.accept = 'image/*';
+  inp.addEventListener('change', async () => {
+    if (!inp.files[0]) return;
+    try {
+      S.photos.fondo = await readPhoto(inp.files[0], { max: 1920, q: 0.82 });
+      S.business.theme = { ...(S.business.theme || {}), fondo: 'propio' };
+      save();
+      aplicarTema(S.business, S.photos);
+      renderApp('ajustes');
+      toast('Ese es tu fondo');
+    } catch { toast('Esa imagen no se pudo leer', 'warn'); }
+  });
+  inp.click();
 }

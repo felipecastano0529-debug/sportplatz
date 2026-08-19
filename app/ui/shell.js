@@ -17,6 +17,7 @@ import { openModal, toast } from './modal.js';
 import { me } from '../core/teams.js';
 import { filaCuentaHTML, wireCuenta } from './cuenta.js';
 import { videoFondoVisible } from './vfondo.js';
+import { modoFondo } from './tema.js';
 
 import { viewPanel }    from '../views/panel.js';
 import { viewCanchas, getCanchaSport } from '../views/canchas.js';
@@ -186,6 +187,23 @@ export function paintViewBg(view) {
     return;
   }
 
+  /* El negocio puede haber apagado el escenario desde Ajustes. Se consulta
+     aquí y no en cada vista: el fondo es una decisión del shell. */
+  const fondo = modoFondo(S.business, S.photos);
+
+  /* Sobrio es quitar la FOTO, no cambiar de mundo. El atributo `data-bleed`
+     se queda puesto —con otro valor— porque de él cuelgan las superficies
+     oscuras: sin él la aplicación entera se volvía clara de golpe, que no es
+     lo que promete un botón que dice "sin foto". */
+  if (STADIUM_VIEWS.has(view) && fondo === 'sobrio') {
+    host.className = 'view-bg is-plain';
+    host.innerHTML = '<span class="vb-grain"></span>';
+    delete document.body.dataset.sport;
+    document.body.dataset.bleed = 'plain';
+    videoFondoVisible(false);
+    return;
+  }
+
   if (STADIUM_VIEWS.has(view)) {
     host.className = 'view-bg is-stadium';
     host.innerHTML = `
@@ -195,7 +213,9 @@ export function paintViewBg(view) {
       <span class="vb-scrim"></span>`;
     delete document.body.dataset.sport;
     document.body.dataset.bleed = 'stadium';
-    videoFondoVisible(true);
+    // El vídeo es el estadio de la casa: con la foto del negocio detrás no
+    // pinta nada, y encima taparía justo lo que se acaba de subir.
+    videoFondoVisible(fondo === 'estadio');
     return;
   }
 

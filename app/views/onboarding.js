@@ -252,7 +252,8 @@ function build(btn) {
       created: iso(today()),
       openHour: 6,
       closeHour: 23,
-      logo: null
+      logo: null,
+      theme: { accent: 'esmeralda', fondo: 'estadio' }
     };
 
     const next = {

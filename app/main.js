@@ -14,6 +14,7 @@ import { initSpotlight } from './ui/motion.js';
 import { setPhotoHandler } from './ui/photo.js';
 import { toast } from './ui/modal.js';
 import { paintBackdrop } from './ui/backdrop.js';
+import { aplicarTema } from './ui/tema.js';
 import { renderApp } from './ui/shell.js';
 import { initVideoFondo } from './ui/vfondo.js';
 import { renderOnboarding, renderStep, OB } from './views/onboarding.js';
@@ -42,6 +43,9 @@ async function boot() {
 
   if (saved && saved.courts?.length) {
     setS(migrate(saved));
+    // Antes del primer render: si no, la app aparece en esmeralda y salta al
+    // color del negocio un cuadro después.
+    aplicarTema(S.business, S.photos);
     paintBackdrop();
     renderApp(null, { intro: true });
   } else {
@@ -70,6 +74,9 @@ function migrate(s) {
   s.business.openHour ??= 6;
   s.business.closeHour ??= 23;
   s.business.logo ??= null;
+  s.business.theme ??= { accent: 'esmeralda', fondo: 'estadio' };
+  s.business.theme.accent ??= 'esmeralda';
+  s.business.theme.fondo ??= 'estadio';
   s.session ??= { role: 'owner', playerId: s.players[0]?.id ?? null };
   s.session.role ??= 'owner';
   // Los torneos viejos guardaban goleadores sin enlace al jugador real.

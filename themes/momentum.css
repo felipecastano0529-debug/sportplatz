@@ -55,12 +55,12 @@
   --accent-hi:   #34d399;   /* la forma legible sobre negro: 10.1:1 */
   --accent-deep: #03543f;
 
-  --brand:      #047857;   /* mismo color: no hace falta un token aparte */
-  --brand-2:    #059669;   /* borde de foco */
-  --brand-3:    #34d399;   /* borde en hover */
-  --brand-deep: #03543f;
-  --brand-tint: #e6f7f0;
-  --on-accent:  #ffffff;   /* texto sobre el relleno esmeralda */
+  --brand:      var(--accent);   /* mismo color: no hace falta un token aparte */
+  --brand-2:    color-mix(in srgb, var(--accent-hi) 30%, var(--accent));   /* borde de foco */
+  --brand-3:    var(--accent-hi);   /* borde en hover */
+  --brand-deep: var(--accent-deep);
+  --brand-tint: color-mix(in srgb, var(--accent) 9%, #fff);
+  --on-accent:  #ffffff;   /* texto sobre el relleno de marca */
 
   --red:   #e5231f;   --red-tint:   #ffecea;   --red-deep:   #a5120f;
   --amber: #f5a300;   --amber-tint: #fff4e0;   --amber-deep: #a86a00;
@@ -93,7 +93,7 @@
   --rail-text:  #ffffff;
   --rail-dim:   #a8b8ae;
   --rail-line:  rgba(255,255,255,.10);
-  --nav-on-bg:  rgba(52,211,153,.16);
+  --nav-on-bg:  color-mix(in srgb, var(--accent-hi) 16%, transparent);
 
 /* Sombras: azul muy oscuro. Un gris puro sobre este blanco se ve sucio. */
   --shadow-rgb: 11, 20, 38;
@@ -183,8 +183,15 @@
 
 /* ── 5. MATERIALES ─────────────────────────────────────────────────────── */
 
-  --g-brand:      linear-gradient(180deg, #0aa06d 0%, #047857 100%);
-  --g-brand-hov:  linear-gradient(180deg, #14b981 0%, #059669 100%);
+  /* Derivados del acento y no escritos a mano: así cambiar `--accent` y
+     `--accent-hi` —lo que hace el selector de color de Ajustes— retiñe los
+     rellenos, los bordes de foco y los tintes sin tocar una sola regla.
+     Las mezclas están calibradas contra los valores que estaban puestos a
+     mano: el esmeralda sale a menos de un punto de diferencia. */
+  --g-brand:      linear-gradient(180deg,
+                    color-mix(in srgb, var(--accent-hi) 45%, var(--accent)) 0%, var(--accent) 100%);
+  --g-brand-hov:  linear-gradient(180deg,
+                    var(--accent-hi) 0%, color-mix(in srgb, var(--accent-hi) 40%, var(--accent)) 100%);
   --g-brand-soft: linear-gradient(140deg, #f1fbf7 0%, #e2f6ee 100%);
   --g-red:        linear-gradient(180deg, #f4453f 0%, #d21b17 100%);
 
