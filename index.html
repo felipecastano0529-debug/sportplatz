@@ -7,6 +7,25 @@
 <meta name="description" content="Plataforma de reservas de canchas: panel del dueño, agenda por hora, torneos con llaves, equipos con su histórico y Neo AI respondiendo por WhatsApp.">
 <meta name="color-scheme" content="light">
 
+<!-- La demo se sirve en dos sitios: en su propio dominio y colgada de una
+     ruta de filyandco.com. Todo el proyecto usa rutas relativas —lo que le
+     permite vivir en cualquier carpeta sin recompilar nada—, así que bajo un
+     prefijo hace falta decirle contra qué las resuelve. Va lo primero del
+     <head> a propósito: el parser aún no ha llegado a las hojas ni a los
+     módulos, y el <base> tiene que estar puesto cuando lo haga. -->
+<script>
+(function () {
+  var p = location.pathname;
+  if (/\.[a-z0-9]+$/i.test(p)) p = p.replace(/[^/]*$/, '');   // .../index.html
+  if (p.charAt(p.length - 1) !== '/') p += '/';
+  if (p !== '/') {
+    var b = document.createElement('base');
+    b.href = p;
+    document.head.appendChild(b);
+  }
+})();
+</script>
+
 <meta property="og:type" content="website">
 <meta property="og:title" content="Sportplatz — reservas, torneos y Neo AI para canchas">
 <meta property="og:description" content="Configura tu complejo deportivo en cuatro preguntas y entra a la plataforma: agenda por hora, torneos con llaves que avanzan solas, equipos con su histórico y un bot que reserva por WhatsApp.">
