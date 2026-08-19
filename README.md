@@ -12,6 +12,7 @@ torneos.
 ```
 index.html            La página
 DESIGN.md             El sistema de diseño — léelo antes de tocar CSS
+docs/MOLDE.md         Qué se hereda de esta demo a la siguiente, y qué no
 docs/PLAN.md          Las decisiones de esta reconstrucción
 
 app/main.js           Arranque
