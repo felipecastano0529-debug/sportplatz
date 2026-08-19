@@ -43,9 +43,18 @@ function openDB() {
       const d = req.result;
       if (!d.objectStoreNames.contains(SHELF)) d.createObjectStore(SHELF);
     };
-    req.onsuccess = () => { db = req.result; resolve(db); };
-    req.onerror   = () => { idbBroken = true; resolve(null); };
-    req.onblocked = () => { idbBroken = true; resolve(null); };
+    req.onsuccess = () => { clearTimeout(reloj); db = req.result; resolve(db); };
+    req.onerror   = () => { clearTimeout(reloj); idbBroken = true; resolve(null); };
+    req.onblocked = () => { clearTimeout(reloj); idbBroken = true; resolve(null); };
+
+    /* Y un tope, porque `open` puede quedarse SIN responder: si hay un borrado
+       de la base en cola —o cualquier otra operación que espere a que se
+       cierren las conexiones— la petición no dispara error ni blocked, se
+       queda esperando. Sin este reloj, `boot()` nunca termina y el visitante
+       se queda mirando una pantalla en blanco para siempre. Tres segundos y
+       se sigue en memoria: una demo que funciona sin guardar es infinitamente
+       mejor que una que no abre. */
+    const reloj = setTimeout(() => { idbBroken = true; resolve(null); }, 3000);
   });
 }
 
