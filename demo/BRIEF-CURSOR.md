@@ -25,21 +25,21 @@ Archivos:
 - `app/base.css` — componentes
 - `app/premium.css` — escenario, vidrio oscuro y comunidad
 - `themes/momentum.css` — los tokens
-- `DESIGN.md` — el sistema de diseño y el porqué de cada decisión
+- `../DESIGN.md` — el sistema de diseño y el porqué de cada decisión
 - `README.md` — qué hace cada sección
 
 Son módulos ES: hay que servirlo por HTTP (`python3 dev-server.py`).
 
 ## Reglas que no se negocian
 
-1. **Lee `DESIGN.md` antes de tocar CSS.** Trae las trampas ya documentadas
+1. **Lee `../DESIGN.md` antes de tocar CSS.** Trae las trampas ya documentadas
    (`background` vs `background-color`, el `<svg>` con `width:auto`, los puntos
    del gráfico fuera del SVG). Volver a caer en ellas es retroceder.
 2. **Ningún color literal fuera de `themes/momentum.css`**, salvo capas de luz
    y de velo (`rgba` blancos y negros de scrim y grano). Si un color tiene
    nombre, es un token.
 3. **Tipografía:** el tracking es específico del tamaño. La tabla está en
-   `DESIGN.md`. No pongas un solo `letter-spacing` para todo.
+   `../DESIGN.md`. No pongas un solo `letter-spacing` para todo.
 4. **Movimiento:** nunca `ease-in` en UI, nunca `transition: all`, todo bajo
    300 ms, solo `transform` y `opacity`, `:active` en todo lo pulsable, hover
    detrás de `@media (hover: hover) and (pointer: fine)`.
@@ -70,7 +70,7 @@ Cómo abordarlo:
 - El histórico de equipos y jugadores **se deriva**, no se guarda. No lo
   conviertas en columnas acumuladas o se desincronizará al corregir un marcador.
 - Las animaciones usan Web Animations API. Al pasar a React, usa `motion`
-  manteniendo las mismas curvas y duraciones de `DESIGN.md`.
+  manteniendo las mismas curvas y duraciones de `../DESIGN.md`.
 
 ## Lo que falta y no es código
 

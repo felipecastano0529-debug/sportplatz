@@ -1,0 +1,1688 @@
+<meta charset="utf-8">
+<title>Documento maestro de Sportplatz</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>/* Sportplatz · documento maestro
+   Los colores, la tipografía y las curvas salen de themes/momentum.css:
+   el documento se ve como el producto que especifica. */
+
+:root {
+  --ground:   #f5f7fa;
+  --surface:  #ffffff;
+  --surface-2:#eef1f6;
+  --ink:      #070b13;
+  --ink-2:    #465162;
+  --ink-3:    #657286;
+  --line:     #e4e9f1;
+  --line-2:   #d7dee9;
+  --accent:   #047857;
+  --accent-hi:#34d399;
+  --accent-tint: #e6f4ee;
+  --rail:     #06080a;
+  --rail-text:#ffffff;
+  --rail-dim: #a8b8ae;
+  --rail-line:rgba(255,255,255,.10);
+  --plate:    #0a0e13;
+  --plate-ink:#e8eef4;
+  --amber:    #a86a00;
+
+  --wd-display: 112; --wd-title: 106;
+  --font: 'Archivo', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+  --ease-out: cubic-bezier(.23, 1, .32, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground:  #070b13;
+    --surface: #11161e;
+    --surface-2:#161d27;
+    --ink:     #f4f7fa;
+    --ink-2:   #a9b6c6;
+    --ink-3:   #8b98a9;
+    --line:    rgba(255,255,255,.11);
+    --line-2:  rgba(255,255,255,.18);
+    --accent:  #34d399;
+    --accent-hi:#5ee6a0;
+    --accent-tint: rgba(52,211,153,.13);
+    --plate:   #0a0e13;
+    --amber:   #f5a300;
+  }
+}
+:root[data-theme="dark"] {
+  --ground:  #070b13;
+  --surface: #11161e;
+  --surface-2:#161d27;
+  --ink:     #f4f7fa;
+  --ink-2:   #a9b6c6;
+  --ink-3:   #8b98a9;
+  --line:    rgba(255,255,255,.11);
+  --line-2:  rgba(255,255,255,.18);
+  --accent:  #34d399;
+  --accent-hi:#5ee6a0;
+  --accent-tint: rgba(52,211,153,.13);
+  --plate:   #0a0e13;
+  --amber:   #f5a300;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font);
+  font-variation-settings: 'wdth' var(--wd-body, 100);
+  font-size: 1rem;
+  line-height: 1.62;
+  letter-spacing: -.004em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.skip {
+  position: absolute; left: -9999px; top: 0; z-index: 20;
+  background: var(--accent); color: #fff; padding: .6rem 1rem; border-radius: 0 0 12px 0;
+}
+.skip:focus { left: 0; }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+
+/* ── Armazón ───────────────────────────────────────────────────────────── */
+
+.shell { display: grid; grid-template-columns: 15.5rem minmax(0, 1fr); align-items: start; }
+
+.rail {
+  position: sticky; top: 0; align-self: start;
+  height: 100vh; overflow-y: auto;
+  background: var(--rail);
+  background-image:
+    radial-gradient(130% 48% at 14% -6%, rgba(226,240,235,.10) 0%, transparent 64%),
+    linear-gradient(156deg, rgba(214,232,226,.075) 0%, rgba(214,232,226,.02) 16%, transparent 34%),
+    linear-gradient(90deg, transparent 76%, rgba(0,0,0,.3) 100%);
+  color: var(--rail-text);
+  border-right: 1px solid var(--rail-line);
+}
+.rail-in { padding: 1.75rem 1.25rem 2.5rem; display: flex; flex-direction: column; gap: .25rem; }
+
+.rail-mark {
+  margin: 0; display: flex; align-items: center; gap: .5rem;
+  font-variation-settings: 'wdth' var(--wd-title);
+  font-weight: 800; font-size: 1.0625rem; letter-spacing: -.02em;
+}
+.rail-mark .dot {
+  width: .5rem; height: .5rem; border-radius: 999px;
+  background: var(--accent-hi); box-shadow: 0 0 0 3px rgba(52,211,153,.18);
+}
+.rail-sub {
+  margin: 0 0 1.5rem; color: var(--rail-dim);
+  font-family: var(--mono); font-size: .6875rem; letter-spacing: .04em;
+}
+
+.rail-nav { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1px; }
+.rail-nav a {
+  display: grid; grid-template-columns: 1.4rem 1fr; gap: .5rem; align-items: baseline;
+  padding: .4rem .5rem; border-radius: 8px;
+  color: var(--rail-dim); text-decoration: none; font-size: .8125rem; line-height: 1.35;
+  transition: color 180ms var(--ease-out), background-color 180ms var(--ease-out);
+}
+.rail-nav .tn {
+  font-family: var(--mono); font-size: .6875rem; font-weight: 500;
+  color: rgba(255,255,255,.34); font-variant-numeric: tabular-nums;
+}
+.rail-nav a.is-on { color: #fff; background: rgba(52,211,153,.14); }
+.rail-nav a.is-on .tn { color: var(--accent-hi); }
+@media (hover: hover) and (pointer: fine) {
+  .rail-nav a:hover { color: #fff; background: rgba(255,255,255,.06); }
+}
+
+.rail-foot {
+  margin: 2rem 0 0; padding-top: 1rem; border-top: 1px solid var(--rail-line);
+  color: var(--rail-dim); font-family: var(--mono); font-size: .6875rem; line-height: 1.7;
+}
+.rail-foot a { color: var(--accent-hi); text-decoration: none; word-break: break-all; }
+
+/* ── El documento ──────────────────────────────────────────────────────── */
+
+.doc {
+  padding: 4.5rem clamp(1.25rem, 5vw, 4.5rem) 8rem;
+  max-width: 62rem;
+}
+.doc > * { max-width: 46rem; }
+.doc h1 {
+  margin: 0 0 1rem;
+  font-variation-settings: 'wdth' var(--wd-display);
+  font-weight: 800; font-size: clamp(2.375rem, 4.3vw, 3.5rem);
+  line-height: .96; letter-spacing: -.038em; text-wrap: balance;
+}
+.doc h1 + p {
+  font-size: 1.1875rem; line-height: 1.5; letter-spacing: -.012em; color: var(--ink-2);
+  margin: 0 0 1.75rem;
+}
+.doc h1 + p strong { color: var(--ink); }
+
+.doc h2 {
+  margin: 4.5rem 0 1.25rem; padding-top: 2.25rem; scroll-margin-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  font-variation-settings: 'wdth' var(--wd-title);
+  font-weight: 800; font-size: clamp(1.5rem, 2.5vw, 2rem);
+  line-height: 1.05; letter-spacing: -.03em; text-wrap: balance;
+}
+.doc h3 {
+  margin: 2.5rem 0 .75rem; font-weight: 700; font-size: 1.125rem;
+  line-height: 1.28; letter-spacing: -.02em;
+}
+.doc h4 { margin: 1.75rem 0 .5rem; font-weight: 700; font-size: .9375rem; letter-spacing: -.012em; }
+
+.doc p { margin: 0 0 1.1rem; }
+.doc strong { font-weight: 700; }
+.doc em { font-style: italic; color: var(--ink-2); }
+
+.doc a { color: var(--accent); text-decoration: underline; text-underline-offset: .18em;
+         text-decoration-thickness: 1px; text-decoration-color: color-mix(in srgb, var(--accent) 42%, transparent); }
+@media (hover: hover) and (pointer: fine) {
+  .doc a:hover { text-decoration-color: currentColor; }
+}
+
+.doc ul, .doc ol { margin: 0 0 1.2rem; padding-left: 1.25rem; }
+.doc li { margin: 0 0 .45rem; }
+.doc li > ul, .doc li > ol { margin-top: .45rem; }
+.doc ul { list-style: none; padding-left: 1.1rem; }
+.doc ul > li { position: relative; }
+.doc ul > li::before {
+  content: ''; position: absolute; left: -1.1rem; top: .68em;
+  width: .3rem; height: 1px; background: var(--line-2);
+}
+
+hr { display: none; }
+
+/* Identificador de regla: R4, P2. Es la referencia que se cita en un ticket,
+   así que se lee como un dato y no como texto en negrita. */
+.rid {
+  display: inline-block; font-family: var(--mono); font-size: .6875rem; font-weight: 600;
+  letter-spacing: .02em; color: var(--accent);
+  background: var(--accent-tint); border-radius: 999px;
+  padding: .1rem .45rem; margin-right: .3rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.doc blockquote {
+  margin: 1.75rem 0 2rem; padding: 0 0 0 1.25rem;
+  border-left: 2px solid var(--accent);
+  font-variation-settings: 'wdth' var(--wd-title);
+  font-size: 1.25rem; line-height: 1.35; letter-spacing: -.022em; color: var(--ink);
+}
+.doc blockquote p { margin: 0; }
+
+.doc code {
+  font-family: var(--mono); font-size: .8125em;
+  background: var(--surface-2); border: 1px solid var(--line);
+  border-radius: 5px; padding: .08em .35em;
+}
+.doc pre {
+  background: var(--plate); color: var(--plate-ink);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px; padding: 1.1rem 1.25rem; margin: 0 0 1.5rem;
+  overflow-x: auto; max-width: 46rem;
+  box-shadow: 0 12px 26px -14px rgba(11,20,38,.34);
+}
+.doc pre code {
+  background: none; border: 0; padding: 0; font-size: .78rem; line-height: 1.6;
+  color: inherit; white-space: pre;
+}
+
+.scroller { overflow-x: auto; margin: 0 0 1.5rem; max-width: 46rem; }
+.doc table {
+  border-collapse: collapse; width: 100%; font-size: .875rem;
+  font-variant-numeric: tabular-nums;
+}
+.doc th {
+  text-align: left; vertical-align: bottom;
+  padding: .5rem .9rem .5rem 0; border-bottom: 1px solid var(--line-2);
+  font-family: var(--mono); font-size: .6875rem; font-weight: 500;
+  letter-spacing: .085em; text-transform: uppercase; color: var(--ink-3);
+  white-space: nowrap;
+}
+.doc td {
+  padding: .6rem .9rem .6rem 0; border-bottom: 1px solid var(--line);
+  vertical-align: top; color: var(--ink-2);
+}
+.doc td:first-child { color: var(--ink); }
+.doc td code { font-size: .75rem; }
+
+.doc > p:last-child {
+  margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--line);
+  font-family: var(--mono); font-size: .6875rem; letter-spacing: .04em; color: var(--ink-3);
+}
+
+/* ── Estrecho ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 60rem) {
+  .shell { grid-template-columns: 1fr; }
+  .rail { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--rail-line); }
+  .rail-in { padding: 1.5rem 1.25rem 1.75rem; }
+  .rail-nav { display: grid; grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr)); gap: 2px; }
+  .doc { padding: 2.5rem 1.25rem 5rem; }
+  .doc h1 { font-size: clamp(2rem, 9vw, 2.75rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition-duration: 1ms !important; animation-duration: 1ms !important; }
+}
+
+/* ── Impresión ─────────────────────────────────────────────────────────────
+   El rail deja de ser navegación y pasa a ser lo que un documento impreso
+   necesita en su primera página: portada e índice. Cada sección arranca en
+   página nueva; nada se parte por la mitad. */
+
+@page { size: A4; margin: 18mm 16mm 20mm; }
+/* La portada va a sangre: el negro es la marca, no un recuadro. */
+@page :first { margin: 0; }
+
+@media print {
+  :root {
+    --ground: #ffffff; --surface: #ffffff; --surface-2: #f5f7fa;
+    --ink: #070b13; --ink-2: #2f3a4a; --ink-3: #465162;
+    --line: #d7dee9; --line-2: #bcc6d5;
+    --accent: #047857; --accent-hi: #34d399; --accent-tint: #e6f4ee;
+    --plate: #0a0e13; --plate-ink: #e8eef4;
+  }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  body { background: #fff; font-size: 10.5pt; line-height: 1.5; }
+  .skip { display: none; }
+  .shell { display: block; }
+
+  /* Portada */
+  .rail {
+    position: static; height: auto; overflow: visible;
+    border: 0; break-after: page;
+    background: var(--rail);
+  }
+  .rail-in { min-height: 295mm; padding: 34mm 22mm 22mm; gap: 0; }
+  .rail-foot { margin-top: auto; }
+  .rail-mark { font-size: 30pt; letter-spacing: -.035em; }
+  .rail-mark .dot { width: 10pt; height: 10pt; box-shadow: none; }
+  .rail-sub { font-size: 8.5pt; margin-bottom: 14mm; }
+  .rail-nav { display: block; columns: 2; column-gap: 10mm; }
+  .rail-nav li { break-inside: avoid; }
+  .rail-nav a { padding: 1.6mm 0; font-size: 9pt; color: #d3dbe4; }
+  .rail-nav .tn { color: var(--accent-hi); }
+  .rail-foot { margin-top: 12mm; font-size: 8pt; }
+
+  .doc { padding: 0; max-width: none; }
+  .doc > * { max-width: none; }
+  .doc pre, .scroller, .doc blockquote { max-width: none; }
+
+  .doc h1 { font-size: 26pt; margin-bottom: 5mm; }
+  .doc h1 + p { font-size: 12pt; }
+  .doc h2 {
+    break-before: page; break-after: avoid;
+    border-top: 0; padding-top: 0; margin: 0 0 5mm;
+    font-size: 17pt;
+  }
+  .doc h3, .doc h4 { break-after: avoid; }
+  .doc h3 { font-size: 12pt; margin-top: 7mm; }
+
+  .doc table, .doc blockquote, .scroller { break-inside: avoid; }
+  .doc pre { break-inside: auto; }
+  .doc pre { box-shadow: none; font-size: 7.6pt; padding: 4mm 5mm; }
+  .doc pre code { font-size: inherit; white-space: pre-wrap; }
+  .doc li, .doc tr { break-inside: avoid; }
+  .doc table { font-size: 9pt; }
+  .doc th { font-size: 7.5pt; }
+  .scroller { overflow: visible; }
+  .doc a { text-decoration: none; color: var(--accent); }
+}
+</style>
+<a class="skip" href="#doc">Saltar al contenido</a>
+<div class="shell">
+  <nav class="rail" aria-label="Secciones">
+    <div class="rail-in">
+      <p class="rail-mark"><span class="dot" aria-hidden="true"></span>Sportplatz</p>
+      <p class="rail-sub">Documento maestro · Fily &amp; Co</p>
+      <ol class="rail-nav"><li><a href="#0-como-se-usa-este-documento"><b class="tn">0</b><span>Cómo se usa este documento</span></a></li>
+<li><a href="#1-que-es-sportplatz"><b class="tn">1</b><span>Qué es Sportplatz</span></a></li>
+<li><a href="#2-usuarios-y-roles"><b class="tn">2</b><span>Usuarios y roles</span></a></li>
+<li><a href="#3-las-pantallas"><b class="tn">3</b><span>Las pantallas</span></a></li>
+<li><a href="#4-reglas-de-negocio"><b class="tn">4</b><span>Reglas de negocio</span></a></li>
+<li><a href="#5-modelo-de-datos"><b class="tn">5</b><span>Modelo de datos</span></a></li>
+<li><a href="#6-arquitectura"><b class="tn">6</b><span>Arquitectura</span></a></li>
+<li><a href="#7-cuentas-y-multi-tenancy"><b class="tn">7</b><span>Cuentas y multi-tenancy</span></a></li>
+<li><a href="#8-pagos"><b class="tn">8</b><span>Pagos</span></a></li>
+<li><a href="#9-neo-ai-en-produccion"><b class="tn">9</b><span>Neo AI en producción</span></a></li>
+<li><a href="#10-sistema-de-diseno"><b class="tn">10</b><span>Sistema de diseño</span></a></li>
+<li><a href="#11-trampas-ya-documentadas"><b class="tn">11</b><span>Trampas ya documentadas</span></a></li>
+<li><a href="#12-plan-de-construccion"><b class="tn">12</b><span>Plan de construcción</span></a></li>
+<li><a href="#13-medicion"><b class="tn">13</b><span>Medición</span></a></li>
+<li><a href="#14-decisiones-abiertas"><b class="tn">14</b><span>Decisiones abiertas</span></a></li>
+<li><a href="#15-anexos"><b class="tn">15</b><span>Anexos</span></a></li></ol>
+      <p class="rail-foot">Demo en vivo<br><a href="https://sportplatz-eight.vercel.app" target="_blank" rel="noopener">sportplatz-eight.vercel.app</a></p>
+    </div>
+  </nav>
+  <main class="doc" id="doc" tabindex="-1"><h1>Sportplatz — Documento maestro</h1>
+<p><strong>De la demo a la plataforma.</strong> Todo lo que hay que saber para construir
+Sportplatz como SaaS multi-tenant real: qué es, para quién, qué hace cada
+pantalla, cuáles son las reglas exactas, cómo se guardan los datos, cómo se
+cobra, cómo habla el bot y cómo se ve.</p>
+<ul>
+<li><strong>Demo en vivo:</strong> https://sportplatz-eight.vercel.app</li>
+<li><strong>Código de referencia:</strong> este repositorio (HTML/CSS/JS plano, sin build)</li>
+<li><strong>Estado:</strong> demo terminada a nivel de diseño y comportamiento. La lógica
+  funciona de verdad; lo que falta es backend, cuentas, dinero y WhatsApp real.</li>
+<li><strong>Fecha del documento:</strong> 2026-08-20</li>
+</ul>
+<hr />
+<h2 id="0-como-se-usa-este-documento">0. Cómo se usa este documento</h2>
+<p>Está escrito para dos lectores y no hace falta leerlo entero para empezar:</p>
+<div class="scroller"><table>
+<thead>
+<tr>
+<th>Si eres…</th>
+<th>Lee</th>
+<th>Sáltate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dueño de producto / cliente</td>
+<td>§1 a §4 y §12</td>
+<td>§5 a §9</td>
+</tr>
+<tr>
+<td>Dev o agencia que construye</td>
+<td>§4 a §12</td>
+<td>nada</td>
+</tr>
+<tr>
+<td>Agente de código (Claude Code, Cursor)</td>
+<td>§4, §5, §10, §11, §12</td>
+<td>§1 a §3</td>
+</tr>
+</tbody>
+</table></div>
+<p>Tres reglas que atraviesan todo el documento:</p>
+<ol>
+<li><strong>La demo es la especificación.</strong> Cuando este documento y el código de la
+   demo no coincidan, gana el código: está probado con usuarios. Lo que aquí
+   se marca como <em>NUEVO</em> es lo que la demo todavía no hace.</li>
+<li><strong>No se rediseña.</strong> El sistema visual está resuelto y documentado en
+   <code>DESIGN.md</code>. Migrar de stack no es licencia para cambiar el aspecto.</li>
+<li><strong>Si la agenda miente, el producto no vende.</strong> Toda regla de
+   disponibilidad, dinero y torneos se implementa exacta. Las reglas están
+   en §4, numeradas, para poder citarlas en un ticket.</li>
+</ol>
+<hr />
+<h2 id="1-que-es-sportplatz">1. Qué es Sportplatz</h2>
+<p>Software de gestión para <strong>complejos deportivos</strong>: canchas sintéticas, pádel,
+tenis, voleibol playa y paintball. Un negocio que hoy se administra con un
+cuaderno, un grupo de WhatsApp y la memoria del que atiende.</p>
+<h3>1.1 El problema real</h3>
+<p>Un complejo de diez canchas mueve entre 40 y 90 reservas por semana. Hoy:</p>
+<ul>
+<li>Las reservas llegan por WhatsApp, a cualquier hora, y alguien tiene que
+  contestar. Si contesta tarde, el cliente reserva en otro lado.</li>
+<li>El adelanto se pide por Nequi y se anota en el cuaderno. Nadie sabe con
+  certeza cuánto se ha <strong>cobrado</strong> este mes, solo cuánto se ha <strong>facturado</strong>.</li>
+<li>Se pierden horas por doble reserva y por huecos que nadie llenó.</li>
+<li>Los torneos se organizan en una hoja de papel que se moja.</li>
+</ul>
+<h3>1.2 Qué resuelve</h3>
+<p><strong>Para el dueño:</strong> una agenda que no se contradice, la plata separada entre
+facturado y cobrado, saldos por cobrar con nombre y teléfono, y un asistente
+de WhatsApp que atiende y aparta sin que nadie conteste.</p>
+<p><strong>Para el jugador:</strong> reservar en veinte segundos sin llamar, armar su equipo,
+inscribirse a torneos y ver su histórico.</p>
+<h3>1.3 El momento que vende</h3>
+<blockquote>
+<p>El visitante reserva una cancha como jugador, toca el conmutador, entra como
+dueño y ve <strong>su propia reserva</strong> en la agenda, en la hora exacta.</p>
+</blockquote>
+<p>Veinte segundos, sin explicación. Todo lo demás de la plataforma existe para
+que ese momento sea posible y creíble. En la plataforma real ese momento se
+convierte en la promesa comercial: <em>lo que el jugador hace, el dueño lo ve al
+instante</em>.</p>
+<h3>1.4 Qué NO es</h3>
+<ul>
+<li>No es un marketplace de canchas. El dueño no compite en una lista; la
+  plataforma es suya y lleva su nombre y su logo.</li>
+<li>No es un CRM genérico.</li>
+<li>No es una app nativa. Es web, y se manda por WhatsApp como link.</li>
+</ul>
+<hr />
+<h2 id="2-usuarios-y-roles">2. Usuarios y roles</h2>
+<div class="scroller"><table>
+<thead>
+<tr>
+<th>Rol</th>
+<th>Quién es</th>
+<th>Qué quiere</th>
+<th>Cómo entra</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Dueño</strong></td>
+<td>Paga la plataforma</td>
+<td>Ver plata, ocupación y saldos</td>
+<td>Correo y contraseña</td>
+</tr>
+<tr>
+<td><strong>Operador</strong> <em>(NUEVO)</em></td>
+<td>Quien atiende el mostrador</td>
+<td>Crear reservas y cobrar, sin ver finanzas</td>
+<td>Invitación del dueño</td>
+</tr>
+<tr>
+<td><strong>Jugador</strong></td>
+<td>El cliente del dueño</td>
+<td>Reservar, equipo, torneos, histórico</td>
+<td>Teléfono con código (OTP)</td>
+</tr>
+<tr>
+<td><strong>Fily admin</strong> <em>(NUEVO)</em></td>
+<td>Nosotros</td>
+<td>Alta de complejos, soporte, facturación</td>
+<td>Panel aparte</td>
+</tr>
+</tbody>
+</table></div>
+<p>Decisiones de rol que se heredan de la demo:</p>
+<ul>
+<li><strong>El rol no es un filtro de permisos: son dos productos distintos sobre el
+  mismo estado.</strong> El dueño ve plata y ocupación; el jugador ve su próximo
+  partido. Cambia la navegación entera, no los datos que se ocultan.</li>
+<li>En la demo el rol se cambia con un conmutador sin autenticación. En
+  producción son sesiones distintas — pero <strong>el conmutador se conserva en la
+  demo comercial</strong>, que sigue viviendo y es la herramienta de venta.</li>
+<li>Un mismo ser humano puede ser dueño de un complejo y jugador en otro. Los
+  perfiles son independientes y se enlazan por teléfono.</li>
+</ul>
+<hr />
+<h2 id="3-las-pantallas">3. Las pantallas</h2>
+<p>Trece vistas, más el onboarding. Nombres exactos como están en el producto.</p>
+<h3>3.1 Onboarding — cuatro preguntas</h3>
+<p>No da la bienvenida: <strong>personaliza</strong>. Con estas cuatro respuestas se genera el
+negocio entero.</p>
+<ol>
+<li><strong>Nombre del complejo y WhatsApp.</strong> El número no es un dato de formulario:
+   es el número al que Neo mandaría las reservas, y la demo se lo enseña
+   funcionando con su propio número.</li>
+<li><strong>Qué deportes ofrece.</strong> Selección múltiple entre los cinco.</li>
+<li><strong>Cuántas canchas de cada uno.</strong> Contador por deporte. Foto opcional por
+   deporte, arrastrando el archivo.</li>
+<li><strong>A qué precio la hora.</strong> Precio por deporte, prellenado con el precio
+   sugerido de mercado.</li>
+</ol>
+<p>Al terminar: se crean las canchas, se genera la historia de arranque (§4.9) y
+se entra al Panel.</p>
+<h3>3.2 Lado del dueño — siete vistas</h3>
+<p><strong>Panel</strong> — Facturado de hoy y de la semana. <strong>Cobrado</strong> del mes, que no es lo
+mismo que facturado y aquí se distingue. Saldos por cobrar. Ingresos diarios
+de los últimos 14 días. Ranking de qué cancha deja más plata. Próximas
+reservas y quién debe cuánto.</p>
+<p><strong>Canchas</strong> — La foto de la cancha del deporte ocupa todo el fondo y las
+tarjetas flotan encima en vidrio oscuro. El selector salta entre deportes y
+<strong>cambia el color de toda la sección</strong>. Cada cancha con nombre y precio
+editables, estado en vivo y la tira de horas del día.</p>
+<p><strong>Reservas</strong> — Agenda hora × cancha, 14 días navegables, filtro por deporte.
+Crear reserva con adelanto, registrar abonos, cancelar. Verde = pagada, ámbar =
+con adelanto, rojo = sin abonar. <code>WA</code> marca las que entraron por Neo. Scrollea
+en horizontal con la columna de horas y la cabecera fijas: aguanta 40 canchas.</p>
+<p><strong>Torneos</strong> — Crear, editar, sortear cruces, eliminar. 4, 8 o 16 equipos.
+Llaves donde los ganadores avanzan solos, calendario, tabla de posiciones,
+anotadores, valla menos vencida y podio. Se pueden abrir a inscripción.</p>
+<p><strong>Equipos</strong> — El directorio del complejo: clubes con escudo y récord,
+jugadores con ficha, y un salón de la fama con máximos anotadores y clubes más
+ganadores.</p>
+<p><strong>Neo AI</strong> — Conversación de WhatsApp donde el bot cotiza, explica el adelanto,
+aparta y confirma con código, mientras al lado se encienden las cinco cosas
+que hace por detrás.</p>
+<p><strong>Ajustes</strong> — Nombre y logo del negocio, <strong>horario de atención</strong>, renombrar y
+tarifar cada cancha, fotos, reiniciar.</p>
+<h3>3.3 Lado del jugador — seis vistas</h3>
+<p><strong>Inicio</strong> — Su próximo partido, sus reservas, cómo va su equipo, qué canchas
+están libres en este momento.</p>
+<p><strong>Reservar</strong> — Deporte, día, cancha y hora en una sola pantalla, con la parrilla
+de horas libres. Elige si aparta con adelanto, paga completo o paga en cancha.</p>
+<p><strong>Mi equipo</strong> — Crearlo, ponerle escudo y color, armar la plantilla.</p>
+<p><strong>Torneos</strong> — Ver los que hay, meter su equipo en un cupo libre, seguir la llave.</p>
+<p><strong>Mi histórico</strong> — Partidos, anotaciones, títulos, equipos y en qué canchas juega
+más. Nada de esto se guarda: se deriva (§4.7).</p>
+<p><strong>Neo AI</strong> — El mismo asistente, dentro de la app.</p>
+<h3>3.4 El conmutador</h3>
+<p>Abajo a la izquierda: <em>Viendo como dueño / jugador</em>. Es lo que convierte esto
+en un demo y no en una captura. <strong>Se conserva en la demo comercial; en la
+plataforma real desaparece y lo reemplaza la sesión.</strong></p>
+<hr />
+<h2 id="4-reglas-de-negocio">4. Reglas de negocio</h2>
+<p>Numeradas para poder citarlas. Todas están implementadas en la demo y hay que
+implementarlas igual.</p>
+<h3>4.1 Franjas y horario</h3>
+<ul>
+<li><span class="rid">R1</span> La unidad de reserva es <strong>una hora exacta</strong>. <code>start = '18:00'</code>,
+  <code>end = start + 1h</code>. No hay medias horas ni bloques de 90 minutos.
+  <em>(Extender a duración variable es cambio de producto, no de implementación:
+  ver §14.)</em></li>
+<li><span class="rid">R2</span> El horario de atención es del negocio: <code>openHour</code> (por defecto 6) y
+  <code>closeHour</code> (por defecto 23). Las franjas del día van de <code>openHour</code> a
+  <code>closeHour - 1</code>.</li>
+<li><span class="rid">R3</span> Cambiar el horario <strong>no borra</strong> reservas que queden fuera. Se
+  muestran igual y se avisa.</li>
+</ul>
+<h3>4.2 Disponibilidad</h3>
+<ul>
+<li><span class="rid">R4</span> Una cancha tiene como máximo <strong>una reserva por franja</strong>. La clave es
+  <code>(courtId, date, start)</code>. En la demo se valida en cliente; en producción es
+  una <strong>restricción única en base de datos</strong>, no una comprobación optimista.</li>
+<li><span class="rid">R5</span> Antes de confirmar se vuelve a comprobar. Si en el intervalo alguien
+  tomó la hora, se rechaza y se ofrecen las horas libres restantes. Neo ya lo
+  hace: <em>"Uy, alguien acaba de tomar esa hora mientras hablábamos."</em></li>
+<li><span class="rid">R6</span> Horas libres de una cancha en un día = franjas del horario menos las
+  ocupadas. Las horas ya pasadas de hoy no se ofrecen.</li>
+<li><span class="rid">R7</span> Una cancha con <code>active: false</code> no se ofrece ni cuenta para ocupación.</li>
+</ul>
+<h3>4.3 Dinero</h3>
+<ul>
+<li><span class="rid">R8</span> <code>total</code> = precio de la cancha en el momento de reservar. <strong>Se
+  congela en la reserva</strong>: cambiar la tarifa mañana no reescribe el pasado.</li>
+<li><span class="rid">R9</span> <code>deposit</code> = lo efectivamente recibido. Empieza en 0, en el 50% o en
+  el total. Nunca supera a <code>total</code>.</li>
+<li><span class="rid">R10</span> El <strong>adelanto sugerido</strong> es el 50% del precio redondeado a miles
+  hacia el múltiplo más cercano: <code>round(price * 0.5 / 1000) * 1000</code>.
+  Ejemplo: cancha de $120.000 → adelanto $60.000; de $25.000 → $13.000.</li>
+<li><span class="rid">R11</span> <strong>Saldo</strong> = <code>total - deposit</code>. Cero significa pagada.</li>
+<li><span class="rid">R12</span> <strong>Facturado</strong> en un rango = suma de <code>total</code> de las reservas cuya
+  <code>date</code> cae en el rango.</li>
+<li><span class="rid">R13</span> <strong>Cobrado</strong> en un rango = suma de <code>deposit</code> de esas reservas.
+  Facturado y cobrado <strong>nunca se presentan como el mismo número</strong>. Esta
+  distinción es media venta.</li>
+<li><span class="rid">R14</span> <strong>Por cobrar</strong> = suma de saldos de reservas de hoy en adelante.</li>
+<li><span class="rid">R15</span> Un abono suma a <code>deposit</code> y nunca lo pasa de <code>total</code>.</li>
+<li><span class="rid">R16</span> Moneda: peso colombiano, sin decimales. Formato <code>$120.000</code>
+  (<code>es-CO</code>). En tarjetas de métrica se abrevia: <code>$1.2M</code>, <code>$340k</code>.</li>
+</ul>
+<h3>4.4 Estados y origen de la reserva</h3>
+<ul>
+<li><span class="rid">R17</span> <code>status</code>: <code>'confirmada'</code> para hoy y el futuro, <code>'jugada'</code> para el
+  pasado. <em>(NUEVO en producción: <code>'cancelada'</code> y <code>'no_show'</code> — ver R19.)</em></li>
+<li><span class="rid">R18</span> <code>source</code>: de dónde entró.</li>
+<li><code>'mostrador'</code> — la creó el dueño u operador.</li>
+<li><code>'app'</code> — la creó el jugador desde Reservar.</li>
+<li><code>'neo'</code> — hablando con Neo dentro de la app.</li>
+<li><code>'bot'</code> — Neo por WhatsApp. En la agenda se marca con <code>WA</code>.
+  Las cuatro son la misma entidad. La vista de automatización suma <code>neo</code> y
+  <code>bot</code>; la agenda las distingue.</li>
+<li><span class="rid">R19</span> Cancelar en la demo <strong>borra</strong> la reserva. En producción <strong>no se
+  borra</strong>: pasa a <code>'cancelada'</code>, conserva quién y cuándo canceló, y libera la
+  franja. Un negocio necesita saber qué se cayó.</li>
+<li><span class="rid">R20</span> <em>(NUEVO)</em> Política de cancelación por negocio: hasta N horas antes
+  el adelanto se devuelve o se acredita. Por defecto: 24 horas, acreditado.</li>
+</ul>
+<h3>4.5 Semáforo de la agenda</h3>
+<ul>
+<li><span class="rid">R21</span> Verde = saldo 0. Ámbar = hay adelanto pero queda saldo. Rojo = sin
+  abonar nada. El color nunca es la única señal: siempre lleva su etiqueta.</li>
+</ul>
+<h3>4.6 Torneos</h3>
+<ul>
+<li><span class="rid">R22</span> Tamaños: <strong>4, 8 o 16 equipos</strong>. Eliminación directa.</li>
+<li><span class="rid">R23</span> Rondas por tamaño: 16 → octavos, cuartos, semifinal, final. 8 →
+  cuartos, semifinal, final. 4 → semifinal, final. Siempre hay partido de
+  <strong>tercer puesto</strong>, alimentado por los perdedores de semifinal.</li>
+<li><span class="rid">R24</span> Los ganadores <strong>avanzan solos</strong>: al marcar un resultado, la llave se
+  resuelve hacia adelante. Un empate no produce ganador (eliminación directa).</li>
+<li><span class="rid">R25</span> Tabla: <code>PTS = G*3 + E</code>. Orden: puntos, diferencia, menos recibidos,
+  más anotados.</li>
+<li><span class="rid">R26</span> Valla menos vencida: entre los que ya jugaron, menos goles en contra;
+  desempata más partidos jugados, luego más puntos.</li>
+<li><span class="rid">R27</span> Podio: oro = ganador de la final, plata = perdedor de la final,
+  bronce = ganador del tercer puesto.</li>
+<li><span class="rid">R28</span> Un torneo <code>openSignup</code> acepta que un jugador meta <strong>su equipo</strong> en el
+  primer cupo libre. El cupo pasa a <code>taken</code> y no se puede reasignar sin el
+  dueño.</li>
+<li><span class="rid">R29</span> Volver a sortear (<code>reseed</code>) baraja los cruces de primera ronda,
+  borra los marcadores de esa ronda y resuelve la llave de nuevo. <strong>Solo el
+  dueño</strong>, y solo si no ha empezado.</li>
+<li><span class="rid">R30</span> Los equipos del torneo <strong>apuntan a equipos reales</strong> por <code>teamId</code>. Un
+  equipo que juega tres torneos es el mismo equipo las tres veces: eso es lo
+  único que hace posible el histórico.</li>
+</ul>
+<h3>4.7 Histórico derivado — la regla que más se rompe</h3>
+<ul>
+<li><span class="rid">R31</span> <strong>El histórico NO se guarda. Se deriva de los partidos.</strong> Récord de
+  un equipo, goles de un jugador, títulos, racha, salón de la fama: todo sale
+  de <code>matches</code> y <code>scorers</code> en tiempo de lectura.</li>
+<li><span class="rid">R32</span> Prohibido crear columnas acumuladas (<code>goles_totales</code>,
+  <code>partidos_ganados</code>). Un marcador vive en un solo sitio. Guardar totales
+  obliga a mantenerlos en sincronía cada vez que alguien corrige un resultado,
+  y tarde o temprano se desincronizan.</li>
+<li><span class="rid">R33</span> Si el cálculo pesa, se resuelve con <strong>vistas materializadas o caché
+  con invalidación por torneo</strong>, nunca duplicando el dato en la tabla.</li>
+<li><span class="rid">R34</span> Racha = los cinco resultados más recientes, del más viejo al más
+  nuevo, para leerla como línea de tiempo de izquierda a derecha.</li>
+</ul>
+<h3>4.8 Equipos y jugadores</h3>
+<ul>
+<li><span class="rid">R35</span> Un jugador pertenece a varios equipos. Un equipo tiene un capitán
+  (<code>captainId</code>), que está siempre dentro de la plantilla.</li>
+<li><span class="rid">R36</span> El tamaño sugerido de plantilla depende del deporte: fútbol 7,
+  paintball 5, voleibol 4, pádel 2, tenis 2.</li>
+<li><span class="rid">R37</span> Posiciones por deporte: fútbol (Arquero, Defensa, Volante,
+  Delantero), pádel (Drive, Revés), tenis (Fondo, Red), voleibol (Armador,
+  Punta, Central, Líbero), paintball (Frontal, Medio, Back).</li>
+<li><span class="rid">R38</span> Un equipo sin escudo <strong>no muestra un cuadro gris</strong>: muestra su
+  inicial sobre su color, con el corte de escudo real.</li>
+</ul>
+<h3>4.9 Datos de arranque <em>(solo demo)</em></h3>
+<ul>
+<li><span class="rid">R39</span> La semilla genera <strong>75 días de historia y 14 hacia adelante</strong>,
+  siempre <strong>relativos a hoy</strong>. Nunca fechas fijas en el código: la demo no
+  puede verse caducada.</li>
+<li><span class="rid">R40</span> Carga por día de la semana: sábado 0,75, viernes 0,70, domingo 0,55,
+  entre semana 0,38. Por hora: 17–22 pleno, 10–15 al 35%, resto al 12%.</li>
+<li><span class="rid">R41</span> El pasado va todo pagado. El futuro: 42% pagado, 43% con adelanto,
+  15% sin abonar. 62% entró por bot. 6 de cada 10 las hace un jugador con
+  cuenta, para que el histórico del jugador nazca con contenido.</li>
+<li><span class="rid">R42</span> La generación recorre cada terna (cancha, día, hora) <strong>una sola
+  vez</strong>: un duplicado es imposible por construcción. La versión que comprobaba
+  con <code>some()</code> sobre un array creciente tardaba 10,5 s con 40 canchas.</li>
+</ul>
+<h3>4.10 Neo AI — reglas de conversación</h3>
+<ul>
+<li><span class="rid">R43</span> Neo <strong>no simula</strong>: lee la agenda real y escribe en ella. La reserva
+  que crea hablando es <strong>el mismo objeto</strong> que crea el formulario.</li>
+<li><span class="rid">R44</span> La conversación tiene un solo objetivo: llenar cuatro huecos —
+  <strong>deporte, día, cancha, hora</strong> — y confirmar. Lo demás es acompañamiento.</li>
+<li><span class="rid">R45</span> Neo nunca promete una hora ocupada. Lee disponibilidad de verdad
+  antes de ofrecer.</li>
+<li><span class="rid">R46</span> Entiende cómo se habla aquí: <em>"mañana a las 7"</em> es de noche, <em>"el
+  sábado"</em> es el sábado que viene, <em>"la sintética"</em> es fútbol. La ambigüedad
+  a. m./p. m. se resuelve hacia la tarde y <strong>se avisa</strong>.</li>
+<li><span class="rid">R47</span> Tres formas de pago en la conversación: <code>adelanto</code> (50%),
+  <code>completo</code>, <code>cancha</code> (paga al llegar, <code>deposit: 0</code>).</li>
+<li><span class="rid">R48</span> Cada reserva sale con <strong>código corto</strong> <code>SP-XXXX</code> (últimos cuatro del
+  id, en mayúsculas). Sirve para cancelar: <em>"cancelar SP-3F9A"</em>.</li>
+<li><span class="rid">R49</span> Tras tres mensajes seguidos sin entender, Neo ofrece opciones
+  rápidas en vez de seguir preguntando abierto.</li>
+</ul>
+<hr />
+<h2 id="5-modelo-de-datos">5. Modelo de datos</h2>
+<h3>5.1 El estado de hoy (demo)</h3>
+<p>Un único objeto <code>S</code>, plano, en memoria, persistido en IndexedDB:</p>
+<pre><code class="language-js">S = {
+  business: {
+    name, whatsapp, sports: ['futbol','padel'],
+    openHour: 6, closeHour: 23, logo,
+    theme: { accent: 'esmeralda', fondo: 'estadio' }
+  },
+  courts:   [{ id, sport, n, name, price, image, photo, active }],
+  bookings: [{ id, courtId, date:'2026-08-20', start:'18:00', end:'19:00',
+               playerId, customer, phone, total, deposit,
+               source:'mostrador'|'app'|'neo'|'bot',
+               status:'confirmada'|'jugada', note }],
+  players:  [{ id, name, phone, position, avatar, color, since }],
+  teams:    [{ id, name, sport, color, crest, captainId, roster:[playerId], created }],
+  tournaments: [{
+    id, name, sport, size:4|8|16, startDate, openSignup,
+    teams:   [{ id, teamId, name, color, taken }],
+    matches: [{ id, round, idx, teamA, teamB, scoreA, scoreB,
+                date, time, court, played, isThird }],
+    scorers: [{ id, team, playerId, player, goals }]
+  }],
+  photos:  { sports: { futbol: dataURL } },
+  session: { role: 'owner'|'player', playerId }
+}
+</code></pre>
+<p><strong>Por qué está así y por qué cambia.</strong> La app entera lee el estado de forma
+<strong>síncrona</strong> (<code>S.bookings.filter(...)</code> aparece en cada vista). Eso hizo posible
+una demo sin backend y sin latencia. En producción esa forma no sirve: hace
+falta consultar entre negocios, dos personas editan a la vez, y el documento
+crece sin techo.</p>
+<h3>5.2 El esquema de producción (Postgres)</h3>
+<p>Multi-tenant por <code>complejo_id</code>, con RLS en todas las tablas. Sin columnas
+acumuladas (R31–R33).</p>
+<pre><code class="language-sql">-- ── Tenencia ───────────────────────────────────────────────────────────────
+create table complejos (
+  id            uuid primary key default gen_random_uuid(),
+  slug          text unique not null,          -- para la URL pública
+  nombre        text not null,
+  whatsapp      text,
+  logo_url      text,
+  hora_abre     smallint not null default 6,
+  hora_cierra   smallint not null default 23,
+  moneda        text not null default 'COP',
+  zona_horaria  text not null default 'America/Bogota',
+  tema          jsonb not null default '{}',
+  plan          text not null default 'trial',
+  creado_en     timestamptz not null default now()
+);
+
+-- Un ser humano. Puede ser dueño de un complejo y jugador en otro.
+create table personas (
+  id         uuid primary key references auth.users(id) on delete cascade,
+  nombre     text not null,
+  telefono   text unique,
+  email      text,
+  avatar_url text,
+  creado_en  timestamptz not null default now()
+);
+
+-- Quién puede qué, dentro de qué complejo.
+create table membresias (
+  complejo_id uuid not null references complejos(id) on delete cascade,
+  persona_id  uuid not null references personas(id)  on delete cascade,
+  rol         text not null check (rol in ('dueno','operador','jugador')),
+  creado_en   timestamptz not null default now(),
+  primary key (complejo_id, persona_id, rol)
+);
+
+-- ── Recursos ───────────────────────────────────────────────────────────────
+create table canchas (
+  id          uuid primary key default gen_random_uuid(),
+  complejo_id uuid not null references complejos(id) on delete cascade,
+  deporte     text not null check (deporte in
+                ('futbol','padel','tenis','voleibol','paintball')),
+  numero      smallint not null,
+  nombre      text not null,
+  precio      integer not null check (precio &gt;= 0),   -- COP, sin decimales
+  foto_url    text,
+  activa      boolean not null default true,
+  orden       smallint not null default 0
+);
+create index on canchas (complejo_id, deporte);
+
+-- ── Agenda ─────────────────────────────────────────────────────────────────
+create table reservas (
+  id           uuid primary key default gen_random_uuid(),
+  complejo_id  uuid not null references complejos(id) on delete cascade,
+  cancha_id    uuid not null references canchas(id)   on delete cascade,
+  fecha        date not null,
+  inicio       time not null,                 -- siempre en punto (R1)
+  fin          time not null,
+  persona_id   uuid references personas(id),  -- null: cliente sin cuenta
+  cliente      text not null,                 -- nombre congelado
+  telefono     text,
+  total        integer not null check (total &gt;= 0),      -- congelado (R8)
+  abonado      integer not null default 0 check (abonado &gt;= 0 and abonado &lt;= total),
+  origen       text not null default 'mostrador'
+               check (origen in ('mostrador','app','neo','bot')),
+  estado       text not null default 'confirmada'
+               check (estado in ('confirmada','jugada','cancelada','no_show')),
+  nota         text default '',
+  codigo       text generated always as
+               ('SP-' || upper(right(id::text, 4))) stored,   -- R48
+  cancelada_en  timestamptz,
+  cancelada_por uuid references personas(id),
+  creado_en    timestamptz not null default now()
+);
+
+-- R4: la no-doble-reserva es una restricción, no una comprobación.
+create unique index reservas_franja_unica
+  on reservas (cancha_id, fecha, inicio)
+  where estado in ('confirmada','jugada');
+
+create index on reservas (complejo_id, fecha);
+create index on reservas (persona_id, fecha desc);
+
+-- Cada movimiento de plata, no un contador. `abonado` se mantiene por trigger
+-- sobre esta tabla: es la única acumulación permitida, y es reconstruible.
+create table pagos (
+  id          uuid primary key default gen_random_uuid(),
+  complejo_id uuid not null references complejos(id) on delete cascade,
+  reserva_id  uuid not null references reservas(id) on delete cascade,
+  monto       integer not null check (monto &lt;&gt; 0),   -- negativo = devolución
+  medio       text not null check (medio in
+                ('efectivo','transferencia','pasarela','cortesia')),
+  referencia  text,                                   -- id de la pasarela
+  registrado_por uuid references personas(id),
+  creado_en   timestamptz not null default now()
+);
+
+-- ── Comunidad ──────────────────────────────────────────────────────────────
+create table equipos (
+  id          uuid primary key default gen_random_uuid(),
+  complejo_id uuid not null references complejos(id) on delete cascade,
+  nombre      text not null,
+  deporte     text not null,
+  color       text not null,
+  escudo_url  text,
+  capitan_id  uuid references personas(id),
+  creado_en   timestamptz not null default now()
+);
+
+create table plantillas (
+  equipo_id  uuid not null references equipos(id)   on delete cascade,
+  persona_id uuid not null references personas(id)  on delete cascade,
+  posicion   text,
+  desde      date not null default current_date,
+  primary key (equipo_id, persona_id)
+);
+
+create table torneos (
+  id           uuid primary key default gen_random_uuid(),
+  complejo_id  uuid not null references complejos(id) on delete cascade,
+  nombre       text not null,
+  deporte      text not null,
+  tamano       smallint not null check (tamano in (4,8,16)),   -- R22
+  fecha_inicio date not null,
+  inscripcion_abierta boolean not null default false,
+  creado_en    timestamptz not null default now()
+);
+
+create table torneo_cupos (
+  id         uuid primary key default gen_random_uuid(),
+  torneo_id  uuid not null references torneos(id) on delete cascade,
+  posicion   smallint not null,
+  equipo_id  uuid references equipos(id) on delete set null,
+  nombre     text not null,
+  color      text not null,
+  unique (torneo_id, posicion)
+);
+
+create table partidos (
+  id         uuid primary key default gen_random_uuid(),
+  torneo_id  uuid not null references torneos(id) on delete cascade,
+  ronda      text not null check (ronda in
+               ('octavos','cuartos','semis','final','tercero')),
+  idx        smallint not null,
+  cupo_a     uuid references torneo_cupos(id),
+  cupo_b     uuid references torneo_cupos(id),
+  marcador_a smallint,
+  marcador_b smallint,
+  fecha      date,
+  hora       time,
+  cancha_id  uuid references canchas(id),
+  jugado     boolean not null default false,
+  unique (torneo_id, ronda, idx)
+);
+
+-- Anotaciones: el hecho, no el total (R31).
+create table anotaciones (
+  id         uuid primary key default gen_random_uuid(),
+  partido_id uuid not null references partidos(id) on delete cascade,
+  cupo_id    uuid not null references torneo_cupos(id) on delete cascade,
+  persona_id uuid references personas(id),
+  nombre     text not null,          -- por si no tiene cuenta
+  goles      smallint not null default 1 check (goles &gt; 0)
+);
+</code></pre>
+<h3>5.3 Cálculos derivados</h3>
+<p>Se implementan como <strong>vistas</strong> o funciones puras sobre el modelo. Portar tal
+cual desde <code>app/core/calc.js</code>, <code>tournament.js</code> y <code>teams.js</code>:</p>
+<div class="scroller"><table>
+<thead>
+<tr>
+<th>Cálculo</th>
+<th>Regla</th>
+<th>Origen en la demo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Facturado / Cobrado</td>
+<td>R12, R13</td>
+<td><code>revenueBetween</code>, <code>collectedBetween</code></td>
+</tr>
+<tr>
+<td>Por cobrar</td>
+<td>R14</td>
+<td><code>pendingTotal</code></td>
+</tr>
+<tr>
+<td>Ocupación</td>
+<td>franjas usadas / franjas posibles</td>
+<td><code>occupancy</code></td>
+</tr>
+<tr>
+<td>Ranking por cancha</td>
+<td>R12 agrupado</td>
+<td><code>revenueByCourt</code></td>
+</tr>
+<tr>
+<td>Serie diaria (14 d)</td>
+<td>R12 por día</td>
+<td><code>dailySeries</code></td>
+</tr>
+<tr>
+<td>Horas libres</td>
+<td>R6</td>
+<td><code>freeHours</code></td>
+</tr>
+<tr>
+<td>Tabla del torneo</td>
+<td>R25</td>
+<td><code>standings</code></td>
+</tr>
+<tr>
+<td>Valla menos vencida</td>
+<td>R26</td>
+<td><code>cleanSheets</code></td>
+</tr>
+<tr>
+<td>Podio</td>
+<td>R27</td>
+<td><code>podium</code></td>
+</tr>
+<tr>
+<td>Récord de equipo</td>
+<td>R31</td>
+<td><code>teamRecord</code></td>
+</tr>
+<tr>
+<td>Ficha de jugador</td>
+<td>R31</td>
+<td><code>playerRecord</code></td>
+</tr>
+<tr>
+<td>Salón de la fama</td>
+<td>R31</td>
+<td><code>topScorersAllTime</code>, <code>teamLeaderboard</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3>5.4 Seguridad de fila (RLS)</h3>
+<p>Es lo único que separa los datos de un negocio de los de otro. Si esto está
+mal, todo lo demás da igual.</p>
+<pre><code class="language-sql">alter table reservas enable row level security;
+
+-- Pertenencia al complejo: la función que usan todas las políticas.
+create or replace function es_del_complejo(c uuid, roles text[] default null)
+returns boolean language sql stable security definer set search_path = '' as $$
+  select exists (
+    select 1 from public.membresias m
+     where m.complejo_id = c
+       and m.persona_id = auth.uid()
+       and (roles is null or m.rol = any(roles))
+  );
+$$;
+
+-- Dueño y operador ven toda la agenda del complejo.
+create policy &quot;agenda del complejo&quot; on reservas for select to authenticated
+  using (es_del_complejo(complejo_id, array['dueno','operador']));
+
+-- El jugador ve solo lo suyo.
+create policy &quot;mis reservas&quot; on reservas for select to authenticated
+  using (persona_id = auth.uid());
+
+-- El jugador crea reservas a su nombre, en un complejo donde está inscrito.
+create policy &quot;reservar&quot; on reservas for insert to authenticated
+  with check (persona_id = auth.uid()
+              and es_del_complejo(complejo_id, array['jugador','dueno','operador']));
+</code></pre>
+<p>Reglas que se repiten en cada tabla:</p>
+<ul>
+<li><strong>Nunca una política para <code>anon</code>.</strong> Quien no ha entrado no lee ni escribe.</li>
+<li><strong>El jugador nunca ve el dinero agregado del complejo.</strong> Ve su propia
+  reserva y su propio saldo.</li>
+<li><strong>El <code>service_role</code> no aparece en el navegador.</strong> Salta RLS por completo y
+  vive solo en el servidor.</li>
+</ul>
+<hr />
+<h2 id="6-arquitectura">6. Arquitectura</h2>
+<h3>6.1 Stack</h3>
+<div class="scroller"><table>
+<thead>
+<tr>
+<th>Capa</th>
+<th>Elección</th>
+<th>Por qué</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Framework</td>
+<td><strong>Next.js (App Router) + TypeScript</strong></td>
+<td>Server Components para lo que es lectura pesada; Server Actions para escribir</td>
+</tr>
+<tr>
+<td>Estilos</td>
+<td><strong>Tailwind</strong> con los tokens de <code>themes/momentum.css</code></td>
+<td>Los tokens ya son la fuente de verdad; se mapean a <code>tailwind.config</code></td>
+</tr>
+<tr>
+<td>Componentes</td>
+<td>shadcn/ui <strong>retematizado</strong></td>
+<td>Base para componer, nunca el look final</td>
+</tr>
+<tr>
+<td>Movimiento</td>
+<td><strong>motion</strong> (Framer Motion)</td>
+<td>Mismas curvas y duraciones de <code>DESIGN.md</code></td>
+</tr>
+<tr>
+<td>Datos</td>
+<td><strong>Postgres</strong> (Supabase o Neon)</td>
+<td>RLS, realtime, y ya hay migración escrita</td>
+</tr>
+<tr>
+<td>Auth</td>
+<td>Supabase Auth</td>
+<td>Correo/contraseña para dueño, OTP por teléfono para jugador</td>
+</tr>
+<tr>
+<td>Archivos</td>
+<td>Supabase Storage o Vercel Blob</td>
+<td>Fotos de cancha, logos, escudos</td>
+</tr>
+<tr>
+<td>Hosting</td>
+<td><strong>Vercel</strong></td>
+<td>Fluid Compute; funciones Node por defecto</td>
+</tr>
+<tr>
+<td>Notificaciones</td>
+<td>WhatsApp Cloud API</td>
+<td>§9</td>
+</tr>
+</tbody>
+</table></div>
+<p><strong>Al provisionar cada servicio externo (base de datos, pagos, correo,
+observabilidad), pasar por el Marketplace de Vercel antes de escribir código
+de SDK.</strong> Integración real desde el primer día, no mock.</p>
+<h3>6.2 Renderizado y datos</h3>
+<ul>
+<li><strong>Lectura del dueño</strong> (Panel, Reservas, Torneos): Server Components que
+  consultan directo. Nada de <code>useEffect</code> + <code>fetch</code>.</li>
+<li><strong>Escritura</strong>: Server Actions con revalidación por etiqueta
+  (<code>revalidateTag('agenda:'+complejoId)</code>).</li>
+<li><strong>Realtime</strong>: suscripción a <code>reservas</code> filtrada por <code>complejo_id</code>. Es lo que
+  hace que el dueño vea caer la reserva del jugador sin recargar — el momento
+  que vende (§1.3), ahora de verdad.</li>
+<li><strong>Optimista en la agenda</strong>: crear una reserva pinta la celda de inmediato y
+  revierte si la restricción única la rechaza (R4).</li>
+</ul>
+<h3>6.3 Estructura de rutas</h3>
+<pre><code>app/
+  (marketing)/                  la landing y el demo público
+  (demo)/demo/                  la demo actual, sin cuenta, tal como está hoy
+  (app)/[complejo]/             la plataforma real, multi-tenant por slug
+    panel/  canchas/  reservas/  torneos/  equipos/  neo/  ajustes/
+    j/                          el lado del jugador
+      inicio/  reservar/  equipo/  torneos/  historial/  neo/
+  api/
+    wa/webhook/                 entrada de WhatsApp Cloud API
+    pagos/webhook/              confirmación de la pasarela
+</code></pre>
+<ul>
+<li>El <strong>tenant sale de la URL</strong> (<code>/[complejo]</code>), se resuelve en un layout y se
+  valida contra <code>membresias</code>. Nunca se confía en un <code>complejo_id</code> que venga del
+  cliente.</li>
+<li>La <strong>demo pública sobrevive</strong> en <code>/demo</code>: es la herramienta de venta y se
+  mantiene sin cuenta, con el conmutador de rol y todo su estado en el
+  navegador.</li>
+</ul>
+<h3>6.4 Lo que se copia y lo que se reescribe</h3>
+<div class="scroller"><table>
+<thead>
+<tr>
+<th>Archivo actual</th>
+<th>Destino</th>
+<th>Trabajo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>app/core/util.js</code></td>
+<td><code>lib/util.ts</code></td>
+<td>Copiar y tipar</td>
+</tr>
+<tr>
+<td><code>app/core/sports.js</code></td>
+<td><code>lib/sports.ts</code></td>
+<td>Copiar tal cual (SVG incluidos)</td>
+</tr>
+<tr>
+<td><code>app/core/calc.js</code></td>
+<td><code>lib/queries/*.ts</code></td>
+<td>Reescribir contra SQL, misma firma</td>
+</tr>
+<tr>
+<td><code>app/core/tournament.js</code></td>
+<td><code>lib/tournament.ts</code></td>
+<td>Copiar; puro</td>
+</tr>
+<tr>
+<td><code>app/core/teams.js</code></td>
+<td><code>lib/records.ts</code></td>
+<td>Copiar; puro (R31)</td>
+</tr>
+<tr>
+<td><code>app/core/neo.js</code></td>
+<td><code>lib/neo/</code></td>
+<td>Copiar el motor; cambiar lectura/escritura por consultas</td>
+</tr>
+<tr>
+<td><code>app/core/seed.js</code></td>
+<td><code>lib/seed.ts</code></td>
+<td>Solo para la demo y para datos de prueba</td>
+</tr>
+<tr>
+<td><code>app/core/store.js</code></td>
+<td>—</td>
+<td><strong>Se tira.</strong> Lo reemplazan las consultas</td>
+</tr>
+<tr>
+<td><code>app/ui/shell.js</code></td>
+<td><code>app/(app)/layout.tsx</code></td>
+<td>Layout con navegación por rol</td>
+</tr>
+<tr>
+<td><code>app/views/*.js</code></td>
+<td>un componente por vista</td>
+<td><code>viewX(main)</code> → <code>&lt;X/&gt;</code></td>
+</tr>
+<tr>
+<td><code>app/base.css</code> + <code>premium.css</code></td>
+<td>globals + componentes</td>
+<td>Migrar; no rediseñar</td>
+</tr>
+<tr>
+<td><code>themes/momentum.css</code></td>
+<td><code>app/globals.css</code> + <code>tailwind.config</code></td>
+<td><strong>Fuente de verdad del diseño</strong></td>
+</tr>
+</tbody>
+</table></div>
+<p><code>core/</code> no toca el DOM. Por eso se copia: fue partido por esa costura a
+propósito.</p>
+<hr />
+<h2 id="7-cuentas-y-multi-tenancy">7. Cuentas y multi-tenancy</h2>
+<h3>7.1 Cómo entra cada quien</h3>
+<ul>
+<li><strong>Dueño</strong>: correo y contraseña. Al registrarse crea su complejo y pasa por
+  el onboarding de cuatro preguntas (§3.1), que ahora escribe en base de datos.</li>
+<li><strong>Operador</strong>: el dueño lo invita por correo o por link. Rol <code>operador</code>.</li>
+<li><strong>Jugador</strong>: <strong>teléfono + código por WhatsApp</strong>. Es el dato que ya tiene el
+  negocio y el que usa para reservar. Sin contraseña.</li>
+<li><strong>El teléfono es la llave de unión</strong>: si el dueño creó reservas a nombre de
+  un teléfono y esa persona luego abre cuenta, sus reservas anteriores se le
+  atribuyen automáticamente.</li>
+</ul>
+<h3>7.2 Reglas de aislamiento</h3>
+<ol>
+<li>Toda tabla lleva <code>complejo_id</code> y RLS. Sin excepción.</li>
+<li>El tenant se resuelve en el servidor, del slug de la URL, contra
+   <code>membresias</code>. Nunca de un campo del formulario.</li>
+<li>Un jugador ve su reserva, no la agenda. Un operador ve la agenda, no el
+   Panel financiero.</li>
+<li><code>service_role</code> solo en funciones de servidor: webhooks, cron, migraciones.</li>
+</ol>
+<h3>7.3 Migración del demo a la cuenta</h3>
+<p>Cuando alguien que jugó con la demo se registra, <strong>su complejo de demo se
+sube</strong>: nadie pierde el trabajo por registrarse. Ya está implementado en
+<code>store.js</code> contra Supabase y se conserva el comportamiento.</p>
+<hr />
+<h2 id="8-pagos">8. Pagos</h2>
+<h3>8.1 Qué se cobra y a quién</h3>
+<p>Dos flujos distintos que no se mezclan:</p>
+<p><strong>A. El jugador le paga al complejo</strong> (el adelanto de la reserva).
+<strong>B. El complejo nos paga a nosotros</strong> (la suscripción a la plataforma).</p>
+<h3>8.2 A · Adelanto de reserva</h3>
+<ul>
+<li>Mercado objetivo: Colombia. Los medios que la gente usa son <strong>Nequi,
+  Bancolombia, PSE y tarjeta</strong>.</li>
+<li>Candidatos: <strong>Wompi</strong> (Bancolombia; Nequi y PSE nativos, comisión clara),
+  <strong>Mercado Pago</strong> (mejor conversión en móvil, más caro), <strong>ePayco/PayU</strong>
+  (más medios, integración más áspera). Recomendación: <strong>Wompi primero</strong>, con
+  la capa de pago detrás de una interfaz propia para poder cambiar.</li>
+<li>Reglas:</li>
+<li><span class="rid">P1</span> Se cobra el adelanto de R10 salvo que el jugador elija pagar
+    completo o pagar en cancha.</li>
+<li><span class="rid">P2</span> La reserva se crea <strong>antes</strong> del pago, en estado <code>confirmada</code> con
+    <code>abonado = 0</code>, y con la franja ya bloqueada por 15 minutos. Si el pago no
+    llega, se libera. Bloquear después del pago produce cobros sin cancha.</li>
+<li><span class="rid">P3</span> El webhook de la pasarela es la <strong>única</strong> fuente de verdad del
+    pago. El redirect del navegador no confirma nada.</li>
+<li><span class="rid">P4</span> Cada confirmación inserta una fila en <code>pagos</code> con la referencia de
+    la pasarela. Idempotente por referencia: un webhook repetido no cobra dos
+    veces.</li>
+<li><span class="rid">P5</span> Devolución = fila en <code>pagos</code> con monto negativo. Nunca se edita un
+    pago existente.</li>
+<li><span class="rid">P6</span> El dueño puede registrar pagos en efectivo desde el mostrador; van
+    a la misma tabla con <code>medio: 'efectivo'</code>.</li>
+<li><strong>Liquidación</strong>: el dinero entra a la cuenta del complejo, no a la nuestra.
+  Nosotros no somos intermediarios de fondos — decisión deliberada: serlo
+  cambia el régimen regulatorio del negocio.</li>
+</ul>
+<h3>8.3 B · Suscripción</h3>
+<p>Cobro mensual por complejo, escalado por número de canchas. Prueba de 14 días
+sin tarjeta. El estado vive en <code>complejos.plan</code>. Cuando vence: la plataforma
+pasa a <strong>solo lectura</strong>, nunca se borran datos y la agenda se puede seguir
+consultando. Un negocio que no puede ver su agenda de mañana nos denuncia, con
+razón.</p>
+<hr />
+<h2 id="9-neo-ai-en-produccion">9. Neo AI en producción</h2>
+<h3>9.1 Qué es hoy</h3>
+<p>Un motor determinista en español (<code>app/core/neo.js</code>, 570 líneas) que llena
+cuatro huecos y lee la agenda real. <strong>No hay modelo de lenguaje detrás, y para
+el 80% de las conversaciones no hace falta</strong>: la conversación tiene un solo
+objetivo. Lo que sí exige es entender cómo habla la gente aquí (R46).</p>
+<h3>9.2 Qué se agrega</h3>
+<p><strong>Canal real: WhatsApp Cloud API (Meta).</strong></p>
+<ol>
+<li>Número de WhatsApp Business por complejo, o número compartido con
+   identificación del negocio en el primer mensaje.</li>
+<li>Webhook en <code>/api/wa/webhook</code> que verifica la firma de Meta, resuelve el
+   complejo por el número de destino, y pasa el texto al motor.</li>
+<li><strong>Ventana de 24 horas</strong>: fuera de ella solo se puede escribir con
+   <em>plantillas aprobadas</em>. Hacen falta al menos tres, aprobadas antes del
+   lanzamiento:
+   - <code>recordatorio_reserva</code> — 3 h antes del partido.
+   - <code>saldo_pendiente</code> — el día del partido si queda saldo.
+   - <code>cupo_liberado</code> — cuando se cae una reserva de una hora pico.</li>
+<li><strong>Respuesta a lo no previsto</strong>: si el motor determinista no entiende tras
+   dos intentos (R49), se escala a un LLM con la agenda como contexto y con
+   herramientas acotadas (<code>consultar_disponibilidad</code>, <code>crear_reserva</code>,
+   <code>cancelar_reserva</code>). El LLM <strong>nunca escribe directo en la base</strong>: llama a
+   las mismas funciones que el motor, que son las que validan R4 y R5.</li>
+<li><strong>Traspaso a humano</strong>: palabra clave o tres fallos seguidos y la
+   conversación se marca para que el dueño la vea en la vista de Neo AI.</li>
+</ol>
+<h3>9.3 Reglas que no cambian al pasar a WhatsApp</h3>
+<ul>
+<li>La reserva que crea Neo es <strong>el mismo registro</strong> que crea el mostrador
+  (R43). Solo cambia <code>origen</code>.</li>
+<li>Neo nunca ofrece una hora que no está libre (R45), y revalida antes de
+  cerrar (R5).</li>
+<li>Todo cierre entrega el código <code>SP-XXXX</code> (R48).</li>
+<li>Neo <strong>no negocia precios ni inventa promociones</strong>. Si no sabe, ofrece
+  hablar con el dueño.</li>
+</ul>
+<hr />
+<h2 id="10-sistema-de-diseno">10. Sistema de diseño</h2>
+<p>El detalle completo está en <strong><code>DESIGN.md</code></strong> (26 KB, con el porqué de cada
+valor) y los valores en <strong><code>themes/momentum.css</code></strong>. Esto es lo que no se
+negocia al migrar.</p>
+<h3>10.1 Color</h3>
+<ul>
+<li>Acento <strong>verde esmeralda <code>#047857</code></strong>: 5.48:1 sobre blanco, así que el mismo
+  color sirve de relleno <strong>y</strong> de texto, y encima lleva blanco. Sobre superficie
+  oscura sube a <code>#34d399</code> (10.1:1 sobre negro).</li>
+<li>El verde también significa "pagado". No es un descuido: lo que separa marca
+  de estado no es el tono sino <strong>la forma</strong> — la marca siempre es relleno
+  sólido (botón, pastilla), el estado siempre es tinte de fondo con etiqueta al
+  lado. Nunca compiten por el mismo sitio.</li>
+<li><strong>Canchas es la única sección que se retinta</strong>, con el color real de cada
+  deporte. El retinte va por tokens, nunca por componente.</li>
+<li>Colores de dato separados en <strong>tono, no en luminancia</strong>: se distinguen en
+  escala de grises y para un daltónico. El rojo va al final del orden porque en
+  esta interfaz significa "sin abonar".</li>
+<li><strong>Ningún color literal fuera del archivo de tokens</strong>, salvo capas de luz y de
+  velo (<code>rgba</code> blancos y negros). Si un color tiene nombre, es un token.</li>
+</ul>
+<h3>10.2 Tipografía</h3>
+<p>Una sola familia con <strong>eje de ancho</strong>: Archivo (wdth 62–125, wght 100–900). De
+ahí salen dos voces que no se parecen — el titular ancho y muy pesado de
+gráfico deportivo, y el texto normal — sin cargar una segunda fuente. IBM Plex
+Mono <strong>solo</strong> para dato técnico: horas, códigos.</p>
+<p><strong>El tracking es específico del tamaño.</strong> No hay un <code>letter-spacing</code> para todo:</p>
+<div class="scroller"><table>
+<thead>
+<tr>
+<th>Paso</th>
+<th>Tamaño</th>
+<th>Interlínea</th>
+<th>Tracking</th>
+<th>Peso</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>display</td>
+<td><code>clamp(2.375rem, 4.3vw, 3.625rem)</code></td>
+<td>0.96</td>
+<td>−0.038em</td>
+<td>800</td>
+</tr>
+<tr>
+<td>h1</td>
+<td><code>clamp(1.625rem, 2.5vw, 2.125rem)</code></td>
+<td>1.05</td>
+<td>−0.03em</td>
+<td>800</td>
+</tr>
+<tr>
+<td>h2</td>
+<td>1.125rem</td>
+<td>1.28</td>
+<td>−0.02em</td>
+<td>700</td>
+</tr>
+<tr>
+<td>h3</td>
+<td>0.9375rem</td>
+<td>1.35</td>
+<td>−0.012em</td>
+<td>700</td>
+</tr>
+<tr>
+<td>body</td>
+<td>0.9375rem</td>
+<td>1.6</td>
+<td>−0.004em</td>
+<td>—</td>
+</tr>
+<tr>
+<td>sm</td>
+<td>0.8125rem</td>
+<td>1.5</td>
+<td>0</td>
+<td>—</td>
+</tr>
+<tr>
+<td>xs</td>
+<td>0.75rem</td>
+<td>1.42</td>
+<td>+0.004em</td>
+<td>—</td>
+</tr>
+<tr>
+<td>micro</td>
+<td>0.6875rem</td>
+<td>1.35</td>
+<td>+0.085em</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p>Números siempre <code>tabular-nums lining-nums</code>.</p>
+<h3>10.3 Forma, elevación y material</h3>
+<ul>
+<li>Radios: 8 / 12 / 16 / 20 / 26 px y pastilla. <strong>Uno por rol, no uno por
+  componente.</strong></li>
+<li>Cada nivel de elevación son <strong>dos sombras</strong>: una de contacto, corta y opaca,
+  y una ambiental, larga y difusa. Nunca una sola sombra gigante.</li>
+<li>El rail es <strong>negro mate dibujado con gradientes</strong>, no una foto de metal, y
+  lleva grano finísimo: sin él un negro grande forma bandas y se lee a
+  plástico.</li>
+<li>Las tarjetas sobre foto son <strong>vidrio oscuro</strong> (<code>rgba(8,13,24,.60)</code> +
+  <code>blur(20px) saturate(160%)</code>): se leen apoyadas sobre la foto en vez de
+  taparla.</li>
+</ul>
+<h3>10.4 Fondo</h3>
+<p>La noche de estadio en toda la app; la cancha a sangre <strong>solo</strong> en Canchas.
+Por eso funciona: cuando el fondo cambia, cambia porque estás mirando otro
+deporte, no porque cambiaste de pestaña.</p>
+<h3>10.5 Movimiento</h3>
+<pre><code>--ease-out     cubic-bezier(.23, 1, .32, 1)     entradas, hover, la mayoría
+--ease-in-out  cubic-bezier(.77, 0, .175, 1)    movimiento en pantalla
+--ease-drawer  cubic-bezier(.32, .72, 0, 1)     toast, hojas
+--ease-pop     cubic-bezier(.34, 1.12, .48, 1)  confirmaciones y podio
+</code></pre>
+<p>Duraciones: 140 ms presión · 180 ms hover · 220 ms elevación · 320 ms modal.</p>
+<p>Sin excepción: <strong>nunca <code>ease-in</code> en UI</strong>, nunca <code>transition: all</code>, solo
+<code>transform</code> y <code>opacity</code>, todo lo pulsable baja a <code>scale(.97)</code> en <code>:active</code>,
+nada entra desde <code>scale(0)</code>, hover detrás de
+<code>@media (hover: hover) and (pointer: fine)</code>, stagger de 38–55 ms en listas.</p>
+<p>Al pasar a React: <strong>motion</strong>, manteniendo exactamente estas curvas y
+duraciones.</p>
+<h3>10.6 Accesibilidad, ya resuelta — no romperla</h3>
+<p>Modal con foco atrapado que vuelve al disparador y fondo <code>inert</code>. Jerarquía de
+encabezados sin saltos (las tarjetas de rejilla son <code>h2</code>). Salto al contenido.
+Objetivos táctiles de 34 px mínimo. <code>role="log"</code> + <code>aria-live</code> en Neo,
+<code>role="status"</code> en el toast. <code>prefers-reduced-motion</code>,
+<code>prefers-reduced-transparency</code> y <code>prefers-contrast</code> respetados.</p>
+<h3>10.7 Anti-patrones que este sistema rechaza</h3>
+<p>Texto con degradado · una sola tipografía sin jerarquía real · gradientes
+morado→azul de marca · cards dentro de cards · texto gris de bajo contraste
+sobre color · icono en cuadrito sobre cada heading · emojis como iconografía ·
+sombras difusas sin lógica de elevación · un <code>border-radius</code> por componente ·
+retículas decorativas de fondo · borde lateral grueso de color en tarjetas.</p>
+<hr />
+<h2 id="11-trampas-ya-documentadas">11. Trampas ya documentadas</h2>
+<p>Volver a caer en estas es retroceder. Están explicadas en <code>DESIGN.md</code> y en los
+comentarios del código:</p>
+<ol>
+<li><strong><code>background</code> vs <code>background-color</code></strong> al retintar: el atajo borra la capa
+   de imagen.</li>
+<li><strong><code>&lt;svg&gt;</code> con <code>width: auto</code></strong> colapsa dentro de flex.</li>
+<li>Los puntos del gráfico van <strong>fuera</strong> del SVG: dentro heredan el escalado no
+   uniforme y se deforman.</li>
+<li><strong><code>localStorage</code> no aguanta</strong>: 3,7 MB de datos con 40 canchas y el techo son
+   ~4 MB. <code>setItem</code> lanza y se pierde el negocio entero. Por eso IndexedDB en
+   la demo, y Postgres en producción.</li>
+<li><strong><code>indexedDB.open</code> puede no responder nunca</strong> (borrado en cola): sin un
+   temporizador de 3 s, el arranque no termina y el visitante ve una pantalla
+   en blanco.</li>
+<li><strong>Sin build no hay hash en los nombres de archivo</strong>: una foto reemplazada
+   con el mismo nombre se queda en caché, y un 404 antiguo también. De ahí
+   <code>ASSET_V</code>. Al migrar a Next.js esto <strong>desaparece</strong> — lo resuelve el
+   bundler.</li>
+<li><strong>La generación de la semilla debe ser lineal</strong>: comprobar duplicados sobre
+   un array creciente la volvía cuadrática (10,5 s con 40 canchas, hilo
+   congelado y sin indicador).</li>
+<li><strong>La conversación de Neo encadena <code>setTimeout</code> durante ~20 s</strong>: hay que
+   cortarla al cambiar de vista o sigue corriendo sobre nodos desprendidos.</li>
+</ol>
+<hr />
+<h2 id="12-plan-de-construccion">12. Plan de construcción</h2>
+<p>Cinco fases. Cada una termina en algo que se puede enseñar y que alguien puede
+usar. <strong>Ninguna fase se cierra sin sus criterios de aceptación.</strong></p>
+<h3>Fase 0 · Cimientos (1 semana)</h3>
+<ul>
+<li>Next.js + TypeScript + Tailwind con los tokens mapeados.</li>
+<li>Postgres con el esquema de §5.2 y RLS de §5.4.</li>
+<li>Auth: dueño con correo/contraseña, jugador con OTP por teléfono.</li>
+<li>Layout multi-tenant <code>/[complejo]</code> con navegación por rol.</li>
+</ul>
+<p><strong>Aceptación:</strong> dos complejos en la misma base; el dueño de uno no ve ni una
+fila del otro, comprobado con una consulta directa contra RLS.</p>
+<h3>Fase 1 · La agenda (2 semanas) — <em>lo mínimo vendible</em></h3>
+<ul>
+<li>Onboarding de cuatro preguntas escribiendo en base de datos.</li>
+<li>Canchas: crear, renombrar, tarifar, activar, foto.</li>
+<li>Reservas: agenda hora × cancha, 14 días, crear, abonar, cancelar (R19).</li>
+<li>Panel: facturado, cobrado, por cobrar, serie diaria, ranking por cancha.</li>
+<li>Realtime en la agenda.</li>
+</ul>
+<p><strong>Aceptación:</strong> un complejo real opera una semana entera sin cuaderno. Dos
+personas creando reservas a la vez en la misma franja: una gana, la otra ve un
+mensaje claro, nunca hay dos (R4).</p>
+<h3>Fase 2 · El jugador (2 semanas)</h3>
+<ul>
+<li>Registro por teléfono y atribución de reservas anteriores (§7.1).</li>
+<li>Reservar: deporte, día, cancha, hora, forma de pago.</li>
+<li>Inicio, Mis reservas, Mi histórico.</li>
+</ul>
+<p><strong>Aceptación:</strong> un jugador reserva desde el celular y el dueño lo ve aparecer
+en la agenda sin recargar. El momento de §1.3, ahora con dos personas y dos
+dispositivos.</p>
+<h3>Fase 3 · Dinero de verdad (1–2 semanas)</h3>
+<ul>
+<li>Pasarela para el adelanto, con bloqueo de 15 min (P2) y webhook idempotente
+  (P3, P4).</li>
+<li>Tabla <code>pagos</code>, devoluciones, registro de efectivo en mostrador.</li>
+<li>Suscripción y estados de plan.</li>
+</ul>
+<p><strong>Aceptación:</strong> cien pagos de prueba, incluidos webhooks duplicados y pagos
+que nunca llegan; ni un cobro doble ni una franja bloqueada de más.</p>
+<h3>Fase 4 · Comunidad y Neo (2–3 semanas)</h3>
+<ul>
+<li>Equipos, plantillas, torneos, llaves, tablas, salón de la fama.</li>
+<li>WhatsApp Cloud API, plantillas aprobadas, recordatorios.</li>
+<li>Escalado a LLM con herramientas acotadas y traspaso a humano.</li>
+</ul>
+<p><strong>Aceptación:</strong> un torneo de 8 equipos jugado de principio a fin corrigiendo
+un marcador a mitad: todas las estadísticas cuadran sin tocar nada más (R31).
+Veinte conversaciones de WhatsApp reales terminan en reserva sin intervención.</p>
+<h3>Lo que se queda como está</h3>
+<p>La <strong>demo pública</strong> sigue viva en <code>/demo</code>, sin cuenta, con el conmutador de
+rol. Es la herramienta de venta y no se toca salvo para arreglar lo que se
+rompa.</p>
+<hr />
+<h2 id="13-medicion">13. Medición</h2>
+<h3>13.1 Del negocio del cliente</h3>
+<p>Ocupación por cancha y franja · facturado vs cobrado · saldo promedio ·
+reservas por origen (cuántas atiende Neo sin humano) · cancelaciones y
+no-shows · horas muertas recuperadas.</p>
+<h3>13.2 De la demo comercial</h3>
+<p>Ya implementado en <code>app/core/lead.js</code> y se conserva:</p>
+<ul>
+<li><strong>El perfil comercial completo del prospecto sin formulario</strong>: qué deportes
+  tiene, cuántas canchas, a qué precio. Lo entrega en el onboarding porque le
+  sirve, no porque se lo pidamos.</li>
+<li><strong>Señales de enganche</strong>: minutos, secciones distintas abiertas, si habló con
+  el asistente, si volvió.</li>
+<li><strong>El contacto se pide DENTRO de la demo, con su para qué a la vista</strong>: el
+  WhatsApp al que Neo le mandaría las reservas, y la demo se lo enseña
+  funcionando con su propio número.</li>
+<li>Nunca bloquea ni rompe: si el CRM está caído, la demo sigue igual.</li>
+</ul>
+<hr />
+<h2 id="14-decisiones-abiertas">14. Decisiones abiertas</h2>
+<p>Cosas que hay que decidir antes de que el código las decida solo:</p>
+<ol>
+<li><strong>Duración variable de reserva.</strong> Hoy es una hora exacta (R1). Pádel y
+   tenis a menudo se juegan 90 minutos. Cambiarlo toca la agenda, la
+   disponibilidad y Neo. <em>Recomendación: fase 5, con franjas de 30 min como
+   unidad interna y bloques de 60/90 como producto.</em></li>
+<li><strong>Precios por franja.</strong> Hora pico vale más que un martes a las 10 a. m.
+   Toda la estructura lo aguanta (<code>total</code> está congelado en la reserva, R8),
+   pero hay que decidir la interfaz.</li>
+<li><strong>Multi-sede.</strong> Hoy un dueño, un complejo. El índice único que lo impone
+   está señalado en la migración actual y se quita el día que haga falta.</li>
+<li><strong>Quién cobra.</strong> §8.2 asume que el dinero va a la cuenta del complejo. Ser
+   intermediarios de fondos cambia el régimen regulatorio del negocio.</li>
+<li><strong>Número de WhatsApp</strong>: uno por complejo (mejor experiencia, más fricción de
+   alta) o uno compartido (alta inmediata, mensaje menos personal).</li>
+<li><strong>Deportes fuera de los cinco.</strong> El modelo lo soporta; la iconografía y los
+   planos de cancha están dibujados a mano y hay que dibujarlos.</li>
+</ol>
+<hr />
+<h2 id="15-anexos">15. Anexos</h2>
+<h3>15.1 Glosario</h3>
+<div class="scroller"><table>
+<thead>
+<tr>
+<th>Término</th>
+<th>Qué es</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Complejo</strong></td>
+<td>El negocio. Un tenant.</td>
+</tr>
+<tr>
+<td><strong>Cancha</strong></td>
+<td>El recurso que se reserva.</td>
+</tr>
+<tr>
+<td><strong>Franja</strong></td>
+<td>Una hora concreta de una cancha en un día.</td>
+</tr>
+<tr>
+<td><strong>Reserva</strong></td>
+<td>Una franja tomada por alguien.</td>
+</tr>
+<tr>
+<td><strong>Adelanto</strong></td>
+<td>Lo que se paga para apartar (50%, R10).</td>
+</tr>
+<tr>
+<td><strong>Saldo</strong></td>
+<td>Lo que falta por pagar.</td>
+</tr>
+<tr>
+<td><strong>Facturado / Cobrado</strong></td>
+<td>Lo que vale / lo que entró (R12, R13).</td>
+</tr>
+<tr>
+<td><strong>Cupo</strong></td>
+<td>Una plaza de equipo en un torneo.</td>
+</tr>
+<tr>
+<td><strong>Neo AI</strong></td>
+<td>El asistente de WhatsApp.</td>
+</tr>
+<tr>
+<td><strong>El momento</strong></td>
+<td>Reservar como jugador y verlo caer en la agenda del dueño.</td>
+</tr>
+</tbody>
+</table></div>
+<h3>15.2 Archivos de referencia en este repositorio</h3>
+<div class="scroller"><table>
+<thead>
+<tr>
+<th>Archivo</th>
+<th>Qué contiene</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>README.md</code></td>
+<td>Qué hace cada sección, en prosa</td>
+</tr>
+<tr>
+<td><code>DESIGN.md</code></td>
+<td>El sistema de diseño y el porqué de cada valor</td>
+</tr>
+<tr>
+<td><code>docs/MOLDE.md</code></td>
+<td>Qué se hereda de esta demo a la siguiente</td>
+</tr>
+<tr>
+<td><code>docs/PLAN.md</code></td>
+<td>Las decisiones de la reconstrucción</td>
+</tr>
+<tr>
+<td><code>docs/DESPLIEGUE.md</code></td>
+<td>Cómo se despliega</td>
+</tr>
+<tr>
+<td><code>BRIEF-CURSOR.md</code></td>
+<td>Brief corto para pegar en un agente de código</td>
+</tr>
+<tr>
+<td><code>themes/momentum.css</code></td>
+<td><strong>Los tokens: la fuente de verdad del diseño</strong></td>
+</tr>
+<tr>
+<td><code>supabase/migrations/0001_espacios.sql</code></td>
+<td>El esquema actual, con RLS y concurrencia optimista</td>
+</tr>
+</tbody>
+</table></div>
+<h3>15.3 Cómo correr la demo</h3>
+<pre><code class="language-bash">cd Sportplatz &amp;&amp; python3 dev-server.py   # http://localhost:5173
+</code></pre>
+<p>Son módulos ES: <strong>necesita servirse por HTTP</strong>. <code>dev-server.py</code> manda
+<code>no-store</code>; con el <code>http.server</code> normal el navegador se queda con el JS viejo
+después de cada edición y parece que los cambios no entraron.</p>
+<hr />
+<p><em>Sportplatz · Fily &amp; Co · documento maestro, 2026-08-20.</em></p></main>
+</div>
+<script>/* Marca en el índice la sección que se está leyendo. */
+(function () {
+  var links = Array.prototype.slice.call(document.querySelectorAll('.rail-nav a'));
+  if (!links.length || !('IntersectionObserver' in window)) return;
+
+  var byId = {};
+  links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+  var visible = new Set();
+
+  function paint() {
+    var first = null;
+    links.forEach(function (a) {
+      var id = a.getAttribute('href').slice(1);
+      if (!first && visible.has(id)) first = a;
+    });
+    links.forEach(function (a) { a.classList.toggle('is-on', a === first); });
+  }
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) visible.add(e.target.id); else visible.delete(e.target.id);
+    });
+    paint();
+  }, { rootMargin: '0px 0px -70% 0px' });
+
+  Object.keys(byId).forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) io.observe(el);
+  });
+})();
+</script>

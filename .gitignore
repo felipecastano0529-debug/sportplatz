@@ -13,3 +13,7 @@ node_modules/
 
 # Credenciales locales que nunca deben viajar al repo
 .secretos/
+
+# Next.js
+.next/
+out/
