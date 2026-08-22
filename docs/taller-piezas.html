@@ -1,0 +1,262 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8">
+<title>taller de piezas</title>
+<link rel="stylesheet" href="assets/fuentes/fuentes.css">
+<style>
+:root{
+  --em:#047857; --em-hi:#34d399; --em-deep:#03543f;
+  --red:#e5231f; --amber:#f5a300; --gold:#c98a00;
+  --night:#070b13; --night-2:#0d1622; --night-3:#17233b;
+  --sans:'Archivo',system-ui,sans-serif; --mono:'IBM Plex Mono',monospace;
+  --w1:#ffffff; --w2:rgba(255,255,255,.78); --w3:rgba(255,255,255,.58); --w4:rgba(255,255,255,.42);
+  --hair:rgba(255,255,255,.11);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:transparent;font-family:var(--sans);
+  font-variation-settings:'wdth' 100,'wght' 420;-webkit-font-smoothing:antialiased}
+.pieza{width:820px;padding:46px;display:flex;align-items:center;justify-content:center}
+
+/* ── vidrio de la casa ─────────────────────────────────────────────────────
+   El mismo material del panel del hero: cristal oscuro, filo de luz arriba,
+   sombra en pila y un halo esmeralda que sale del propio objeto. */
+.g{position:relative;border-radius:26px;
+  background:linear-gradient(158deg,rgba(30,44,70,.96) 0%,rgba(15,24,38,.97) 46%,rgba(11,18,30,.98) 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16), inset 0 0 0 1px rgba(255,255,255,.075),
+             0 2px 6px rgba(0,0,0,.5), 0 34px 70px -26px rgba(0,0,0,.8),
+             0 0 120px -34px rgba(52,211,153,.4);
+  color:var(--w1)}
+.g::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:radial-gradient(120% 90% at 88% -10%,rgba(255,255,255,.10),transparent 58%)}
+.rot{font-family:var(--mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--w4)}
+.num{font-variant-numeric:tabular-nums;letter-spacing:-.04em;line-height:.94;
+  font-variation-settings:'wdth' 106,'wght' 800}
+.pill{display:inline-flex;align-items:center;gap:7px;padding:6px 13px;border-radius:999px;
+  font-size:.78rem;font-variation-settings:'wdth' 102,'wght' 650;letter-spacing:-.01em}
+.dot{width:8px;height:8px;border-radius:50%;flex:none}
+
+/* ══ 1 · LA PLATA ═══════════════════════════════════════════════════════ */
+#plata .g{width:660px;padding:34px 36px 30px}
+.par{display:grid;grid-template-columns:1fr auto 1fr;align-items:end;gap:22px}
+.par .col{display:flex;flex-direction:column;gap:9px}
+.par .num{font-size:2.55rem}
+.brecha{align-self:stretch;width:1px;background:linear-gradient(180deg,transparent,var(--hair) 22%,var(--hair) 78%,transparent)}
+.barra{height:9px;border-radius:6px;background:rgba(255,255,255,.09);overflow:hidden;margin-top:3px}
+.barra i{display:block;height:100%;border-radius:6px}
+.pie{margin-top:26px;padding-top:20px;border-top:1px solid var(--hair);
+  display:flex;align-items:center;justify-content:space-between;gap:18px}
+.saldos{display:flex;flex-direction:column;gap:4px}
+.saldos b{font-size:1.5rem}
+.avs{display:flex}
+.avs span{width:32px;height:32px;border-radius:50%;margin-left:-7px;
+  box-shadow:0 0 0 2.5px #101a2c;display:grid;place-items:center;
+  font-size:.68rem;font-variation-settings:'wght' 700;color:#0b111c}
+
+/* ══ 2 · NEO ════════════════════════════════════════════════════════════ */
+#neo .g{width:520px;padding:26px 24px 24px;display:flex;flex-direction:column;gap:12px}
+.cab{display:flex;align-items:center;gap:11px;padding-bottom:16px;border-bottom:1px solid var(--hair)}
+.cab .av{width:38px;height:38px;border-radius:50%;background:linear-gradient(140deg,#34d399,#047857);
+  display:grid;place-items:center;font-size:.9rem;font-variation-settings:'wght' 800;color:#04231a}
+.bur{max-width:82%;padding:11px 14px;border-radius:16px;font-size:.86rem;line-height:1.45}
+.bur--in{align-self:flex-start;background:rgba(255,255,255,.075);border-bottom-left-radius:5px;color:var(--w2)}
+.bur--out{align-self:flex-end;background:linear-gradient(150deg,#0e6b4e,#0a5340);border-bottom-right-radius:5px}
+.horas{align-self:flex-end;display:flex;gap:7px;margin-top:1px}
+.horas span{padding:7px 12px;border-radius:11px;background:rgba(52,211,153,.14);
+  box-shadow:inset 0 0 0 1px rgba(52,211,153,.3);font-family:var(--mono);
+  font-size:.72rem;color:var(--em-hi)}
+.tick{align-self:flex-end;font-family:var(--mono);font-size:.6rem;color:var(--w4);letter-spacing:.08em}
+.conf{margin-top:6px;padding:14px 16px;border-radius:16px;
+  background:linear-gradient(150deg,rgba(52,211,153,.16),rgba(52,211,153,.05));
+  box-shadow:inset 0 0 0 1px rgba(52,211,153,.28);display:flex;align-items:center;gap:13px}
+.conf .ok{width:30px;height:30px;border-radius:50%;background:var(--em-hi);flex:none;
+  display:grid;place-items:center;color:#052e22;font-size:.95rem;font-variation-settings:'wght' 800}
+
+/* ══ 3 · DEPORTES ═══════════════════════════════════════════════════════ */
+#deportes{width:1000px}
+#deportes .baraja{position:relative;width:860px;height:390px}
+.carta{position:absolute;width:300px;height:340px;border-radius:24px;padding:22px;
+  background:linear-gradient(158deg,rgba(34,50,78,.98) 0%,rgba(14,23,38,.99) 55%,rgba(10,17,28,1) 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18), inset 0 0 0 1px rgba(255,255,255,.09),
+             0 26px 50px -22px rgba(0,0,0,.85), 0 0 70px -30px rgba(var(--crgb),.6);
+  display:flex;flex-direction:column;justify-content:space-between;
+  transform-origin:50% 100%}
+.carta::before{content:"";position:absolute;inset:0;border-radius:inherit;
+  background:radial-gradient(90% 70% at 50% 0%,rgba(var(--crgb),.42),transparent 62%)}
+.carta .plano{position:relative;width:100%;height:150px;color:rgba(255,255,255,.5)}
+.carta .plano svg{width:100%;height:100%}
+.carta .plano rect,.carta .plano circle,.carta .plano line{fill:none;stroke:currentColor;
+  stroke-width:2.4;vector-effect:non-scaling-stroke}
+.carta .plano .net{stroke:rgb(var(--crgb));stroke-width:3.4}
+.carta h3{position:relative;font-size:1.28rem;letter-spacing:-.03em;
+  font-variation-settings:'wdth' 106,'wght' 780}
+.carta p{position:relative;font-family:var(--mono);font-size:.65rem;letter-spacing:.14em;
+  text-transform:uppercase;color:rgb(var(--crgb));margin-top:5px}
+.carta .marca{position:relative;width:34px;height:34px;border-radius:50%;background:rgb(var(--crgb));
+  box-shadow:0 0 26px rgba(var(--crgb),.7)}
+
+/* ══ 4 · TORNEOS ════════════════════════════════════════════════════════ */
+#llaves .g{width:700px;padding:30px 32px}
+.llave{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 30px;align-items:start}
+.ronda{display:flex;flex-direction:column;gap:12px}
+.ronda .rot{margin-bottom:4px}
+.duelo{border-radius:14px;padding:10px 12px;background:rgba(255,255,255,.055);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.075);display:flex;flex-direction:column;gap:7px}
+.duelo.gana{background:linear-gradient(150deg,rgba(52,211,153,.15),rgba(52,211,153,.04));
+  box-shadow:inset 0 0 0 1px rgba(52,211,153,.3)}
+.eq{display:flex;align-items:center;gap:9px;font-size:.82rem;
+  font-variation-settings:'wdth' 102,'wght' 600}
+.eq em{margin-left:auto;font-style:normal;font-family:var(--mono);font-size:.76rem;color:var(--w3)}
+.eq.w em{color:var(--em-hi)}
+.eq.l{color:var(--w4)}
+.copa{margin-top:22px;padding-top:18px;border-top:1px solid var(--hair);
+  display:flex;align-items:center;gap:14px}
+.podio{display:flex;align-items:flex-end;gap:5px;height:34px}
+.podio i{width:16px;border-radius:3px 3px 0 0;display:block}
+
+/* ══ 5 · COMUNIDAD ══════════════════════════════════════════════════════ */
+#comunidad .g{width:640px;padding:30px 32px}
+.club{display:flex;align-items:center;gap:14px;padding:14px 0;border-top:1px solid var(--hair)}
+.club:first-of-type{border-top:0;padding-top:2px}
+.escudo{width:42px;height:42px;flex:none;display:grid;place-items:center;
+  font-size:.95rem;font-variation-settings:'wght' 800;color:#08111c;
+  clip-path:polygon(50% 0,100% 16%,100% 62%,50% 100%,0 62%,0 16%)}
+.club .n{display:flex;flex-direction:column;gap:3px}
+.club .n b{font-size:.98rem;font-variation-settings:'wdth' 102,'wght' 700;letter-spacing:-.015em}
+.club .n span{font-family:var(--mono);font-size:.65rem;letter-spacing:.1em;color:var(--w4)}
+.racha{margin-left:auto;display:flex;gap:4px}
+.racha i{width:9px;height:20px;border-radius:3px;display:block}
+.fama{margin-top:24px;padding:18px 20px;border-radius:18px;background:rgba(255,255,255,.045);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)}
+.fama .fila{display:flex;align-items:center;gap:12px;font-size:.86rem;padding:7px 0}
+.fama .fila b{margin-left:auto;font-family:var(--mono);color:var(--em-hi);font-size:.82rem}
+.fama .pos{font-family:var(--mono);font-size:.68rem;color:var(--w4);width:20px}
+</style></head><body>
+
+<!-- ══════════ 1 · LA PLATA ══════════ -->
+<div class="pieza" id="plata"><div class="g">
+  <div class="par">
+    <div class="col">
+      <span class="rot">Facturado · 30 días</span>
+      <span class="num">$108.9M</span>
+      <div class="barra"><i style="width:100%;background:rgba(255,255,255,.3)"></i></div>
+    </div>
+    <div class="brecha"></div>
+    <div class="col">
+      <span class="rot" style="color:var(--em-hi)">Cobrado · 30 días</span>
+      <span class="num" style="color:var(--em-hi)">$88.5M</span>
+      <div class="barra"><i style="width:81%;background:linear-gradient(90deg,#047857,#34d399)"></i></div>
+    </div>
+  </div>
+  <div class="pie">
+    <div class="saldos">
+      <span class="rot">Por cobrar</span>
+      <b class="num" style="color:#f5a300">$20.441.000</b>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <div class="avs">
+        <span style="background:#7dd3fc">EP</span><span style="background:#fca5a5">FO</span>
+        <span style="background:#fcd34d">KC</span><span style="background:#a7f3d0">DM</span>
+        <span style="background:rgba(255,255,255,.22);color:#fff">+10</span>
+      </div>
+      <span class="pill" style="background:rgba(245,163,0,.16);box-shadow:inset 0 0 0 1px rgba(245,163,0,.32);color:#ffca63">
+        <span class="dot" style="background:#f5a300"></span>14 con saldo</span>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══════════ 2 · NEO ══════════ -->
+<div class="pieza" id="neo"><div class="g">
+  <div class="cab">
+    <span class="av">N</span>
+    <div><div style="font-size:.92rem;font-variation-settings:'wght' 700">Neo AI</div>
+      <div class="rot" style="letter-spacing:.1em">en línea · responde en 8 s</div></div>
+    <span class="pill" style="margin-left:auto;background:rgba(52,211,153,.14);color:var(--em-hi)">
+      <span class="dot" style="background:#34d399"></span>WhatsApp</span>
+  </div>
+  <div class="bur bur--in">¿Tienen cancha libre mañana a las 7?</div>
+  <div class="bur bur--out">Mañana sábado, Cancha sintética. Me quedan estas horas:</div>
+  <div class="horas"><span>6:00 p.m.</span><span>7:00 p.m.</span><span>9:00 p.m.</span></div>
+  <div class="bur bur--in">Las 7 me sirve</div>
+  <div class="conf">
+    <span class="ok">✓</span>
+    <div><div style="font-size:.9rem;font-variation-settings:'wght' 700">Apartada · Sintética 1</div>
+      <div class="rot" style="letter-spacing:.1em;margin-top:3px">sáb 23 · 7:00 p. m. · adelanto $60.000</div></div>
+    <span class="pill" style="margin-left:auto;font-family:var(--mono);background:rgba(255,255,255,.09);color:var(--w2)">SP-3F9A</span>
+  </div>
+</div></div>
+
+<!-- ══════════ 3 · DEPORTES ══════════ -->
+<div class="pieza" id="deportes"><div class="baraja">
+  <div class="carta" style="--crgb:226,80,70;left:0;top:44px;transform:rotate(-9deg)">
+    <span class="marca"></span>
+    <div class="plano"><svg viewBox="0 0 160 100"><rect x="6" y="6" width="148" height="88" rx="3"/><line x1="80" y1="6" x2="80" y2="94"/><circle cx="80" cy="50" r="13"/></svg></div>
+    <div><h3>Paintball</h3><p>Eliminaciones</p></div>
+  </div>
+  <div class="carta" style="--crgb:220,160,80;left:132px;top:26px;transform:rotate(-4.5deg)">
+    <span class="marca"></span>
+    <div class="plano"><svg viewBox="0 0 160 100"><rect x="12" y="10" width="136" height="80" rx="2"/><line class="net" x1="80" y1="10" x2="80" y2="90"/></svg></div>
+    <div><h3>Voleibol</h3><p>Puntos</p></div>
+  </div>
+  <div class="carta" style="--crgb:90,140,240;left:264px;top:14px;transform:rotate(0deg)">
+    <span class="marca"></span>
+    <div class="plano"><svg viewBox="0 0 160 100"><rect x="8" y="8" width="144" height="84" rx="1"/><rect x="8" y="18" width="144" height="64"/><line class="net" x1="80" y1="8" x2="80" y2="92"/><line x1="40" y1="18" x2="40" y2="82"/><line x1="120" y1="18" x2="120" y2="82"/></svg></div>
+    <div><h3>Tenis</h3><p>Puntos</p></div>
+  </div>
+  <div class="carta" style="--crgb:30,190,205;left:396px;top:26px;transform:rotate(4.5deg)">
+    <span class="marca"></span>
+    <div class="plano"><svg viewBox="0 0 160 100"><rect x="10" y="6" width="140" height="88" rx="2"/><line class="net" x1="80" y1="6" x2="80" y2="94"/><line x1="38" y1="6" x2="38" y2="94"/><line x1="122" y1="6" x2="122" y2="94"/><line x1="38" y1="50" x2="122" y2="50"/></svg></div>
+    <div><h3>Pádel</h3><p>Puntos</p></div>
+  </div>
+  <div class="carta" style="--crgb:40,205,110;left:528px;top:44px;transform:rotate(9deg)">
+    <span class="marca"></span>
+    <div class="plano"><svg viewBox="0 0 160 100"><rect x="4" y="4" width="152" height="92" rx="2"/><line class="net" x1="80" y1="4" x2="80" y2="96"/><circle cx="80" cy="50" r="16"/><rect x="4" y="26" width="24" height="48"/><rect x="132" y="26" width="24" height="48"/></svg></div>
+    <div><h3>Sintética</h3><p>Goles</p></div>
+  </div>
+</div></div>
+
+<!-- ══════════ 4 · TORNEOS ══════════ -->
+<div class="pieza" id="llaves"><div class="g">
+  <div class="llave">
+    <div class="ronda">
+      <span class="rot">Cuartos</span>
+      <div class="duelo"><span class="eq w"><i class="dot" style="background:#e5231f"></i>Los Vikingos<em>2</em></span><span class="eq l"><i class="dot" style="background:#1447e6"></i>Real Manrique<em>1</em></span></div>
+      <div class="duelo"><span class="eq w"><i class="dot" style="background:#0f8a4d"></i>Deportivo La 70<em>1</em></span><span class="eq l"><i class="dot" style="background:#ff7a00"></i>Atlético Poblado<em>0</em></span></div>
+      <div class="duelo"><span class="eq l"><i class="dot" style="background:#8b5cf6"></i>FC Sabaneta<em>1</em></span><span class="eq w"><i class="dot" style="background:#8b5cf6"></i>Los Tigres<em>3</em></span></div>
+      <div class="duelo"><span class="eq w"><i class="dot" style="background:#0ea5e9"></i>Envigado FC<em>3</em></span><span class="eq l"><i class="dot" style="background:#f59e0b"></i>Barrio Antioquia<em>2</em></span></div>
+    </div>
+    <div class="ronda">
+      <span class="rot">Semifinal</span>
+      <div class="duelo gana" style="margin-top:22px"><span class="eq w"><i class="dot" style="background:#e5231f"></i>Los Vikingos<em>3</em></span><span class="eq l"><i class="dot" style="background:#0f8a4d"></i>Deportivo La 70<em>0</em></span></div>
+      <div class="duelo gana" style="margin-top:44px"><span class="eq w"><i class="dot" style="background:#8b5cf6"></i>Los Tigres<em>1</em></span><span class="eq l"><i class="dot" style="background:#0ea5e9"></i>Envigado FC<em>0</em></span></div>
+    </div>
+    <div class="ronda">
+      <span class="rot">Final</span>
+      <div class="duelo" style="margin-top:96px"><span class="eq"><i class="dot" style="background:#e5231f"></i>Los Vikingos<em>—</em></span><span class="eq"><i class="dot" style="background:#8b5cf6"></i>Los Tigres<em>—</em></span></div>
+    </div>
+  </div>
+  <div class="copa">
+    <div class="podio"><i style="height:20px;background:#9aa3ae"></i><i style="height:34px;background:#f5c04a"></i><i style="height:14px;background:#c08457"></i></div>
+    <div><div style="font-size:.9rem;font-variation-settings:'wght' 700">Los ganadores avanzan solos</div>
+      <div class="rot" style="letter-spacing:.1em;margin-top:3px">tabla · anotadores · valla menos vencida</div></div>
+    <span class="pill" style="margin-left:auto;background:rgba(255,255,255,.08);color:var(--w2)">8 equipos</span>
+  </div>
+</div></div>
+
+<!-- ══════════ 5 · COMUNIDAD ══════════ -->
+<div class="pieza" id="comunidad"><div class="g">
+  <div class="club"><span class="escudo" style="background:#e5231f;color:#fff">LV</span>
+    <span class="n"><b>Los Vikingos</b><span>18 J · 12 G · 3 E · 3 P</span></span>
+    <span class="racha"><i style="background:#0d9c5f"></i><i style="background:#0d9c5f"></i><i style="background:rgba(255,255,255,.2)"></i><i style="background:#0d9c5f"></i><i style="background:#0d9c5f"></i></span></div>
+  <div class="club"><span class="escudo" style="background:#1447e6;color:#fff">RM</span>
+    <span class="n"><b>Real Manrique</b><span>16 J · 9 G · 2 E · 5 P</span></span>
+    <span class="racha"><i style="background:#e5231f"></i><i style="background:#0d9c5f"></i><i style="background:#0d9c5f"></i><i style="background:rgba(255,255,255,.2)"></i><i style="background:#0d9c5f"></i></span></div>
+  <div class="club"><span class="escudo" style="background:#f5a300">DL</span>
+    <span class="n"><b>Deportivo La 70</b><span>15 J · 8 G · 4 E · 3 P</span></span>
+    <span class="racha"><i style="background:#0d9c5f"></i><i style="background:rgba(255,255,255,.2)"></i><i style="background:#0d9c5f"></i><i style="background:#e5231f"></i><i style="background:#0d9c5f"></i></span></div>
+  <div class="fama">
+    <span class="rot">Salón de la fama · goleadores</span>
+    <div class="fila" style="margin-top:8px"><span class="pos">01</span><span class="dot" style="background:#e5231f;width:9px;height:9px"></span>Santiago Mejía<b>24</b></div>
+    <div class="fila"><span class="pos">02</span><span class="dot" style="background:#1447e6;width:9px;height:9px"></span>Kevin Marín<b>19</b></div>
+    <div class="fila"><span class="pos">03</span><span class="dot" style="background:#f5a300;width:9px;height:9px"></span>Julián Betancur<b>17</b></div>
+  </div>
+</div></div>
+
+</body></html>

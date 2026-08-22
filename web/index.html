@@ -1,0 +1,3007 @@
+<!doctype html>
+<html lang="es">
+<head>
+<script>document.documentElement.className="js"</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sportplatz — la plataforma de tu complejo deportivo</title>
+<meta name="description" content="Agenda por hora que no se contradice, la plata separada entre facturado y cobrado, torneos con llaves que avanzan solas y Neo contestando por WhatsApp. Para canchas sintéticas, pádel, tenis, voleibol playa y paintball.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#070b13">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sportplatz — la plataforma de tu complejo deportivo">
+<meta property="og:description" content="Se acabó el cuaderno. Agenda por hora, facturado y cobrado separados, torneos con llaves, y un asistente que reserva por WhatsApp. Ábrela y reserva una cancha.">
+<!-- ABSOLUTAS, no relativas. Los rastreadores de WhatsApp, Facebook y X no
+     resuelven rutas relativas: si van sin dominio, el enlace compartido sale
+     sin imagen. Y este producto se reparte por WhatsApp, así que la tarjeta
+     del enlace ES la primera pantalla.
+     Van contra el dominio que sirve la página HOY. sportplatz.com NO es
+     nuestro: está registrado desde 1999 y aparcado por un tercero, así que
+     apuntar ahí el canonical le regalaba la página a otro y dejaba la
+     imagen de la tarjeta en un servidor ajeno. El día que haya dominio
+     propio se cambian las tres de aquí abajo y la del canonical. -->
+<meta property="og:url" content="https://sportplatz-web.vercel.app/">
+<meta property="og:image" content="https://sportplatz-web.vercel.app/assets/fondos/estadio-desktop.jpg?v=1">
+<meta property="og:image:width" content="1800">
+<meta property="og:image:height" content="1013">
+<meta property="og:locale" content="es_CO">
+<meta property="og:site_name" content="Sportplatz">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://sportplatz-web.vercel.app/">
+
+<!-- Archivo trae eje de ancho (wdth 62–125). De una sola familia salen dos
+     voces: el titular ancho y muy pesado de gráfico de televisión deportiva,
+     y el texto de ancho normal. IBM Plex Mono solo para dato técnico.
+     AUTO-ALOJADAS, no desde el CDN de Google: eran dos dominios externos con
+     su DNS y su TLS en la ruta crítica de la primera pintada, para una
+     página que por lo demás no pide nada de fuera. Las @font-face están
+     abajo, dentro del <style>, con unicode-range: latin-ext existe en disco
+     pero el navegador no lo pide si la página no usa esos caracteres.
+     El crossorigin del preload es obligatorio aunque sea el mismo origen, o
+     la fuente se descarga dos veces. -->
+<link rel="preload" as="font" type="font/woff2" crossorigin
+      href="assets/fuentes/archivo-100-900-latin.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin
+      href="assets/fuentes/ibm-plex-mono-400-latin.woff2">
+
+
+<!-- El fondo del hero. Va con la misma srcset/sizes que el <img>, o el
+     navegador descarga dos archivos en vez de uno. -->
+<link rel="preload" as="image" href="assets/fondos/cuadros-1440.webp"
+      imagesrcset="assets/fondos/cuadros-900.webp 900w,
+                   assets/fondos/cuadros-1440.webp 1440w,
+                   assets/fondos/cuadros-2560.webp 2560w"
+      imagesizes="100vw" fetchpriority="high">
+
+<!-- El panel de la agenda es lo primero que hay después del hero, y llegaba
+     tarde: el escáner de precarga no lo ve porque está a mitad del documento
+     y para cuando el parser llega ya estás bajando. Precargado, está
+     descargado y descodificado antes de que la sección aparezca.
+     imagesrcset/imagesizes tienen que ser LOS MISMOS del <img> o el
+     navegador descarga dos archivos en vez de uno. -->
+<link rel="preload" as="image" href="assets/producto/agenda-780.webp"
+      imagesrcset="assets/producto/agenda-780.webp 780w,
+                   assets/producto/agenda-1560.webp 1560w"
+      imagesizes="(min-width:64rem) 700px, 92vw">
+
+<link rel="icon" type="image/png" href="assets/marca/favicon.png?v=1">
+<link rel="apple-touch-icon" href="assets/marca/favicon.png?v=1">
+
+<style>
+/* ══ FUENTES AUTO-ALOJADAS ═══════════════════════════════════════════
+   format('woff2') y NUNCA format('woff2-variations'): con lo segundo el
+   navegador descarta la @font-face entera, en silencio y sin error, y la
+   página cae al fallback como si el archivo no existiera.
+   ════════════════════════════════════════════════════════════════════ */
+/* Archivo · 100-900 · latin-ext */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+  src: url(assets/fuentes/archivo-100-900-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* Archivo · 100-900 · latin */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+  src: url(assets/fuentes/archivo-100-900-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* IBM Plex Mono · 400 · latin-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(assets/fuentes/ibm-plex-mono-400-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* IBM Plex Mono · 400 · latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(assets/fuentes/ibm-plex-mono-400-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* IBM Plex Mono · 500 · latin-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(assets/fuentes/ibm-plex-mono-500-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* IBM Plex Mono · 500 · latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(assets/fuentes/ibm-plex-mono-500-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* IBM Plex Mono · 600 · latin-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(assets/fuentes/ibm-plex-mono-600-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* IBM Plex Mono · 600 · latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(assets/fuentes/ibm-plex-mono-600-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SPORTPLATZ · web pública
+   Piel heredada de DESIGN.md: esmeralda sobre noche de estadio.
+   Anatomía heredada de la landing de Pida Pues; la piel NO — allá era azul
+   plano sobre blanco con Geist, aquí es noche de estadio con Archivo.
+
+   Las seis leyes de la casa, aplicadas aquí:
+   1. Un solo motor de scroll (un listener + un rAF) al final del archivo.
+   2. offsetTop, nunca getBoundingClientRect sobre algo que se anima.
+   3. Dos transforms nunca comparten elemento — de ahí los nodos anidados.
+   4. Leer todo, después escribir todo.
+   5. Todo se apaga con prefers-reduced-motion.
+   6. Solo se promete lo que la plataforma cumple. Los totales se suman en
+      código; no hay un número escrito a mano en la calculadora.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root{
+  /* ── color ─────────────────────────────────────────────────────────────
+     Esmeralda #047857 da 5.48:1 sobre blanco: el MISMO color sirve de
+     relleno y de texto. Sobre negro no se ve, y ahí sube a #34d399. */
+  --em:#047857;  --em-hi:#34d399;  --em-deep:#03543f;
+  --em-rgb:4,120,87;
+  --red:#e5231f;  --amber:#f5a300;  --green:#0d9c5f;  --gold:#c98a00;
+
+  --night:#070b13;      /* la noche de estadio: fondo de las bandas oscuras */
+  --night-2:#0d1622;
+  --night-3:#17233b;    /* superficie de énfasis dentro de la noche */
+  /* No es blanco puro: el blanco puro no existe en la naturaleza y al lado
+     de bone y mist se lee como un agujero. #fcfdfe conserva la misma
+     temperatura fría de la familia y sigue dando 19.3:1 contra la tinta. */
+  --paper:#fcfdfe;
+  --bone:#f5f7fa;
+  --mist:#eef1f6;
+  --line:#e4e9f1;  --line-2:#d7dee9;
+
+  --ink:#070b13;  --ink-2:#465162;  --ink-3:#657286;  --ink-4:#8f9cb0;
+
+  /* Alfas calculadas contra #070b13, no elegidas a ojo:
+     .78 → 10.8:1 · .60 → 7.2:1 · .46 → 4.5:1, el mínimo que se permite. */
+  --on-night:#ffffff;
+  --on-night-2:rgba(255,255,255,.78);
+  --on-night-3:rgba(255,255,255,.60);
+  --on-night-4:rgba(255,255,255,.46);
+  --hair-night:rgba(255,255,255,.13);
+
+  --shadow-rgb:11,20,38;
+
+  /* ── forma ─────────────────────────────────────────────────────────────
+     Tres radios, no uno por componente. Nunca 999px en un campo de texto. */
+  --r:10px;  --r-lg:18px;  --r-xl:26px;
+
+  --sans:'Archivo',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+
+  /* Nunca ease-in en UI: empieza lento justo cuando el ojo está mirando. */
+  --ease:cubic-bezier(.16,1,.3,1);
+  /* Muelle críticamente amortiguado, sin rebote: es lo que Apple usa para
+     mover y recolocar (damping 1.0, respuesta ~0.4 s). El rebote se reserva
+     para lo que el dedo ha lanzado, y una cápsula que se encoge sola no lo
+     ha lanzado nadie. */
+  --muelle:cubic-bezier(.32,.72,0,1);
+  --ease-io:cubic-bezier(.77,0,.175,1);
+
+  --pad:clamp(20px,4.4vw,56px);
+  --wrap:1280px;
+
+  /* Escala de 4pt con nombre por intención, no por píxeles. */
+  --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-6:24px;
+  --s-8:32px; --s-12:48px; --s-16:64px; --s-24:96px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  scroll-behavior:smooth;scroll-padding-top:96px}
+body{font-family:var(--sans);font-variation-settings:'wdth' 100,'wght' 420;
+  /* clip y no hidden: `hidden` convierte al body en un contenedor
+     desplazable —con su caja de scroll, su capa y su hit-testing— para algo
+     que solo tiene que recortar. `clip` recorta y ya. */
+  background:var(--paper);color:var(--ink);line-height:1.6;overflow-x:clip;
+  font-size:clamp(.95rem,.35vw + .87rem,1.02rem)}
+a{color:inherit;text-decoration:none}
+img,svg{display:block;max-width:100%}
+button,input{font:inherit;color:inherit;background:none;border:0}
+button{cursor:pointer}
+::selection{background:var(--em);color:#fff}
+:focus-visible{outline:2px solid var(--em-hi);outline-offset:3px;border-radius:4px}
+
+/* ── tipografía ────────────────────────────────────────────────────────────
+   El tracking es específico del tamaño: display muy apretado, micro abierto.
+   La interlínea BAJA cuando el cuerpo sube. */
+.d{font-size:clamp(2.55rem,7.1vw,6.2rem);font-variation-settings:'wdth' 112,'wght' 800;
+  line-height:.9;letter-spacing:-.045em;overflow-wrap:break-word}
+.h2{font-size:clamp(1.95rem,4.4vw,3.55rem);font-variation-settings:'wdth' 108,'wght' 800;
+  line-height:.98;letter-spacing:-.035em;overflow-wrap:break-word}
+.h3{font-size:clamp(1.12rem,1.5vw,1.4rem);font-variation-settings:'wdth' 104,'wght' 700;
+  line-height:1.18;letter-spacing:-.02em}
+.h4{font-size:1rem;font-variation-settings:'wdth' 102,'wght' 700;letter-spacing:-.014em;line-height:1.3}
+.lead{font-size:clamp(1.02rem,1.25vw,1.19rem);line-height:1.55;color:var(--ink-2);
+  font-variation-settings:'wdth' 100,'wght' 420;letter-spacing:-.008em}
+.small{font-size:.875rem;line-height:1.55;color:var(--ink-3)}
+.mono{font-family:var(--mono);font-size:.7rem;font-weight:500;letter-spacing:.13em;
+  text-transform:uppercase;line-height:1.4}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* Sobre fondo oscuro sube el interlineado: la letra clara se percibe más fina. */
+.on-night{color:var(--on-night)}
+.on-night .lead{color:var(--on-night-2);line-height:1.62}
+.on-night .small{color:var(--on-night-3);line-height:1.6}
+.on-night .mono{color:var(--em-hi)}
+.mono--dim{color:var(--ink-4)}
+
+/* rótulo: barra corta de 1px + texto mono. Sin pastilla, sin punto. */
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);
+  font-size:.7rem;font-weight:500;letter-spacing:.13em;text-transform:uppercase;color:var(--em)}
+.eyebrow::before{content:"";width:26px;height:1px;background:currentColor;flex:none}
+.on-night .eyebrow{color:var(--em-hi)}
+
+/* ── layout ───────────────────────────────────────────────────────────────
+   La sección es una BANDA de borde a borde. El color llega al filo de la
+   ventana; el contenido va centrado y limitado. Nada de tarjetas flotando. */
+section{position:relative}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--pad);position:relative;z-index:4}
+.band{padding:clamp(76px,8.5vw,140px) 0}
+.b-paper{background:var(--paper)}
+.b-bone{background:var(--bone)}
+.b-mist{background:var(--mist)}
+.b-night{background:var(--night);color:var(--on-night)}
+.b-night-2{background:var(--night-2);color:var(--on-night)}
+
+/* Cabecera de sección: titular y bajada juntos, no a lados opuestos —
+   separados dejan un vacío en medio y dejan de leerse como una unidad. */
+.head{max-width:min(100%,58rem);display:flex;flex-direction:column;gap:var(--s-4)}
+/* El ancho del titular se mide en SU propia tipografía. Si se limita la
+   cabecera en `ch`, el `ch` sale de la métrica del cuerpo (~9px) y un display
+   de 56px acaba partido en seis líneas de tres palabras. */
+.head .h2{max-width:19ch}
+.head .h2{margin-top:var(--s-2)}
+.head .lead{max-width:52ch}
+/* Siete cabeceras con la misma forma se leen como una plantilla, por muy
+   bien que esté cada una. Las pares cuelgan de una regla a todo el ancho de
+   la caja: la mitad derecha vacía pasa a ser estructura en vez de hueco, y
+   la regla es el mismo recurso que ya ordena las trece vistas, los planes y
+   las preguntas. Titular y bajada siguen JUNTOS y debajo — separarlos a
+   lados opuestos deja un vacío en medio y rompe la unidad. */
+.head--rule{max-width:100%;padding-top:var(--s-6);border-top:1px solid var(--line-2)}
+.head--rule > *{align-self:flex-start}
+.b-night .head--rule{border-top-color:rgba(255,255,255,.20)}
+
+/* ── costura ──────────────────────────────────────────────────────────────
+   Salto claro↔oscuro: CURVA, no fundido. Interpolar entre blanco y casi
+   negro pasa por una franja de gris que no pertenece a ninguna de las dos
+   superficies y se lee como suciedad. La curva es asimétrica y con una sola
+   ondulación: una onda simétrica se reconoce como plantilla al instante.
+   Va como SUPERPOSICIÓN (z-index 3) por encima de los fondos y por debajo
+   del contenido, o cualquier capa absolute la tapa. */
+.seam{position:absolute;left:0;right:0;bottom:-1px;width:100%;
+  height:clamp(46px,5.2vw,88px);z-index:3;pointer-events:none;display:block}
+/* El -1px no es cosmético: el borde del SVG cae en un píxel fraccionario y
+   deja asomar una hebra de la banda de abajo justo en el empalme. */
+
+/* ── botones ──────────────────────────────────────────────────────────────
+   Todo lo pulsable baja a scale(.97) en :active. Nada de transition:all. */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  padding:13px 22px;border-radius:var(--r);font-size:.95rem;
+  font-variation-settings:'wdth' 102,'wght' 600;letter-spacing:-.012em;white-space:nowrap;
+  transition:background .18s var(--ease),color .18s var(--ease),
+             box-shadow .18s var(--ease),transform .14s var(--ease)}
+/* Se LEVANTA al pasar por encima y se HUNDE al pulsar. Un botón que solo
+   cambia de color no se siente como una pieza; uno que se mueve un píxel y
+   alarga su sombra, sí. Un solo `transform` con los dos valores dentro: dos
+   declaraciones separadas se pisarían. */
+@media (hover:hover) and (pointer:fine){
+  .btn:hover{transform:translateY(-1px)}
+}
+.btn:active{transform:translateY(0) scale(.97)}
+
+/* ── el material del botón ─────────────────────────────────────────────────
+   Dos capas, cada una en su pseudo-elemento porque cada una lleva su propio
+   transform y en el mismo nodo se pisarían sin dar ningún error.
+   ::before es el brillo especular — una lámina de luz en la mitad de arriba,
+   recortada por el radio. Es lo que hace que la superficie parezca curva en
+   vez de un rectángulo de color plano.
+   ::after es el barrido: un destello estrecho que cruza UNA vez al pasar por
+   encima. Va con transform, nunca con background-position, que repinta la
+   capa entera en cada fotograma. */
+.btn{position:relative;overflow:hidden;isolation:isolate}
+.btn > *{position:relative;z-index:2}
+.btn::before{content:"";position:absolute;left:1px;right:1px;top:1px;height:46%;
+  border-radius:calc(var(--r) - 1px) calc(var(--r) - 1px) 40% 40%;
+  background:linear-gradient(180deg,rgba(255,255,255,.20),rgba(255,255,255,0));
+  pointer-events:none;z-index:1}
+.btn::after{content:"";position:absolute;top:0;bottom:0;width:38%;left:-45%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.26),transparent);
+  transform:translateX(0);pointer-events:none;z-index:1}
+@media (hover:hover) and (pointer:fine){
+  .btn:hover::after{transform:translateX(380%);
+    transition:transform .62s cubic-bezier(.32,0,.24,1)}
+}
+/* Los secundarios son superficie clara o transparente: ahí una lámina de luz
+   blanca no se ve y el barrido ensucia. */
+.btn-ghost::before,.btn-ghost::after,
+.btn-line::before,.btn-line::after{display:none}
+/* Cinco sombras a la vez, no una difusa: luz arriba, sombra abajo, contacto,
+   proyección y halo. Una sola sombra es la firma de lo genérico. El degradado
+   vertical le da el volumen que un plano de color no tiene. */
+.btn-em{color:#fff;
+  background:linear-gradient(180deg,#0a8f68 0%,var(--em) 48%,#036244 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28),
+             inset 0 -1px 0 rgba(0,0,0,.22),
+             0 1px 2px rgba(var(--shadow-rgb),.34),
+             0 8px 20px -10px rgba(var(--em-rgb),.85),
+             0 0 34px -14px rgba(var(--em-rgb),.55)}
+.btn-em:hover{background:linear-gradient(180deg,#0d9e74 0%,#059669 48%,#046b4b 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.34),
+             inset 0 -1px 0 rgba(0,0,0,.22),
+             0 2px 3px rgba(var(--shadow-rgb),.34),
+             0 14px 30px -12px rgba(var(--em-rgb),.95),
+             0 0 44px -14px rgba(var(--em-rgb),.7)}
+/* Al pulsar se INVIERTE: se va la luz interior y entra una sombra interior.
+   Es lo que hace que se sienta que se hunde en vez de solo encogerse. */
+.btn-em:active{box-shadow:inset 0 2px 5px rgba(0,0,0,.30),
+                          0 2px 6px rgba(var(--em-rgb),.30)}
+.btn-ink{color:#fff;
+  background:linear-gradient(180deg,#1a2436 0%,var(--ink) 52%,#03060c 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.20),
+             inset 0 -1px 0 rgba(0,0,0,.3),
+             0 1px 2px rgba(var(--shadow-rgb),.34),
+             0 8px 20px -10px rgba(var(--shadow-rgb),.6)}
+.btn-ink:hover{box-shadow:inset 0 1px 0 rgba(255,255,255,.26),
+             inset 0 -1px 0 rgba(0,0,0,.3),
+             0 2px 3px rgba(var(--shadow-rgb),.34),
+             0 14px 30px -12px rgba(var(--shadow-rgb),.7)}
+.btn-ink:active{box-shadow:inset 0 2px 5px rgba(0,0,0,.42),
+                           0 2px 6px rgba(var(--shadow-rgb),.3)}
+.btn-ink:hover{background:var(--em)}
+.btn-ghost{color:var(--on-night);box-shadow:inset 0 0 0 1px rgba(255,255,255,.22)}
+.btn-ghost:hover{background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px rgba(255,255,255,.4)}
+.btn-line{color:var(--ink);box-shadow:inset 0 0 0 1px var(--line-2)}
+.btn-line:hover{box-shadow:inset 0 0 0 1px var(--ink)}
+.btn-lg{padding:16px 28px;font-size:1.02rem}
+.arw{display:inline-block;transition:transform .3s var(--ease)}
+@media (hover:hover) and (pointer:fine){
+  .btn:hover .arw,.lnk:hover .arw{transform:translateX(4px)}
+}
+.lnk{display:inline-flex;align-items:center;gap:8px;font-size:.95rem;
+  font-variation-settings:'wdth' 102,'wght' 600;padding-bottom:3px;
+  box-shadow:inset 0 -1px 0 var(--line-2);transition:box-shadow .22s var(--ease)}
+.lnk:hover{box-shadow:inset 0 -1px 0 var(--em)}
+.on-night .lnk{box-shadow:inset 0 -1px 0 rgba(255,255,255,.28)}
+.on-night .lnk:hover{box-shadow:inset 0 -1px 0 var(--em-hi)}
+.cta-row{display:flex;flex-wrap:wrap;gap:var(--s-3);align-items:center}
+/* Apilados en móvil van a ancho completo. Dos botones uno encima de otro con
+   179 y 181px de ancho dejan el canto derecho desalineado dos píxeles: poco
+   para nombrarlo y bastante para que se vea descuidado. Y de paso un botón a
+   todo el ancho es un blanco de toque mucho mejor. El .lnk no es un botón,
+   así que se queda a su ancho. */
+@media (max-width:30rem){
+  .cta-row{flex-direction:column;align-items:stretch;width:100%}
+  .cta-row .btn{width:100%}
+  .cta-row .lnk{align-self:flex-start}
+}
+
+/* ── revelado ─────────────────────────────────────────────────────────────
+   18px de desplazamiento, no 90: el recorrido lo hace el paralaje de las
+   piezas de dentro, no el bloque entero viajando por la pantalla.
+   Medio segundo y no tres cuartos, y la cascada en pasos de 45 ms: el
+   último de una sección llegaba a 1,08 s desde que asomaba —0,36 de espera
+   más 0,72 de viaje— y bajando deprisa eso ya no se lee como una entrada,
+   se lee como que la página no ha cargado. Ahora el último cierra en 0,72.
+   Solo se ocultan bajo html.js, así que sin JS la página se ve completa. */
+.js .rv{opacity:0;transform:translateY(18px);
+  transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.js .rv.in{opacity:1;transform:none}
+.js .rv-1{transition-delay:.045s} .js .rv-2{transition-delay:.09s}
+.js .rv-3{transition-delay:.135s} .js .rv-4{transition-delay:.18s}
+.js .rv-5{transition-delay:.225s} .js .rv-6{transition-delay:.27s}
+
+/* ── grano ────────────────────────────────────────────────────────────────
+   Sin él, un degradado grande sobre superficie oscura forma bandas y se lee
+   a plástico. Con él, a metal anodizado. */
+.grain{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.4;
+  mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E")}
+
+/* ══ NAV · LA CÁPSULA ════════════════════════════════════════════════════
+   No es una barra: es un objeto que flota sobre la página. Dos estados —
+   ancha con los enlaces, corta con la marca y el menú— y una sola cápsula
+   que pasa de uno al otro. La foto y el nombre NO se tocan en la
+   transición: son la pieza que persiste, y por eso el cambio se lee como
+   que la cápsula se encoge alrededor de ellos y no como dos barras
+   distintas cruzándose.
+   .nav no recibe puntero: es una franja invisible a todo lo ancho y se
+   comería los clics de la página por los lados de la cápsula. */
+.nav{position:fixed;inset:0 0 auto;z-index:200;pointer-events:none;
+  display:flex;justify-content:center;padding:clamp(10px,1.3vw,18px) var(--pad) 0}
+
+/* ── la cápsula ────────────────────────────────────────────────────────────
+   El ancho se ANIMA, que en esta casa está prohibido, y aquí es la decisión
+   correcta con dos condiciones que la hacen barata y que no son opcionales:
+   · `contain:layout` encierra el recálculo dentro de la cápsula. Sin él, un
+     ancho animado invalida la maqueta de la página entera 60 veces por
+     segundo, que es exactamente por lo que la regla existe.
+   · `overflow:hidden` recorta los enlaces contra la propia cápsula mientras
+     encoge, así que dentro no se reordena ni se parte nada.
+   La alternativa —recortar con clip-path— deja fuera la sombra Y el filete
+   del canto derecho, que son justo lo que hace que la pieza flote. */
+.pill{pointer-events:auto;position:relative;display:flex;align-items:center;
+  gap:clamp(20px,3vw,46px);padding:7px 68px 7px 7px;
+  width:var(--w-ancha,auto);max-width:100%;
+  border-radius:999px;background:var(--paper);overflow:hidden;contain:layout;
+  /* Sombra en pila: contacto, ambiente y proyección larga. Una sola sombra
+     difusa es la firma de lo genérico. */
+  box-shadow:inset 0 0 0 1px rgba(var(--shadow-rgb),.07),
+             0 1px 2px rgba(var(--shadow-rgb),.06),
+             0 8px 20px -8px rgba(var(--shadow-rgb),.18),
+             0 40px 70px -46px rgba(var(--shadow-rgb),.55);
+  transition:width .46s var(--muelle)}
+.nav.corta .pill{width:var(--w-corta,auto)}
+/* Los dos anchos se miden una vez —en carga, en resize y cuando llegan las
+   fuentes— con la clase que quita los enlaces. Dos lecturas forzadas ahí
+   valen infinitamente menos que una sola por fotograma. */
+.pill.midiendo{width:auto;transition:none}
+.pill.sin-links .nav-links{display:none}
+
+/* ── la marca, la pieza que persiste ──────────────────────────────────────*/
+.brand{display:inline-flex;align-items:center;gap:11px;flex:none;
+  color:var(--ink);padding-right:2px}
+.brand-ph{width:38px;height:38px;border-radius:50%;flex:none;
+  display:grid;place-items:center;background:var(--night);overflow:hidden;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.10)}
+.brand-ph img{width:23px;height:23px}
+.brand b{font-size:1.05rem;font-variation-settings:'wdth' 104,'wght' 750;
+  letter-spacing:-.026em;white-space:nowrap}
+
+/* ── los enlaces ──────────────────────────────────────────────────────────
+   Se van ANTES de que el canto de la cápsula los alcance: 140 ms de
+   desvanecido contra 460 de encogido. Al revés se verían cortados por el
+   borde, que se lee como un fallo de recorte y no como una salida.
+   visibility al final del desvanecido, o el tabulador sigue entrando en
+   unos enlaces que ya no se ven. */
+/* Los dos sentidos NO son simétricos, y ahí estaba el fallo.
+   Al encoger, los enlaces se van en 140 ms y la cápsula tarda 460: se van
+   antes de que el canto los alcance, que es lo correcto.
+   Al estirarse pasaba lo mismo pero al revés — reaparecían de inmediato
+   mientras la cápsula seguía estrecha, así que durante un cuarto de segundo
+   se veían cortados por dentro. Ahora esperan 280 ms: primero crece la
+   cápsula, después aparecen. */
+.nav-links{display:flex;gap:clamp(14px,1.9vw,28px);flex:none;
+  transition:opacity .24s var(--ease) .28s,transform .46s var(--muelle),visibility 0s}
+.nav.corta .nav-links{opacity:0;transform:translateX(-12px);
+  visibility:hidden;pointer-events:none;
+  transition:opacity .14s linear,transform .46s var(--muelle),visibility 0s .14s}
+.nav-links a{position:relative;font-size:.93rem;white-space:nowrap;
+  color:var(--ink-2);font-variation-settings:'wdth' 102,'wght' 620;
+  letter-spacing:-.012em;transition:color .2s}
+.nav-links a:hover{color:var(--ink)}
+/* El subrayado nace del centro: crece hacia los dos lados en vez de barrer
+   de izquierda a derecha, que se lee como una barra de carga. */
+.nav-links a::after{content:"";position:absolute;left:0;right:0;bottom:-5px;
+  height:1px;background:currentColor;transform:scaleX(0);
+  transition:transform .3s var(--ease)}
+@media (hover:hover) and (pointer:fine){
+  .nav-links a:hover::after{transform:scaleX(1)}
+}
+
+/* ── los tres puntos ──────────────────────────────────────────────────────
+   Anclado al canto derecho de la cápsula y FUERA del flujo: así viaja solo
+   con el borde mientras encoge, sin una sola línea de JS calculando cuánto
+   tiene que desplazarse. El centrado vertical va con margin y no con
+   translate, para dejarle el transform libre a la entrada. */
+.dots{position:absolute;right:7px;top:50%;margin-top:-19px;
+  width:46px;height:38px;border-radius:999px;
+  display:flex;align-items:center;justify-content:center;gap:4px;
+  background:transparent;transition:background .2s var(--ease)}
+.dots i{width:5px;height:5px;border-radius:50%;background:var(--ink-4);
+  display:block;transition:background .2s var(--ease)}
+@media (hover:hover) and (pointer:fine){
+  .dots:hover{background:var(--mist)}
+  .dots:hover i{background:var(--ink-3)}
+}
+.dots.x{background:var(--night)}
+.dots.x i{background:var(--on-night-2)}
+
+/* ── la cápsula entra ──────────────────────────────────────────────────────
+   Cae como UN objeto. La cascada pieza por pieza que había antes servía
+   para una barra de borde a borde; una cápsula que se monta a trozos
+   delante de ti deja de leerse como un objeto. Solo bajo html.js — sin JS
+   está donde tiene que estar. */
+.js .nav{transform:translateY(-160%);opacity:0;
+  animation:navBaja .72s var(--muelle) .15s forwards}
+@keyframes navBaja{to{transform:none;opacity:1}}
+/* Los enlaces sí entran uno detrás de otro DENTRO de la cápsula, y el
+   transform de esa entrada vive en cada <a>: el de la salida al encoger
+   vive en el contenedor. Dos transforms, dos nodos. */
+.js .nav-links a{opacity:0;animation:navPieza .5s var(--ease) forwards;
+  animation-delay:calc(.54s + var(--n) * 55ms)}
+@keyframes navPieza{to{opacity:1;transform:none}}
+
+/* ── el menú ──────────────────────────────────────────────────────────────
+   Cuelga de la cápsula, centrado bajo ella, y sale del mismo sitio al que
+   vuelve. --nav-alto lo escribe el motor al medir. */
+.sheet{position:fixed;top:calc(var(--nav-alto,66px) + 8px);left:0;right:0;
+  margin-inline:auto;width:min(304px,calc(100vw - 24px));z-index:199;
+  background:var(--paper);border-radius:var(--r-lg);padding:8px;
+  display:none;flex-direction:column;
+  box-shadow:inset 0 0 0 1px rgba(var(--shadow-rgb),.07),
+             0 2px 4px rgba(var(--shadow-rgb),.06),
+             0 26px 52px -28px rgba(var(--shadow-rgb),.4)}
+.sheet.open{display:flex;animation:sheetIn .28s var(--muelle)}
+@keyframes sheetIn{from{opacity:0;transform:translateY(-10px) scale(.97)}}
+.sheet a{padding:12px 14px;border-radius:var(--r);font-size:.98rem;
+  color:var(--ink-2);font-variation-settings:'wdth' 102,'wght' 600}
+.sheet a:hover{background:var(--bone);color:var(--ink)}
+/* El menú sale del sitio al que vuelve: pegado al canto derecho de la
+   cápsula, que es donde están los tres puntos que lo abren. Centrado bajo
+   una cápsula ancha se leería como que lo abrió otra cosa.
+   En pantalla estrecha se queda centrado: alineado al canto se saldría por
+   el borde, y un menú cortado es peor que uno que no señala su origen. */
+@media (min-width:60rem){
+  .sheet{left:auto;margin-inline:0;right:calc(50% - var(--w-ancha,340px) / 2)}
+  .nav.corta ~ .sheet{right:calc(50% - var(--w-corta,210px) / 2)}
+}
+
+@media (max-width:60rem){
+  /* Sin enlaces dentro, la cápsula ya nace corta: los dos anchos medidos
+     coinciden y la transición no tiene nada que animar. */
+  .nav-links{display:none}
+}
+@media (max-width:30rem){
+  .pill{padding-right:54px}
+  .brand-ph{width:30px;height:30px}
+  .brand-ph img{width:19px;height:19px}
+  .brand b{font-size:.96rem}
+  .dots{width:40px}
+}
+
+/* ══ HERO ═════════════════════════════════════════════════════════════════
+   Cinco capas: foto → velo escalonado → haces esmeralda → grano → contenido.
+   La foto vive en un nodo propio dentro de .hero-bg porque lleva el paralaje:
+   si compartiera elemento con el recorte, el transform del motor pisaría al
+   de la capa y al terminar lo dejaría en none. */
+.hero{position:relative;overflow:hidden;isolation:isolate;
+  padding:clamp(128px,15vh,180px) 0 clamp(74px,8vw,104px)}
+.hero-bg{position:absolute;inset:0;z-index:0;overflow:hidden}
+/* El fondo se estira por arriba y por abajo: si midiera lo justo, al
+   desplazarlo con el paralaje asomaría una franja vacía por el canto. */
+.bg-par{position:absolute;inset:-9% 0;will-change:transform}
+/* ── la deriva del fondo ───────────────────────────────────────────────────
+   El fondo se quedó quieto el día que le quitamos el seguimiento del puntero,
+   porque ESA era toda su animación: la escena no tiene movimiento propio.
+   Aquí se le da uno que no depende del ratón ni de la GPU — una respiración
+   muy lenta que acerca y desplaza el plano.
+   Va en su PROPIO nodo: .bg-par ya lleva el transform del paralaje del
+   scroll, y dos transforms en el mismo elemento se pisan sin dar un error.
+   28 s por ciclo son 0,036 Hz: por debajo del umbral vestibular, y detrás
+   del velo se lee como profundidad, no como un fondo moviéndose. */
+.bg-deriva{position:absolute;inset:0;will-change:transform;
+  animation:deriva 19s var(--ease-io) infinite alternate}
+@keyframes deriva{
+  from{transform:scale(1.03) translate3d(-1.8%,-1.2%,0)}
+  to{transform:scale(1.12) translate3d(1.8%,1.2%,0)}}
+/* ── el fondo del hero ─────────────────────────────────────────────────────
+   Los cuadros son una IMAGEN, no una escena.
+   Eran una escena de Spline: 60 peticiones a unpkg y spline.design, ~1 MB de
+   JS y un bucle de render WebGL a pantalla completa. Medido con Chrome sin
+   cabeza, haciendo scroll de verdad por toda la página:
+
+     con la escena  → 3 868 ms de script, 170 de 186 fotogramas por encima
+                      de 20 ms, p95 de 34 ms por fotograma
+     sin la escena  →    11 ms de script,   4 de 308 fotogramas lentos,
+                      p95 de 17,5 ms
+
+   Y `app.stop()` NO lo arregla: los números de arriba son con la escena
+   parada catorce segundos antes. El runtime sigue comiéndose el hilo.
+   Así que la escena se renderizó una vez, se capturó, y lo que queda es un
+   .webp de 43 KB que se ve igual y cuesta cero. El día que haya que
+   recomponerla, se vuelve a montar la escena en local y se recaptura.
+   ──────────────────────────────────────────────────────────────────────── */
+.cuadros{position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:50% 46%}
+/* pointer-events:none NO es cosmético: el seguimiento del puntero de la
+   escena vive DENTRO del .splinecode y escucha en su propio lienzo. Sin
+   eventos que escuchar, los cuadros se quedan quietos en su composición. */
+.hero-3d{position:absolute;inset:0;z-index:2;display:block;width:100%;height:100%;
+  pointer-events:none;opacity:0;transition:opacity .9s var(--ease)}
+.hero-3d.visible{opacity:1}
+
+/* El velo es un ESCALÓN, no una lámina: cae denso donde hay texto suelto y se
+   levanta en el cuenco, que es donde se ve el estadio. Medido contra el punto
+   más claro de la foto, el titular blanco pasa de 14:1 y el rótulo esmeralda
+   de 7.8:1. */
+.hero-veil{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    linear-gradient(100deg,rgba(7,11,19,.93) 0%,rgba(7,11,19,.82) 22%,
+                    rgba(7,11,19,.38) 42%,transparent 62%),
+    linear-gradient(180deg,rgba(7,11,19,.50) 0%,transparent 16%,
+                    transparent 78%,rgba(7,11,19,.52) 100%)}
+@media (max-width:60rem){
+  .hero-veil{background:linear-gradient(180deg,rgba(7,11,19,.86) 0%,rgba(7,11,19,.62) 34%,
+                       rgba(7,11,19,.58) 62%,rgba(7,11,19,.9) 100%)}
+}
+/* Luz esmeralda PINTADA. Estaba también en el hero, con opacity:0 y sin nada
+   que la encendiera: una capa a pantalla completa componiendo para no verse.
+   Ahí se fue; queda solo en la banda del CTA final, que la enciende a mano. */
+.hero-beams{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;
+  transition:opacity .9s var(--ease);
+  background:
+    radial-gradient(46% 38% at 12% -4%,rgba(52,211,153,.3),transparent 68%),
+    radial-gradient(40% 34% at 88% -6%,rgba(52,211,153,.2),transparent 70%)}
+/* El hero va CENTRADO y en una columna: el titular arriba, la agenda debajo.
+   En dos columnas el ojo tiene que elegir por dónde empezar, y la primera
+   pantalla es justo donde no se puede dudar. */
+.hero-in{display:flex;flex-direction:column;align-items:center;
+  gap:clamp(34px,4.5vw,58px);text-align:center}
+@media (max-width:64rem){.hero-in{grid-template-columns:minmax(0,1fr);gap:var(--s-12)}}
+/* Lleva transform Y opacidad escritos en cada fotograma mientras el hero
+   sale. Sin will-change el navegador repinta el texto entero cada vez en vez
+   de mover una capa ya rasterizada. */
+.hero-copy{display:flex;flex-direction:column;gap:var(--s-6);align-items:center;
+  max-width:min(100%,54rem);will-change:transform,opacity}
+/* ── el nombre en el hero ──────────────────────────────────────────────────
+   Archivo trae eje de ancho (wdth 62–125). Aquí va al máximo: es la voz de
+   gráfico de televisión deportiva, y es lo que separa el nombre de la marca
+   del resto del texto sin cambiar de familia.
+   El tracking se APRIETA a este tamaño. Una fuente ya ancha y muy pesada, a
+   ocho rem, con tracking neutro se lee suelta y pierde el bloque. */
+/* nowrap y el tamaño atado al ANCHO de la ventana: once mayúsculas de
+   El tamaño sale de medir el TEXTO, no la caja: con max-width la caja se
+   queda en el ancho del contenedor y el texto se sale por debajo sin que el
+   rect lo diga. Medido: a 244.8px de fuente el texto ocupa 2038px, así que
+   para llenar ~1050px hacen falta 126px ≈ 8.75vw. Sin nowrap se parte entre letras, porque cada letra es un
+   inline-block y ahí el navegador puede cortar. */
+.marca-hero{font-size:min(8.75vw,7.9rem);white-space:nowrap;line-height:.84;
+  max-width:100%;
+  font-variation-settings:'wdth' 125,'wght' 800;
+  letter-spacing:-.045em;text-transform:uppercase;
+  color:var(--on-night);margin-bottom:clamp(6px,1vw,14px)}
+/* Cada letra en su nodo para poder animarlas por separado. El espacio no es
+   problema aquí —es una sola palabra— pero si algún día lleva dos, el
+   espacio va FUERA del span o se pegan. */
+.marca-hero i{display:inline-block;font-style:normal}
+/* will-change solo mientras entra. Once letras promocionadas para siempre
+   son once capas de composición vivas el resto de la visita, y la entrada
+   dura segundo y medio. La clase la quita el JS al terminar. */
+.js .marca-hero:not(.listo) i{will-change:transform,opacity}
+.js .marca-hero i{opacity:0;transform:translateY(.14em) scaleY(.9);
+  font-variation-settings:'wdth' 62,'wght' 800}
+.js .marca-hero.in i{animation:marcaIn .82s var(--ease) forwards;
+  animation-delay:calc(var(--n) * 42ms)}
+/* El eje de ancho se ABRE mientras la letra entra: arranca condensada y
+   termina en su ancho pleno. Es un movimiento que solo permite una fuente
+   variable, y no hay forma de fingirlo con transform. */
+@keyframes marcaIn{
+  to{opacity:1;transform:none;font-variation-settings:'wdth' 125,'wght' 800}
+}
+/* El titular deja de ser la pieza más grande: ahora acompaña al nombre. */
+.hero-copy .d{font-size:clamp(1.6rem,3.9vw,3.1rem);line-height:1.04;
+  letter-spacing:-.03em;font-variation-settings:'wdth' 104,'wght' 650;
+  color:var(--on-night-2);max-width:22ch}
+.hero-copy .lead{max-width:44ch}
+/* La fila de botones deja de estirarse al ancho de la caja: centrada, los dos
+   botones juntos leen como una sola decisión con su alternativa al lado. */
+.hero .cta-row{justify-content:center}
+
+.hero-note{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;
+  color:var(--on-night-3);display:flex;align-items:flex-start;gap:8px}
+.hero-note::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--em-hi);
+  flex:none;margin-top:.42em;align-self:flex-start}
+
+/* franja de impacto: el PIE del hero, no una sección aparte. */
+.impact{margin-top:clamp(56px,7vw,88px);padding-top:var(--s-8);
+  border-top:1px solid var(--hair-night);
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(min(150px,100%),1fr));gap:var(--s-6)}
+.impact>div{display:flex;flex-direction:column;gap:6px;padding-left:var(--s-4);
+  border-left:1px solid var(--hair-night)}
+.impact b{font-size:clamp(1.7rem,3vw,2.5rem);font-variation-settings:'wdth' 110,'wght' 800;
+  letter-spacing:-.035em;line-height:1;color:var(--em-hi);font-variant-numeric:tabular-nums}
+.impact span{font-size:.84rem;color:var(--on-night-3);line-height:1.52;max-width:24ch}
+
+/* ══ LA AGENDA ════════════════════════════════════════════════════════════
+   La banda del panel del producto. Dos columnas: la pieza manda y el texto
+   la explica desde el lado — no debajo, que es donde un pie de foto se lee
+   como una nota al margen.
+   ────────────────────────────────────────────────────────────────────────
+   El panel es una imagen, así que el ancho lo fija la maqueta y la altura
+   sale del aspecto: con width/height en el <img> el navegador reserva el
+   hueco antes de descargarla y la página no pega el salto al cargar.
+   El halo del render llega hasta el borde del archivo, así que NO lleva
+   sombra propia ni recorte: pegarle una sombra encima de un glow dibujado
+   deja un doble contorno que se ve sucio. */
+.agenda-in{display:grid;grid-template-columns:minmax(0,1.42fr) minmax(0,1fr);
+  gap:clamp(30px,4.6vw,76px);align-items:center}
+@media (max-width:64rem){
+  .agenda-in{grid-template-columns:minmax(0,1fr);gap:clamp(30px,6vw,44px)}
+}
+/* La perspectiva vive en el padre y el giro en el hijo: es la única forma de
+   que un render plano se lea como un objeto con canto. El origen queda BAJO
+   el centro para que la pieza se incline apoyada en su base y no cabeceando
+   desde el medio. */
+.ag-stage{position:relative;perspective:1500px;perspective-origin:50% 78%}
+/* Probé una elipse de suelo debajo de la pieza: el render tapa el 100 % de
+   ella cuando está enderezada, y al inclinarse asoma por los cantos como un
+   borrón. El halo del propio archivo ya hace de sombra. */
+.ag-tilt{will-change:transform;transform-origin:50% 88%}
+.ag-float{will-change:transform}
+.agenda-shot{width:min(100%,780px);margin:0}
+.agenda-shot img{width:100%;height:auto;display:block}
+
+.agenda-txt{display:flex;flex-direction:column;gap:var(--s-4);
+  max-width:42ch;align-self:center}
+.agenda-txt .h3{font-size:clamp(1.28rem,1.9vw,1.7rem);margin-top:var(--s-1)}
+/* Leyenda: la misma cuenta que hacen las píldoras del panel, en texto.
+   Filas separadas por filete de 1px — ni tarjetas, ni pastillas, ni iconos
+   redondos: es una lista, y se lee como una lista. */
+.leyenda{list-style:none;margin-top:var(--s-1)}
+.leyenda li{display:grid;grid-template-columns:auto minmax(0,1fr);
+  column-gap:11px;row-gap:2px;padding:12px 0;border-top:1px solid var(--line)}
+.leyenda li:last-child{border-bottom:1px solid var(--line)}
+.leyenda i{grid-column:1;grid-row:1;width:7px;height:7px;border-radius:50%;
+  align-self:center;margin-top:1px}
+.leyenda b{grid-column:2;grid-row:1;font-size:.9rem;
+  font-variation-settings:'wdth' 102,'wght' 700;letter-spacing:-.012em}
+.leyenda span{grid-column:2;grid-row:2;font-size:.845rem;line-height:1.5;color:var(--ink-3)}
+.lg-pt--ok{background:var(--green)}
+.lg-pt--mid{background:var(--gold)}
+.lg-pt--no{background:var(--red)}
+.ag-nota{display:flex;align-items:baseline;gap:9px;font-size:.82rem;color:var(--ink-3);
+  line-height:1.5}
+.ag-nota .mono{flex:none;color:var(--ink-4);font-size:.66rem;
+  padding:3px 7px;border-radius:5px;background:var(--mist);box-shadow:inset 0 0 0 1px var(--line)}
+
+/* ══ BANDA DE PRODUCTO ════════════════════════════════════════════════════
+   La anatomía que se repite en toda la mitad de abajo, y la razón por la que
+   no se repite igual: una captura REAL del producto y, al lado, un titular,
+   dos frases y tres datos. Nada más. El peso lo lleva la imagen; el texto
+   solo la nombra.
+   Las capturas salen de la demo corriendo, tomadas en Chrome sin cabeza a
+   2×. No son maquetas: si el producto cambia, se vuelven a tomar.
+   ──────────────────────────────────────────────────────────────────────── */
+.pro{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
+  gap:clamp(30px,4.6vw,72px);align-items:center}
+/* El orden se alterna banda a banda. Seis bandas con la imagen siempre a la
+   izquierda se leen como una plantilla por muy buena que sea cada una. */
+.pro--flip .pro-txt{order:-1}
+@media (max-width:64rem){
+  .pro{grid-template-columns:minmax(0,1fr);gap:clamp(28px,5vw,40px)}
+  .pro--flip .pro-txt{order:0}
+}
+.pro-txt{display:flex;flex-direction:column;gap:var(--s-4);max-width:46ch}
+.pro-txt .h2{font-size:clamp(1.6rem,3vw,2.5rem);max-width:16ch}
+.pro-txt .lead{max-width:42ch}
+
+/* ── el marco de la captura ────────────────────────────────────────────────
+   La aplicación no se pega desnuda sobre la banda: va en un marco con radio,
+   filete y sombra en pila, que es lo que la hace leer como una ventana y no
+   como un recorte. El radio lo lleva el marco y el overflow recorta la
+   imagen: un border-radius sobre el <img> deja los cantos dentados. */
+.shot{position:relative;border-radius:var(--r-lg);overflow:hidden;
+  background:var(--night-2);
+  box-shadow:inset 0 0 0 1px rgba(var(--shadow-rgb),.10),
+             0 1px 2px rgba(var(--shadow-rgb),.07),
+             0 14px 30px -14px rgba(var(--shadow-rgb),.30),
+             0 60px 90px -60px rgba(var(--shadow-rgb),.70)}
+.on-night .shot{box-shadow:inset 0 0 0 1px rgba(255,255,255,.10),
+             0 2px 6px rgba(0,0,0,.4),
+             0 30px 60px -30px rgba(0,0,0,.75)}
+.shot img{width:100%;height:auto;display:block}
+/* Las piezas propias traen su halo y su sombra dibujados dentro del archivo,
+   con su margen transparente alrededor. Meterlas en el marco deja doble
+   contorno y les corta el halo por el radio. */
+.shot--suelto{background:none;box-shadow:none;overflow:visible;border-radius:0}
+/* Sangra por el canto de fuera: sugiere que la aplicación sigue más allá del
+   borde de la ventana en vez de terminarse justo ahí. */
+@media (min-width:64rem){
+  .pro:not(.pro--flip) .shot{margin-left:calc(var(--pad) * -1.15)}
+  .pro--flip .shot{margin-right:calc(var(--pad) * -1.15)}
+}
+
+/* ── los tres datos ────────────────────────────────────────────────────────
+   Ni tarjetas ni iconos redondos: tres columnas separadas por filete, con el
+   rótulo en mono arriba y una línea debajo. Es una ficha técnica, y se lee
+   como una ficha técnica. */
+.datos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(14px,1.6vw,22px);margin-top:var(--s-2);
+  padding-top:var(--s-4);border-top:1px solid var(--line-2)}
+.on-night .datos{border-top-color:var(--hair-night)}
+.datos > div{display:flex;flex-direction:column;gap:5px}
+.datos b{font-family:var(--mono);font-size:.66rem;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--em);font-weight:500}
+.on-night .datos b{color:var(--em-hi)}
+.datos span{font-size:.83rem;line-height:1.45;color:var(--ink-3)}
+.on-night .datos span{color:var(--on-night-3)}
+@media (max-width:34rem){
+  .datos{grid-template-columns:minmax(0,1fr);gap:0}
+  .datos > div{padding:11px 0;border-top:1px solid var(--line)}
+  .datos > div:first-child{border-top:0}
+  .on-night .datos > div{border-top-color:var(--hair-night)}
+}
+
+/* ── la fila de deportes retiñendo ─────────────────────────────────────────
+   Cinco pastillas con el color real de cada superficie. No es decoración: es
+   la prueba de que el selector retiñe la sección entera. */
+.tintes{display:flex;flex-wrap:wrap;gap:10px;
+  margin-top:clamp(30px,3.6vw,48px);padding-top:var(--s-6);
+  border-top:1px solid var(--line-2)}
+.tinte{display:inline-flex;align-items:center;gap:8px;padding:7px 13px 7px 8px;
+  border-radius:999px;font-size:.82rem;
+  font-variation-settings:'wdth' 102,'wght' 600;
+  background:var(--paper);box-shadow:inset 0 0 0 1px var(--line-2)}
+.tinte i{width:11px;height:11px;border-radius:50%;flex:none;
+  background:var(--c);box-shadow:0 0 0 3px rgba(var(--crgb),.16)}
+
+/* ══ CINTA DE DEPORTES ════════════════════════════════════════════════════ */
+.strip{padding:var(--s-8) 0;border-bottom:1px solid var(--line)}
+.strip-hd{display:flex;align-items:baseline;gap:var(--s-4);flex-wrap:wrap;
+  margin-bottom:var(--s-6)}
+.rail{overflow:hidden;position:relative;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+/* Dos movimientos en dos nodos: el marquee constante en .rail-in y el
+   empuje del scroll en .rail-par. Juntos en el mismo elemento, el segundo
+   transform pisa al primero sin dar ningún error. */
+.rail-par{will-change:transform}
+.rail-in{display:flex;gap:var(--s-3);width:max-content;animation:slide 42s linear infinite}
+/* Siete cintas infinitas siguen gastando fotograma cuando ya nadie las ve, y
+   cada una se lleva su capa de composición. Fuera de pantalla, quietas. */
+.rail-in.quieta,.rowtrack.quieta{animation-play-state:paused}
+.rail:hover .rail-in{animation-play-state:paused}
+@keyframes slide{to{transform:translateX(-50%)}}
+.sport{display:flex;align-items:center;gap:14px;padding:12px 18px 12px 12px;
+  border-radius:var(--r);background:var(--paper);box-shadow:inset 0 0 0 1px var(--line);flex:none}
+.sport .plan{width:58px;height:36px;flex:none;color:var(--ink-4)}
+.sport .plan rect,.sport .plan circle,.sport .plan line,.sport .plan path{
+  fill:none;stroke:currentColor;stroke-width:2;vector-effect:non-scaling-stroke}
+.sport .plan .net{stroke:var(--em);stroke-width:2.6}
+.sport b{font-size:.95rem;font-variation-settings:'wdth' 104,'wght' 700;letter-spacing:-.016em;display:block}
+.sport span{font-size:.79rem;color:var(--ink-3);display:block;margin-top:1px}
+
+/* ══ CINTAS: HOY / CON SPORTPLATZ ═════════════════════════════════════════
+   Comunica VOLUMEN de problemas sin escribir una lista de viñetas. */
+.vs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:var(--s-4);
+  margin-top:clamp(40px,5vw,64px)}
+.vsbox{border-radius:var(--r-lg);padding:22px 0 26px;overflow:hidden;position:relative}
+/* El corte de la cinta se desvanece contra el propio fondo de la caja. Sin
+   esto, la píldora de los bordes queda cortada a cuchillo y se lee como un
+   fallo de maqueta en vez de como «hay más». */
+.vsbox::before,.vsbox::after{content:"";position:absolute;top:0;bottom:0;width:40px;z-index:2;pointer-events:none}
+.vsbox::before{left:0} .vsbox::after{right:0}
+.vsbox--hoy::before{background:linear-gradient(90deg,var(--mist),transparent)}
+.vsbox--hoy::after{background:linear-gradient(270deg,var(--mist),transparent)}
+.vsbox--con::before{background:linear-gradient(90deg,var(--night),transparent)}
+.vsbox--con::after{background:linear-gradient(270deg,var(--night),transparent)}
+.vsbox h3{padding:0 24px;margin-bottom:18px;display:flex;align-items:center;gap:10px;
+  position:relative;z-index:3}
+.vsbox--hoy{background:var(--mist);box-shadow:inset 0 0 0 1px var(--line)}
+.vsbox--con{background:var(--night);color:var(--on-night);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 24px 48px -34px rgba(var(--shadow-rgb),.7)}
+.vsbox--con h3{color:#fff}
+.rowtrack{display:flex;gap:9px;width:max-content;margin-bottom:9px;
+  animation:slide 34s linear infinite}
+.rowtrack:nth-child(odd){animation-duration:42s}
+.rowtrack--rev{animation-direction:reverse}
+.vsbox:hover .rowtrack{animation-play-state:paused}
+.pillx{flex:none;padding:8px 14px;border-radius:999px;font-size:.86rem;white-space:nowrap;
+  background:var(--paper);color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line)}
+.pillx.hot{background:var(--red);color:#fff;box-shadow:none}
+.vsbox--con .pillx{background:rgba(255,255,255,.08);color:var(--on-night-2);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)}
+.vsbox--con .pillx.hot{background:var(--em-hi);color:#03251b;box-shadow:none;
+  font-variation-settings:'wdth' 102,'wght' 700}
+
+/* ══ ESCENAS DE PLATAFORMA ════════════════════════════════════════════════ */
+.stage{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);
+  gap:clamp(28px,3.6vw,64px);align-items:start;margin-top:clamp(40px,5vw,64px)}
+@media (max-width:64rem){.stage{grid-template-columns:minmax(0,1fr)}}
+.tablist{display:flex;flex-direction:column}
+.tab{text-align:left;padding:18px 0 0;border-top:1px solid var(--line);width:100%;
+  display:flex;flex-direction:column;gap:6px;color:var(--ink-3);
+  transition:color .22s var(--ease)}
+.tab:first-child{border-top:0;padding-top:0}
+.tab .tt{display:flex;align-items:baseline;gap:12px}
+.tab .tn{font-family:var(--mono);font-size:.72rem;color:var(--ink-4);flex:none}
+.tab .h4{color:var(--ink-3);transition:color .22s var(--ease)}
+.tab p{font-size:.87rem;line-height:1.5;max-width:38ch;
+  max-height:0;opacity:0;overflow:hidden;
+  transition:max-height .4s var(--ease),opacity .3s var(--ease),margin .4s var(--ease)}
+.tab.on .h4{color:var(--ink)}
+.tab.on .tn{color:var(--em)}
+.tab.on p{max-height:260px;opacity:1;margin-bottom:2px}
+.tab .bar{height:2px;background:var(--line);position:relative;overflow:hidden;
+  margin-top:12px;border-radius:2px}
+.tab .bar i{position:absolute;inset:0;background:var(--em);transform-origin:left;transform:scaleX(0)}
+.tab.on .bar i{animation:fillBar 7s linear forwards}
+@keyframes fillBar{to{transform:scaleX(1)}}
+.tab:last-child .bar{margin-bottom:0}
+
+.canvas{position:relative;border-radius:var(--r-lg);overflow:hidden;isolation:isolate;
+  background:linear-gradient(168deg,#17233b 0%,#070b13 62%,#050912 100%);
+  aspect-ratio:16/10;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.1),inset 0 0 0 1px rgba(255,255,255,.06),
+             0 2px 4px rgba(var(--shadow-rgb),.2),0 40px 70px -40px rgba(var(--shadow-rgb),.65)}
+@media (min-width:64rem){.canvas{position:sticky;top:104px}}
+@media (max-width:36rem){.canvas{aspect-ratio:4/5}}
+.scene{position:absolute;inset:0;padding:clamp(16px,2.4vw,28px);color:#fff;
+  opacity:0;pointer-events:none;transition:opacity .38s var(--ease);
+  display:flex;flex-direction:column;gap:14px}
+.scene.on{opacity:1;pointer-events:auto}
+.scene-hd{display:flex;align-items:center;justify-content:space-between;gap:12px;flex:none}
+.scene-hd .mono{color:var(--em-hi)}
+.scene-hd small{font-size:.72rem;color:var(--on-night-4);font-family:var(--mono)}
+
+/* 01 · la agenda: hora × cancha */
+.grid-ag{flex:1;display:grid;grid-template-columns:46px repeat(4,minmax(0,1fr));
+  grid-auto-rows:minmax(0,1fr);gap:5px;min-height:0}
+.gh{font-family:var(--mono);font-size:.62rem;color:var(--on-night-4);
+  display:flex;align-items:center;justify-content:center;letter-spacing:.04em}
+.gc{border-radius:6px;background:rgba(255,255,255,.055);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.62rem;font-family:var(--mono);color:var(--on-night-4);
+  opacity:0;transform:scale(.86)}
+.scene.on .gc{animation:cellIn .42s var(--ease) forwards;
+  animation-delay:calc(var(--i) * 34ms)}
+@keyframes cellIn{to{opacity:1;transform:none}}
+.gc--ok{background:rgba(94,230,160,.2);box-shadow:inset 0 0 0 1px rgba(94,230,160,.4);color:#5ee6a0}
+.gc--warn{background:rgba(245,163,0,.2);box-shadow:inset 0 0 0 1px rgba(245,163,0,.42);color:#ffc75a}
+.gc--neg{background:rgba(229,35,31,.22);box-shadow:inset 0 0 0 1px rgba(255,157,150,.4);color:#ff9d96}
+/* El nombre manda dentro de la celda; el sans a 100 de ancho aguanta mejor
+   un apellido largo que el mono. Se recorta con ellipsis en vez de envolver:
+   la celda mide 1fr de una parrilla de 4 y envolver le rompe la altura a la
+   fila entera. */
+.gc{padding:0 6px;gap:5px;overflow:hidden}
+.gc b{font-family:var(--sans);font-size:.7rem;letter-spacing:-.01em;
+  font-variation-settings:'wdth' 96,'wght' 620;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.gc i{font-style:normal;font-size:.6rem;letter-spacing:.06em;color:var(--on-night-4);opacity:.55}
+.gc em{font-style:normal;flex:none;font-size:.48rem;letter-spacing:.06em;
+  padding:2px 3px;border-radius:3px;background:rgba(255,255,255,.14);color:var(--on-night-2)}
+@media (max-width:36rem){.gc b{font-size:.62rem}.gc em{display:none}}
+
+/* 02 · Neo AI: el hilo de WhatsApp */
+.chat{flex:1;display:flex;flex-direction:column;gap:9px;justify-content:flex-end;
+  min-height:0;overflow:hidden}
+.bub{max-width:78%;padding:10px 13px;border-radius:14px;font-size:.86rem;line-height:1.45;
+  opacity:0;transform:translateY(12px)}
+.scene.on .bub{animation:bubIn .5s var(--ease) forwards;animation-delay:calc(var(--i) * 620ms)}
+@keyframes bubIn{to{opacity:1;transform:none}}
+.bub--in{align-self:flex-start;background:rgba(255,255,255,.09);
+  border-radius:14px 14px 14px 4px;color:var(--on-night-2)}
+.bub--out{align-self:flex-end;background:var(--em);color:#fff;border-radius:14px 14px 4px 14px;
+  box-shadow:0 1px 1px rgba(0,0,0,.3)}
+.bub .mono{font-size:.62rem;color:rgba(255,255,255,.72);display:block;margin-top:5px;letter-spacing:.1em}
+.bub--in .mono{color:var(--em-hi)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px}
+.chips span{font-family:var(--mono);font-size:.62rem;padding:4px 8px;border-radius:6px;
+  background:rgba(255,255,255,.1);color:#fff;letter-spacing:.05em}
+
+/* 03 · torneos: la llave que avanza sola */
+.bracket{flex:1;min-height:0;display:block}
+.bracket .ln{fill:none;stroke:rgba(255,255,255,.22);stroke-width:1.5;
+  stroke-dasharray:120;stroke-dashoffset:120}
+.scene.on .bracket .ln{animation:draw .8s var(--ease) forwards;animation-delay:calc(var(--i) * 130ms)}
+@keyframes draw{to{stroke-dashoffset:0}}
+.bracket .sl{fill:rgba(255,255,255,.06);stroke:rgba(255,255,255,.1);stroke-width:1;rx:4}
+.bracket .win{fill:rgba(52,211,153,.18);stroke:rgba(52,211,153,.45)}
+.bracket text{fill:#fff;font-family:var(--sans);font-size:8.4px;
+  font-variation-settings:'wdth' 100,'wght' 600;dominant-baseline:middle}
+.bracket .sc{fill:var(--on-night-4);font-family:'IBM Plex Mono',monospace;font-size:7.6px}
+.bracket .g{opacity:0}
+.scene.on .bracket .g{animation:fadeIn .5s var(--ease) forwards;animation-delay:calc(var(--i) * 130ms + 200ms)}
+@keyframes fadeIn{to{opacity:1}}
+.bracket .champ{fill:var(--gold);font-family:'IBM Plex Mono',monospace;font-size:7.4px;letter-spacing:.8px}
+
+/* 04 · el panel: facturado ≠ cobrado */
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;flex:none}
+.tile{border-radius:8px;padding:11px 12px;background:rgba(255,255,255,.055);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),inset 0 0 0 1px rgba(255,255,255,.06)}
+.tile .mono{font-size:.58rem;color:var(--on-night-4);letter-spacing:.1em}
+.tile b{display:block;margin-top:4px;font-size:clamp(.95rem,1.6vw,1.28rem);
+  font-variation-settings:'wdth' 108,'wght' 800;letter-spacing:-.028em;font-variant-numeric:tabular-nums}
+.tile--a b{color:#fff} .tile--b b{color:var(--em-hi)} .tile--c b{color:#ffc75a}
+.chartbox{flex:1;min-height:0;border-radius:8px;background:rgba(255,255,255,.04);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);padding:12px;display:flex;flex-direction:column;gap:8px}
+.chart{flex:1;min-height:0;width:100%}
+.chart .area{fill:url(#gEm)}
+.chart .line{fill:none;stroke:var(--em-hi);stroke-width:2;vector-effect:non-scaling-stroke;
+  stroke-dasharray:900;stroke-dashoffset:900}
+.scene.on .chart .line{animation:draw 1.5s var(--ease) .2s forwards}
+.chart .area{opacity:0}
+.scene.on .chart .area{animation:fadeIn .9s var(--ease) .5s forwards}
+.ranks{display:flex;flex-direction:column;gap:6px;flex:none}
+.rank{display:grid;grid-template-columns:82px minmax(0,1fr) 54px;align-items:center;gap:9px;
+  font-size:.7rem;color:var(--on-night-3)}
+.rank .rb{height:6px;border-radius:3px;background:rgba(255,255,255,.08);overflow:hidden}
+.rank .rb i{display:block;height:100%;border-radius:3px;background:var(--em-hi);
+  transform-origin:left;transform:scaleX(0)}
+.scene.on .rank .rb i{animation:barIn .9s var(--ease) forwards;animation-delay:calc(var(--i) * 90ms + 300ms)}
+@keyframes barIn{to{transform:scaleX(var(--w))}}
+.rank em{font-style:normal;font-family:var(--mono);color:#fff;text-align:right;font-variant-numeric:tabular-nums}
+
+/* ══ CARRUSEL SOBRE NOCHE · lado del jugador ══════════════════════════════
+   Las mismas pestañas del carrusel del dueño, pero la banda es oscura: el
+   color de cada pieza cuelga de .on-night y no hay una regla nueva por
+   componente. */
+.on-night .tab{border-top-color:var(--hair-night);color:var(--on-night-3)}
+.on-night .tab .h4{color:var(--on-night-3)}
+.on-night .tab.on .h4{color:var(--on-night)}
+.on-night .tab .tn{color:var(--on-night-4)}
+.on-night .tab.on .tn{color:var(--em-hi)}
+.on-night .tab .bar{background:var(--hair-night)}
+.on-night .tab .bar i{background:var(--em-hi)}
+/* Sobre banda oscura el lienzo necesita separarse del fondo, no fundirse:
+   sube un punto de luz y le crece la sombra. */
+.on-night .canvas{background:linear-gradient(168deg,#1b2942 0%,#0a1120 62%,#070d18 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.13),inset 0 0 0 1px rgba(255,255,255,.08),
+             0 40px 80px -40px rgba(0,0,0,.9)}
+
+/* ── piezas de las escenas del jugador ─────────────────────────────────────
+   Prefijo j- para no pisar las del dueño: son otra vista del mismo estado,
+   no las mismas cajas. */
+.j-prox{flex:none;border-radius:12px;padding:16px 18px;
+  background:linear-gradient(150deg,rgba(52,211,153,.18),rgba(52,211,153,.045));
+  box-shadow:inset 0 0 0 1px rgba(52,211,153,.28);
+  display:flex;align-items:center;gap:14px;
+  opacity:0;transform:translateY(10px)}
+.scene.on .j-prox{animation:cellIn .55s var(--ease) .1s forwards}
+.j-cre{width:44px;height:44px;flex:none;display:grid;place-items:center;
+  font-size:.95rem;font-variation-settings:'wdth' 102,'wght' 800;color:#08111c;
+  clip-path:polygon(50% 0,100% 16%,100% 62%,50% 100%,0 62%,0 16%)}
+.j-prox .t{display:flex;flex-direction:column;gap:3px;min-width:0}
+.j-prox .t b{font-size:1rem;font-variation-settings:'wdth' 102,'wght' 700;
+  letter-spacing:-.016em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.j-prox .t span{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;
+  color:var(--on-night-3)}
+.j-prox .cd{margin-left:auto;flex:none;font-family:var(--mono);font-size:.66rem;
+  letter-spacing:.08em;padding:7px 11px;border-radius:999px;
+  background:rgba(52,211,153,.18);color:var(--em-hi)}
+
+.j-rot{font-family:var(--mono);font-size:.6rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--on-night-4);flex:none}
+.j-fila{display:flex;flex-wrap:wrap;gap:7px;flex:none}
+.j-chip{font-family:var(--mono);font-size:.65rem;letter-spacing:.04em;
+  padding:8px 12px;border-radius:8px;background:rgba(255,255,255,.06);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);color:var(--on-night-2);
+  opacity:0;transform:translateY(6px)}
+.scene.on .j-chip{animation:cellIn .4s var(--ease) forwards;
+  animation-delay:calc(var(--i) * 90ms + 300ms)}
+.j-chip--on{background:rgba(52,211,153,.2);box-shadow:inset 0 0 0 1px rgba(52,211,153,.45);
+  color:var(--em-hi)}
+
+/* Reservar: los cuatro pasos se encienden uno detrás de otro. La marca de
+   «elegido» entra DESPUÉS de la fila, o se lee como si ya estuviera puesto. */
+.j-pasos{flex:1;display:flex;flex-direction:column;gap:11px;min-height:0;justify-content:center}
+.j-horas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.j-h{border-radius:8px;padding:11px 0;text-align:center;
+  font-family:var(--mono);font-size:.68rem;
+  background:rgba(255,255,255,.055);box-shadow:inset 0 0 0 1px rgba(255,255,255,.07);
+  color:var(--on-night-3);opacity:0;transform:scale(.9)}
+.scene.on .j-h{animation:cellIn .38s var(--ease) forwards;
+  animation-delay:calc(var(--i) * 55ms + 900ms)}
+.j-h--no{color:var(--on-night-4);opacity:.4}
+.j-h--pick{background:rgba(52,211,153,.22);box-shadow:inset 0 0 0 1px rgba(52,211,153,.5);
+  color:#eafff6}
+.scene.on .j-h--pick{animation:cellIn .38s var(--ease) forwards,
+  picoteo .5s var(--ease) 1.7s}
+@keyframes picoteo{40%{transform:scale(1.07)}}
+.j-pie{flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding-top:12px;border-top:1px solid var(--hair-night);
+  opacity:0}
+.scene.on .j-pie{animation:fadeIn .5s var(--ease) 2.1s forwards}
+.j-pie b{font-size:1.05rem;font-variation-settings:'wdth' 104,'wght' 750;letter-spacing:-.02em}
+
+/* Mi equipo: el escudo se arma y la plantilla aparece detrás. */
+.j-team{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.j-cre--big{width:96px;height:96px;font-size:1.9rem;opacity:0;transform:scale(.8)}
+.scene.on .j-cre--big{animation:cellIn .6s var(--ease) .15s forwards}
+.j-plant{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:82%}
+.j-av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+  font-size:.64rem;font-variation-settings:'wght' 700;color:#08111c;
+  opacity:0;transform:scale(.6)}
+.scene.on .j-av{animation:cellIn .42s var(--ease) forwards;
+  animation-delay:calc(var(--i) * 80ms + 600ms)}
+
+/* Mi histórico: la racha se lee de izquierda a derecha, como una línea de
+   tiempo. */
+.j-racha{display:flex;gap:5px;flex:none;justify-content:center}
+.j-racha i{width:16px;height:26px;border-radius:4px;display:block;
+  opacity:0;transform:translateY(8px)}
+.scene.on .j-racha i{animation:cellIn .38s var(--ease) forwards;
+  animation-delay:calc(var(--i) * 90ms + 700ms)}
+
+/* Torneos: el cupo libre se llena con tu equipo. */
+.j-cupo{border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:11px;
+  background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);
+  font-size:.86rem;color:var(--on-night-3)}
+.j-cupo--tuyo{background:rgba(52,211,153,.18);box-shadow:inset 0 0 0 1px rgba(52,211,153,.42);
+  color:#fff;opacity:0;transform:translateX(-12px)}
+.scene.on .j-cupo--tuyo{animation:entraCupo .6s var(--ease) 1.2s forwards}
+@keyframes entraCupo{to{opacity:1;transform:none}}
+.j-cupo .lib{margin-left:auto;font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;
+  color:var(--on-night-4)}
+.j-lista{flex:1;display:flex;flex-direction:column;gap:8px;justify-content:center;min-height:0}
+
+/* ── escena de una sola pieza ──────────────────────────────────────────────
+   Las cuatro escenas del dueño pasaron a ser las piezas dibujadas: la
+   animación NO se va con ellas. Sigue el carrusel entero —pestañas, reloj de
+   siete segundos, barra de progreso— y cada pieza entra con su propio
+   movimiento cada vez que le toca el turno, así que el bloque nunca está
+   quieto aunque nadie toque nada.
+   La pieza trae su halo y su margen transparente dentro del archivo, así que
+   se centra y se deja respirar: ni marco, ni recorte, ni sombra encima. */
+/* El lienzo se pone NEGRO cuando lo que va dentro son las piezas: traen su
+   propio fondo negro con los destellos pintados, y sobre el degradado azulado
+   del lienzo se veía el rectángulo del archivo recortado contra él. Con los
+   dos negros iguales solo se ve la pieza y su brillo. */
+/* ══ LA PANTALLA DE LAS BANDAS ════════════════════════════════════════════
+   Las piezas de las bandas vienen sobre negro, así que sobre una banda clara
+   no pueden ir sueltas: se leerían como un rectángulo negro pegado. Van
+   dentro de una pantalla —negro, radio y sombra en pila— que es justo lo que
+   son. Sobre las bandas oscuras el negro se funde y solo queda la sombra.
+   Dentro, la misma mecánica que en el carrusel: cada globo, fila o tarjeta
+   es un trozo con su máscara, y entran uno detrás de otro. Aquí el disparo
+   no es la pestaña sino el revelado de la banda: entran cuando llegas. */
+.pantalla{position:relative;border-radius:18px;overflow:hidden;background:#000;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),
+             0 2px 6px rgba(var(--shadow-rgb),.10),
+             0 18px 40px -18px rgba(var(--shadow-rgb),.34),
+             0 70px 100px -70px rgba(var(--shadow-rgb),.8)}
+.on-night .pantalla{box-shadow:inset 0 0 0 1px rgba(255,255,255,.10),
+             0 3px 10px rgba(0,0,0,.5),0 40px 80px -40px rgba(0,0,0,.85)}
+.pantalla .pzas{width:100%;height:auto;max-width:none;max-height:none}
+/* Sangra por el canto de fuera como sangraba la captura que había antes. */
+@media (min-width:64rem){
+  .pro:not(.pro--flip) .pantalla{margin-left:calc(var(--pad) * -1.15)}
+  .pro--flip .pantalla{margin-right:calc(var(--pad) * -1.15)}
+}
+.js .pantalla .pz{opacity:0;transform:translate3d(14px,10px,0)}
+.js .pantalla .pz--izq{transform:translate3d(-14px,10px,0)}
+.js .pantalla.in .pz{animation:pzEntra .5s var(--ease) forwards;
+  animation-delay:calc(var(--i) * var(--paso,150ms) + .18s)}
+
+/* ══ ESCENA DE PIEZAS ═════════════════════════════════════════════════════
+   La misma animación que hacían las escenas dibujadas a mano —cada trozo
+   entrando por su cuenta— pero con las láminas de diseño.
+   El truco está en QUÉ se recorta. Partirlas en tiras horizontales no
+   funciona: la lámina lleva un marco que recorre los dos lados, y en cuanto
+   una tira se mueve, el marco se parte y se ve el corte.
+   Aquí cada pieza es un GLOBO, una fila o una tarjeta: cajas sueltas que ya
+   estaban aisladas sobre negro dentro de la lámina. Se recortan con una
+   máscara rectangular a su medida —nunca tocan el marco, que se queda fuera
+   de todas— y el lienzo negro hace de chasis. Como el fondo de la lámina y
+   el del lienzo son el mismo negro, el canto de cada recorte no existe.
+   Las medidas salieron de buscar los bloques de contenido en la propia
+   imagen, no de ponerlas a ojo.
+   ════════════════════════════════════════════════════════════════════════ */
+.canvas--foto{background:#000}
+/* Poco margen: cada pieza ya viene recortada a su contenido, así que el
+   hueco es para que respire, no para dejar negro muerto. */
+.scene--foto{padding:clamp(6px,.9vw,14px);justify-content:center;align-items:center}
+.pzas{position:relative;width:auto;height:100%;max-width:100%;margin:0 auto}
+.pzas--ancha{width:100%;height:auto;max-height:100%}
+.pz{position:absolute;inset:0;
+  -webkit-mask-image:linear-gradient(#000,#000);mask-image:linear-gradient(#000,#000);
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-size:var(--pw) var(--ph);mask-size:var(--pw) var(--ph);
+  -webkit-mask-position:var(--px) var(--py);mask-position:var(--px) var(--py)}
+.pz img{width:100%;height:100%;display:block;object-fit:fill;max-width:none;max-height:none}
+/* El chasis es la lámina con el contenido tapado: entra primero, vacío, y
+   las filas lo van llenando. Va sin máscara — es la pieza entera. */
+.pz--chasis{-webkit-mask-image:none;mask-image:none}
+
+/* Cada pieza entra por su lado: lo que el cliente escribe llega por la
+   izquierda y lo que contesta Neo por la derecha, igual que en un chat de
+   verdad. El paso lo pone cada escena — 620 ms entre mensajes porque se
+   leen, 90 ms entre filas de la agenda porque son una tabla. */
+.js .scene--foto .pz{opacity:0;transform:translate3d(14px,10px,0)}
+.js .scene--foto .pz--izq{transform:translate3d(-14px,10px,0)}
+.js .scene--foto.on .pz{animation:pzEntra .5s var(--ease) forwards;
+  animation-delay:calc(var(--i) * var(--paso,150ms) + .12s)}
+@keyframes pzEntra{to{opacity:1;transform:none}}
+
+/* ══ EL MOMENTO · conector a la demo ══════════════════════════════════════ */
+/* Esto es una SECUENCIA de veinte segundos, no tres características que
+   pasan a la vez. Tres tarjetas iguales en rejilla dicen «tres cosas»; una
+   línea con tres nodos dice «primero esto, después esto». Y de paso caen las
+   dos cajas anidadas: el paso cuelga de la línea, no vive dentro de un panel
+   que a su vez tiene otro panel dentro.
+   Las filas van en subgrid para que las tres reglas del pie caigan en la
+   MISMA línea. Con margin-top:auto quedaban desalineadas seis píxeles —
+   poco para nombrarlo y bastante para que se vea sucio. */
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-template-rows:auto auto auto auto;
+  column-gap:clamp(20px,2.6vw,44px);row-gap:12px;
+  margin-top:clamp(40px,5vw,64px);border-top:1px solid rgba(255,255,255,.22)}
+.step{display:grid;grid-template-rows:subgrid;grid-row:span 4;align-content:start;
+  padding-top:26px;position:relative}
+/* El nodo se come la línea con un halo del color de la banda, para que la
+   regla no le pase por detrás. */
+.step::before{content:"";position:absolute;top:-4px;left:0;width:7px;height:7px;
+  border-radius:50%;background:var(--em-hi);box-shadow:0 0 0 4px var(--night)}
+/* Una sola columna: la línea deja de ser común y cada paso se trae la suya. */
+@media (max-width:56rem){
+  .steps{grid-template-columns:minmax(0,1fr);grid-template-rows:none;
+    row-gap:0;border-top:0}
+  .step{display:flex;flex-direction:column;gap:12px;
+    padding:26px 0 30px;border-top:1px solid rgba(255,255,255,.22)}
+  .step .step-art{margin-top:4px}
+}
+.step .mono{color:var(--em-hi)}
+.step h3{font-size:1.02rem;font-variation-settings:'wdth' 104,'wght' 700;letter-spacing:-.018em}
+.step p{font-size:.87rem;line-height:1.62;color:var(--on-night-3)}
+.step-art{padding-top:14px;border-top:1px solid var(--hair-night);
+  display:flex;flex-direction:column;gap:8px;font-size:.8rem}
+.step-art .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.step-art .mono{font-size:.64rem;letter-spacing:.1em}
+.step-art b{font-variation-settings:'wdth' 102,'wght' 700;letter-spacing:-.014em}
+.step-art .em{color:var(--em-hi);font-family:var(--mono);font-size:.78rem;font-variant-numeric:tabular-nums}
+/* el conmutador de rol, dibujado */
+.switch{display:flex;padding:3px;border-radius:999px;background:rgba(5,9,18,.7);
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.5);gap:2px}
+.switch span{flex:1;text-align:center;padding:7px 10px;border-radius:999px;font-size:.76rem;
+  color:var(--on-night-3);transition:background .3s var(--ease),color .3s var(--ease)}
+.switch span.on{background:var(--em);color:#fff;font-variation-settings:'wdth' 102,'wght' 700}
+.demo-notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr));
+  gap:var(--s-4);margin-top:clamp(36px,4vw,52px);padding-top:var(--s-6);
+  border-top:1px solid var(--hair-night)}
+/* Marca de verificación en círculo RELLENO, no un palito suelto. Y el
+   interlineado sube sobre oscuro: la letra clara sobre noche se percibe más
+   fina de lo que es, y a 1.5 se lee apretada. */
+.demo-notes div{display:flex;gap:10px;font-size:.86rem;color:var(--on-night-3);line-height:1.58}
+.demo-notes div::before{content:"";width:16px;height:16px;border-radius:50%;flex:none;margin-top:2px;
+  background:var(--em-hi) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.6 8.3l2.7 2.7 6-6.3' fill='none' stroke='%23052e22' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat}
+
+/* ══ EL DÍA Y SU HUECO ════════════════════════════════════════════════════
+   Seis franjas de un viernes. Cinco reservadas y una vacía — y el precio
+   dentro de la vacía, que es todo el argumento de la sección.
+   Antes esto era una parrilla de 7×7: el patrón se veía, pero un patrón no
+   dice cuánto cuesta. */
+.dia{margin-top:clamp(34px,4vw,56px)}
+.dia-hd{display:flex;align-items:baseline;justify-content:space-between;
+  gap:var(--s-4);flex-wrap:wrap;margin-bottom:var(--s-3)}
+.dia-pico{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-4)}
+.dia-fila{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:clamp(6px,.8vw,12px)}
+@media (max-width:56rem){.dia-fila{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:30rem){.dia-fila{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.fr{border-radius:var(--r);padding:14px 14px 15px;min-height:92px;
+  display:flex;flex-direction:column;gap:5px;
+  box-shadow:inset 0 0 0 1px var(--line-2)}
+.js .fr{opacity:0;transform:translateY(10px)}
+.js .rv.in .fr,.js .dia.in .fr{animation:frIn .5s var(--ease) forwards;
+  animation-delay:calc(var(--i) * 70ms)}
+@keyframes frIn{to{opacity:1;transform:none}}
+.fr b{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;color:var(--ink-3)}
+.fr span{font-size:.87rem;font-variation-settings:'wdth' 102,'wght' 620;
+  letter-spacing:-.014em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fr--ok{background:rgba(var(--em-rgb),.10);box-shadow:inset 0 0 0 1px rgba(var(--em-rgb),.24)}
+.fr--ok b{color:var(--em)}
+/* El hueco tiene que leerse COMO hueco: contorno cortado y nada macizo
+   dentro. Relleno gris y se confundía con una reservada apagada. */
+.fr--hueco{background:transparent;box-shadow:none;
+  border:1.5px dashed var(--line-2);padding:12.5px 12.5px 13.5px}
+.fr--hueco b,.fr--hueco span{color:var(--ink-4)}
+.fr--hueco span{font-variation-settings:'wdth' 102,'wght' 500}
+.fr em{font-style:normal;margin-top:auto;font-family:var(--mono);font-size:.78rem;
+  letter-spacing:-.01em;color:var(--red);font-weight:600}
+/* Los tres datos de esta banda van a todo el ancho, no dentro de una
+   columna de texto: aquí no hay columna. */
+.datos--ancho{margin-top:clamp(28px,3.2vw,44px)}
+
+/* ══ LAS TRECE VISTAS ═════════════════════════════════════════════════════ */
+.vgroup{margin-top:clamp(40px,5vw,64px)}
+.vgroup + .vgroup{margin-top:clamp(36px,4vw,56px)}
+.vgroup h3{display:flex;align-items:baseline;gap:12px;padding-bottom:var(--s-4);
+  border-bottom:1px solid var(--line-2)}
+.vgroup h3 em{font-style:normal;font-family:var(--mono);font-size:.7rem;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--ink-4)}
+/* El hairline va en el CONTENEDOR, no en cada celda. Con auto-fit la última
+   fila casi nunca está completa, y una línea por celda deja media raya
+   colgando debajo de los dos últimos elementos. */
+.views{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));
+  column-gap:clamp(20px,2.4vw,40px);row-gap:var(--s-2);
+  border-bottom:1px solid var(--line);padding-bottom:var(--s-4)}
+.view{padding:20px 14px 18px;margin-left:-14px;border-radius:var(--r);
+  display:flex;flex-direction:column;gap:5px;transition:background .22s var(--ease)}
+@media (hover:hover) and (pointer:fine){
+  .view:hover{background:var(--paper)}
+}
+.view .tn{font-family:var(--mono);font-size:.68rem;color:var(--em);letter-spacing:.06em}
+.view b{font-size:.99rem;font-variation-settings:'wdth' 104,'wght' 700;letter-spacing:-.018em}
+.view p{font-size:.86rem;line-height:1.52;color:var(--ink-3)}
+
+/* Las trece vistas viven sobre noche. Los hairlines y el gris de cuerpo se
+   recalculan contra #070b13, no se heredan del claro: --line sobre noche
+   es invisible y --ink-3 sobre noche da 2.1:1. */
+.vistas .vgroup h3{border-bottom-color:rgba(255,255,255,.20)}
+.vistas .vgroup h3 em{color:var(--on-night-4)}
+.vistas .views{border-bottom-color:var(--hair-night)}
+.vistas .view .tn{color:var(--em-hi)}
+.vistas .view p{color:var(--on-night-3);line-height:1.6}
+@media (hover:hover) and (pointer:fine){
+  .vistas .view:hover{background:rgba(255,255,255,.055)}
+}
+
+/* ══ PLANES ═══════════════════════════════════════════════════════════════ */
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  margin-top:clamp(40px,5vw,64px);border-radius:var(--r-xl);overflow:hidden;
+  box-shadow:inset 0 0 0 1px var(--line-2)}
+@media (max-width:60rem){.plans{grid-template-columns:minmax(0,1fr)}}
+.plan-c{padding:clamp(26px,3vw,38px);display:flex;flex-direction:column;gap:var(--s-4);
+  border-right:1px solid var(--line-2);background:var(--paper)}
+.plan-c:last-child{border-right:0}
+@media (max-width:60rem){
+  .plan-c{border-right:0;border-bottom:1px solid var(--line-2)}
+  .plan-c:last-child{border-bottom:0}
+}
+/* El plan que se quiere vender va en OSCURO. El contraste de superficie hace
+   el trabajo que en otras páginas hace una etiqueta gritando «recomendado». */
+.plan-c--dark{background:var(--night);color:var(--on-night);border-right-color:var(--night)}
+.plan-c--dark .plan-sub,.plan-c--dark .feat li{color:var(--on-night-3)}
+.plan-c--dark .mono{color:var(--em-hi)}
+.plan-c--dark .featbox{background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+
+.plan-c h3{font-size:1.5rem;font-variation-settings:'wdth' 108,'wght' 800;letter-spacing:-.03em}
+.plan-sub{font-size:.88rem;color:var(--ink-3);line-height:1.5}
+.plan-price{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:var(--s-3) 0}
+.plan-price b{font-size:1.5rem;font-variation-settings:'wdth' 108,'wght' 800;letter-spacing:-.03em;
+  white-space:nowrap}
+.plan-price span{font-size:.84rem;color:var(--ink-4)}
+.plan-c--dark .plan-price span{color:var(--on-night-4)}
+/* Lo que trae va en un panel PROPIO hundido dentro, con su cabecera. Las dos
+   preguntas de quien compra van separadas y en su orden: primero lo que
+   cuesta, sobre la superficie de la tarjeta; después lo que trae, aquí
+   dentro. El panel crece con flex:1 para que las tres tarjetas queden a la
+   misma altura sin tocar la rejilla. */
+.featbox{flex:1;margin-top:var(--s-2);background:var(--bone);border-radius:var(--r);
+  padding:16px 18px;box-shadow:inset 0 0 0 1px var(--line);
+  display:flex;flex-direction:column;gap:10px}
+.featbox .mono{color:var(--ink-4)}
+.feat{list-style:none;display:flex;flex-direction:column;gap:9px}
+.feat li{display:flex;gap:10px;font-size:.87rem;line-height:1.45;color:var(--ink-2)}
+/* El bloque de lo que NO trae va separado por una regla, no pegado a la
+   lista de lo que sí: callar lo que falta solo aplaza la llamada de «pensé
+   que esto venía», y esa llega enfadada. */
+.mono--no{margin-top:var(--s-1);padding-top:var(--s-3);border-top:1px solid var(--line)}
+.plan-c--dark .mono--no{border-top-color:rgba(255,255,255,.12)}
+.plan-c--dark .mono--no{color:var(--on-night-4)}
+/* La etiqueta va DENTRO del <span> del texto: el <li> es flex, así que un
+   <em> hermano se vuelve item propio y se parte en dos renglones. */
+.soon{font-family:var(--mono);font-size:.58rem;font-style:normal;letter-spacing:.1em;
+  text-transform:uppercase;padding:2px 6px;border-radius:4px;white-space:nowrap;
+  background:rgba(255,255,255,.12);color:var(--on-night-3);margin-left:6px;
+  vertical-align:1px}
+.feat li::before{content:"";width:16px;height:16px;flex:none;margin-top:2px;border-radius:50%;
+  background:var(--em) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.6 8.3l2.7 2.7 6-6.3' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat}
+.plan-c--dark .feat li::before{background-color:var(--em-hi);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.6 8.3l2.7 2.7 6-6.3' fill='none' stroke='%23052e22' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.feat--no li::before{background:var(--line-2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M5 5l6 6M11 5l-6 6' fill='none' stroke='%23657286' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center/16px no-repeat}
+.feat--no li{color:var(--ink-4)}
+.plan-c--dark .feat--no li{color:var(--on-night-4)}
+.plan-c--dark .feat--no li::before{background-color:rgba(255,255,255,.14);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M5 5l6 6M11 5l-6 6' fill='none' stroke='%23b9c3d2' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E")}
+.plan-foot{margin-top:clamp(26px,3vw,40px);display:flex;flex-wrap:wrap;gap:var(--s-4);
+  align-items:center;justify-content:space-between}
+.plan-foot p{font-size:.86rem;color:var(--ink-3);max-width:52ch;line-height:1.55}
+
+/* ══ FAQ ══════════════════════════════════════════════════════════════════ */
+.faq{margin-top:clamp(36px,4vw,56px);border-top:1px solid var(--line-2)}
+.faq details{border-bottom:1px solid var(--line-2)}
+.faq summary{list-style:none;cursor:pointer;padding:22px 44px 22px 0;position:relative;
+  display:flex;gap:16px;align-items:baseline;
+  font-size:clamp(1rem,1.35vw,1.16rem);font-variation-settings:'wdth' 104,'wght' 700;
+  letter-spacing:-.02em;line-height:1.35}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary .tn{font-family:var(--mono);font-size:.68rem;color:var(--ink-4);flex:none;
+  font-variation-settings:'wdth' 100,'wght' 400;letter-spacing:.06em}
+.faq summary::after{content:"";position:absolute;right:4px;top:26px;width:14px;height:14px;
+  background:currentColor;transition:transform .3s var(--ease);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M7 1v12M1 7h12' stroke='%23000' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") center/14px no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cpath d='M7 1v12M1 7h12' stroke='%23000' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") center/14px no-repeat}
+.faq details[open] summary::after{transform:rotate(135deg)}
+.faq .ans{padding:0 44px 24px 40px;font-size:.94rem;line-height:1.62;color:var(--ink-2);max-width:70ch}
+.faq .ans a{box-shadow:inset 0 -1px 0 var(--line-2)}
+
+/* ══ CTA FINAL ════════════════════════════════════════════════════════════ */
+.cta-t span{display:inline-block;opacity:0;transform:translateY(24px)}
+.cta.in .cta-t span{animation:wordIn .68s var(--ease) forwards}
+@keyframes wordIn{to{opacity:1;transform:none}}
+
+/* ══ FOOTER ═══════════════════════════════════════════════════════════════ */
+footer{background:#050912;color:var(--on-night);padding:clamp(56px,6vw,88px) 0 var(--s-8)}
+.f-grid{display:grid;grid-template-columns:minmax(0,1.5fr) repeat(3,minmax(0,1fr));
+  gap:var(--s-8);padding-bottom:var(--s-12);border-bottom:1px solid var(--hair-night)}
+@media (max-width:60rem){.f-grid{grid-template-columns:repeat(auto-fit,minmax(min(160px,100%),1fr))}}
+/* La marca del pie usa la misma pieza que la cápsula, pero sobre banda
+   oscura: el color de .brand es tinta y aquí sería un agujero negro. */
+footer .brand{color:var(--on-night)}
+footer .brand-ph{background:rgba(255,255,255,.06)}
+.f-brand p{margin-top:14px;font-size:.87rem;color:var(--on-night-3);max-width:34ch;line-height:1.6}
+.f-col{display:flex;flex-direction:column;gap:11px}
+.f-col h4{font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--on-night-4);margin-bottom:4px;font-variation-settings:'wdth' 100,'wght' 500}
+.f-col a{font-size:.89rem;color:var(--on-night-2);transition:color .2s}
+.f-col a:hover{color:var(--em-hi)}
+.f-bot{padding-top:var(--s-6);display:flex;flex-wrap:wrap;gap:var(--s-4);
+  justify-content:space-between;font-size:.8rem;color:var(--on-night-4)}
+.f-bot a:hover{color:var(--em-hi)}
+
+/* ══ MOVIMIENTO REDUCIDO ══════════════════════════════════════════════════
+   Se apaga TODO el movimiento y se conservan los cambios de opacidad y color,
+   que ayudan a entender. En el mismo commit que lo crea. */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important}
+  .js .rv{opacity:1;transform:none}
+  .js .fr{animation:none;opacity:1;transform:none}
+  .btn::after{display:none}
+  .btn:hover{transform:none}
+  .js .nav,.js .nav-links a{animation:none;opacity:1;transform:none}
+  /* La cápsula sigue cambiando de estado: lo que se apaga es el viaje del
+     ancho, no la información de que hay dos estados. */
+  .pill,.nav-links{transition:none}
+  .nav-links a::after{transition:none}
+  .js .marca-hero i,.js .marca-hero.in i{animation:none;opacity:1;transform:none;
+    font-variation-settings:'wdth' 125,'wght' 800}
+  /* El JS ya no escribe nada bajo movimiento reducido, pero si alguien lo
+     activa con la página abierta los transforms ya escritos se quedarían
+     puestos. Esto los borra igual. */
+  .bg-deriva{animation:none;transform:none}
+  .bg-par,.ag-tilt,.ag-float,.rail-par,.hero-copy,[data-par],[data-par-x]{
+    transform:none!important;opacity:1!important}
+  .rail-in,.rowtrack{animation:none}
+  .js .scene--foto .pz,.js .scene--foto.on .pz{animation:none;opacity:1;transform:none}
+  .js .pantalla .pz,.js .pantalla.in .pz{animation:none;opacity:1;transform:none}
+  .scene.on .gc,.scene.on .bub,.scene.on .bracket .g{opacity:1;transform:none}
+  .scene.on .bracket .ln{stroke-dashoffset:0}
+  .scene.on .chart .line{stroke-dashoffset:0}
+  .scene.on .chart .area{opacity:1}
+  .scene.on .rank .rb i{transform:scaleX(var(--w))}
+  .cta.in .cta-t span{opacity:1;transform:none}
+  .tab.on .bar i{transform:scaleX(1)}
+}
+</style>
+</head>
+<body>
+<a href="#contenido" class="btn btn-ink" style="position:absolute;left:-9999px;top:8px;z-index:300"
+   onfocus="this.style.left='12px'" onblur="this.style.left='-9999px'">Saltar al contenido</a>
+
+<!-- ══ NAV ══════════════════════════════════════════════════════════════ -->
+<!-- La cápsula. La marca va primero y NO se toca al encoger: es la pieza
+     que persiste entre los dos estados. Los tres puntos van fuera del flujo,
+     anclados al canto derecho, para que viajen solos con el borde. -->
+<nav class="nav" id="nav">
+  <div class="pill" id="pill">
+    <a href="#" class="brand">
+      <span class="brand-ph"><img src="assets/marca/logo.png?v=1" alt="" width="30" height="30" decoding="async"></span>
+      <b>Sportplatz</b>
+    </a>
+    <div class="nav-links">
+      <a href="#plataforma">Plataforma</a>
+      <a href="#demo">La demo</a>
+      <a href="#capacidad">Capacidad</a>
+      <a href="#planes">Planes</a>
+      <a href="#preguntas">Preguntas</a>
+    </div>
+    <button class="dots" id="burger" aria-label="Abrir menú" aria-expanded="false"
+            aria-controls="sheet"><i></i><i></i><i></i></button>
+  </div>
+</nav>
+<div class="sheet" id="sheet">
+  <a href="#plataforma">Plataforma</a><a href="#demo">La demo</a>
+  <a href="#capacidad">Capacidad</a><a href="#planes">Planes</a><a href="#preguntas">Preguntas</a>
+</div>
+
+<!-- ══ HERO ═════════════════════════════════════════════════════════════ -->
+<header class="hero b-night on-night" id="contenido">
+  <div class="hero-bg" aria-hidden="true">
+    <!-- El paralaje va en .bg-par y NO en .hero-bg: el recorte tiene que
+         quedarse quieto mientras lo de dentro viaja. -->
+    <div class="bg-par" id="bgPar"><div class="bg-deriva">
+      <!-- Los mismos cuadros, ya renderizados. Ver el bloque de CSS de abajo
+           para por qué dejó de ser una escena viva. -->
+      <img class="cuadros" src="assets/fondos/cuadros-1440.webp"
+           srcset="assets/fondos/cuadros-900.webp 900w,
+                   assets/fondos/cuadros-1440.webp 1440w,
+                   assets/fondos/cuadros-2560.webp 2560w"
+           sizes="100vw" width="2560" height="1280"
+           alt="" decoding="async" fetchpriority="high">
+      <!-- La escena viva va ENCIMA del render fijo y se funde con él cuando
+           llega. Como son los mismos cuadros, el relevo no se ve: ni al
+           entrar, ni cuando la escena se destruye al salir del hero. -->
+      <canvas id="hero3d" class="hero-3d"></canvas>
+    </div></div>
+  </div>
+  <div class="hero-veil" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <div class="hero-in">
+      <span class="eyebrow rv">Software para complejos deportivos</span>
+      <!-- El nombre manda, y va FUERA de .hero-copy: ahí lo limita un
+           max-width pensado para texto y once mayúsculas anchas no caben —
+           se partía en «SPORTPL / ATZ».
+           Es un <p> y no un encabezado: el h1 sigue siendo la promesa, que es
+           lo que describe la página. El aria-label existe porque el JS parte
+           la palabra en letras y un lector la deletrearía. -->
+      <p class="marca-hero rv rv-1" id="marcaHero" aria-label="Sportplatz">Sportplatz</p>
+      <div class="hero-copy">
+        <h1 class="d rv rv-2">Se acabó el cuaderno.</h1>
+        <p class="lead rv rv-3">La agenda, la plata y los torneos de tu complejo en un solo
+          sitio. Y Neo contestando por WhatsApp a la hora que le escriban.</p>
+        <div class="cta-row rv rv-4">
+          <a class="btn btn-em btn-lg" href="https://filyandco.com/demos/sportplatz/" data-demo>Abrir la demo <span class="arw">→</span></a>
+          <a class="btn btn-ghost btn-lg" href="#plataforma">Ver la plataforma</a>
+        </div>
+        <p class="hero-note rv rv-5">Sin registro. Cuatro preguntas y estás adentro.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Costura noche → papel. Curva asimétrica, una sola ondulación. El
+       relleno es el de la banda de ABAJO, que ahora es la de la agenda. -->
+  <svg class="seam" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 90 L0 61 C 232 39 470 78 726 58 C 946 41 1180 12 1440 33 L1440 90 Z" fill="#fcfdfe"/>
+  </svg>
+</header>
+
+<!-- ══ LA AGENDA ════════════════════════════════════════════════════════
+     El panel salió del hero. Allí quedaba al aire: sin nada al lado que
+     dijera qué se está viendo, y compartiendo fondo con la escena 3D — dos
+     piezas oscuras peleando por la misma pantalla.
+     Aquí baja a su propia banda, la más clara de la página, que es contra
+     la que mejor recorta un vidrio oscuro. El render trae su propio halo,
+     así que la banda no le pone sombra encima: dos sombras dejan un doble
+     contorno que se ve sucio. -->
+<section class="band agenda b-paper" id="agenda">
+  <div class="wrap">
+    <div class="agenda-in">
+      <!-- Tres nodos anidados con UN transform en cada uno (ley 3):
+           .ag-stage pone la perspectiva y lleva el revelado,
+           .ag-tilt el enderezado que escribe el motor de scroll,
+           .ag-float el paralaje declarativo.
+           En un solo elemento se pisarían entre ellos sin dar ningún error. -->
+      <div class="ag-stage rv">
+        <div class="ag-tilt" id="agTilt">
+          <div class="ag-float" data-par="26">
+            <!-- El panel del producto. Antes era HTML vivo: la franja de las
+                 19:00 se llenaba sola y el total salía de sumar RESERVAS en
+                 código. Ahora es una pieza fija, así que lo que decía el
+                 panel va en el alt: si no, el dato se queda encerrado en un
+                 píxel. -->
+            <figure class="agenda-shot">
+              <img src="assets/producto/agenda-780.webp"
+                   srcset="assets/producto/agenda-780.webp 780w,
+                           assets/producto/agenda-1560.webp 1560w"
+                   sizes="(min-width:64rem) 700px, 92vw"
+                   width="1560" height="955" decoding="async"
+                   alt="Agenda del sábado 23 de agosto en Sintética 1: las 17:00 pagada por Los Cafeteros; las 18:00 y las 19:00 con adelanto, a nombre de Andrés Vélez y Mateo Ruiz, ambas entradas por WhatsApp; las 20:00 sin abonar, de Club Palmares. Por cobrar en esta cancha, $240.000.">
+            </figure>
+          </div>
+        </div>
+      </div>
+
+      <div class="agenda-txt">
+        <span class="eyebrow rv">La agenda</span>
+        <h2 class="h3 rv rv-1">Un sábado en una cancha, hora por hora.</h2>
+        <p class="small rv rv-2">Así se ve la Sintética 1 un sábado: cada hora con el nombre
+          de quien la reservó y en qué va el pago. La barra verde de abajo suma lo que todavía
+          te deben en esa cancha — y ese número no lo escribe nadie a mano: sale de sumar las
+          reservas de arriba.</p>
+        <ul class="leyenda rv rv-3">
+          <li><i class="lg-pt lg-pt--ok"></i><b>Pagada</b>
+            <span>La hora quedó cobrada completa.</span></li>
+          <li><i class="lg-pt lg-pt--mid"></i><b>Con adelanto</b>
+            <span>Abonó una parte; el resto se cobra en cancha.</span></li>
+          <li><i class="lg-pt lg-pt--no"></i><b>Sin abonar</b>
+            <span>Reservada y sin un peso encima.</span></li>
+        </ul>
+        <p class="ag-nota rv rv-4"><b class="mono">W/A</b> la reserva entró por WhatsApp,
+          hablando con Neo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CINTA DE DEPORTES ════════════════════════════════════════════════ -->
+<section class="b-bone strip">
+  <div class="wrap">
+    <div class="strip-hd">
+      <span class="eyebrow">Los cinco deportes</span>
+      <p class="small" style="max-width:46ch">Cada uno trae su plano de cancha dibujado, su color de
+        superficie y su vocabulario: la sintética habla de goles, el pádel de puntos, el paintball
+        de eliminaciones.</p>
+    </div>
+  </div>
+  <div class="rail"><div class="rail-par" id="railPar" data-par-x="120"><div class="rail-in" id="rail"></div></div></div>
+</section>
+
+<!-- ══ 01 · EL PROBLEMA ═════════════════════════════════════════════════ -->
+<section class="band b-bone" style="padding-top:clamp(56px,6vw,96px)">
+  <div class="wrap">
+    <div class="head rv">
+      <span class="eyebrow">El problema</span>
+      <h2 class="h2">La verdad de tu complejo vive hoy en tres sitios distintos.</h2>
+      <p class="lead">Las reservas de la semana viven repartidas entre un grupo de WhatsApp, un cuaderno y la
+        memoria del que atiende. Ninguno de los tres sabe cuánto se ha <b>cobrado</b> de verdad —
+        solo cuánto se ha facturado, que no es lo mismo.</p>
+    </div>
+
+    <div class="vs">
+      <div class="vsbox vsbox--hoy rv rv-1">
+        <h3 class="h3"><span class="mono mono--dim">Hoy</span></h3>
+        <div class="rowtrack" data-loop="hoy1" data-hot="0"></div>
+        <div class="rowtrack rowtrack--rev" data-loop="hoy2" data-hot="1"></div>
+        <div class="rowtrack" data-loop="hoy3" data-hot="0"></div>
+      </div>
+      <div class="vsbox vsbox--con rv rv-2">
+        <h3 class="h3"><span class="mono">Con Sportplatz</span></h3>
+        <div class="rowtrack" data-loop="con1" data-hot="1"></div>
+        <div class="rowtrack rowtrack--rev" data-loop="con2" data-hot="0"></div>
+        <div class="rowtrack" data-loop="con3" data-hot="0"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 02 · LA PLATAFORMA EN CUATRO ESCENAS ═════════════════════════════ -->
+<section class="band b-mist" id="pantallas">
+  <div class="wrap">
+    <div class="head head--rule rv">
+      <span class="eyebrow">La plataforma</span>
+      <h2 class="h2">Cuatro pantallas hacen el trabajo.</h2>
+      <p class="lead">Las otras nueve existen para que estas cuatro digan la verdad. Toca una para
+        quedarte en ella; si no tocas nada, van pasando solas.</p>
+    </div>
+
+    <div class="stage rv rv-1">
+      <div class="tablist" id="tabs">
+        <button class="tab" type="button">
+          <span class="tt"><span class="h4">La agenda</span></span>
+          <p>Hora × cancha, dos semanas navegables. Verde es pagada, ámbar tiene adelanto, rojo no
+            ha abonado — y el color nunca va solo, siempre lleva su etiqueta. Aguanta cuarenta
+            canchas sin despeinarse.</p>
+          <span class="bar"><i></i></span>
+        </button>
+        <button class="tab" type="button">
+          <span class="tt"><span class="h4">Neo AI</span></span>
+          <p>Contesta por WhatsApp, lee la agenda de verdad y aparta. Nunca ofrece una hora que ya
+            está tomada, y cada reserva sale con su código para cancelar.</p>
+          <span class="bar"><i></i></span>
+        </button>
+        <button class="tab" type="button">
+          <span class="tt"><span class="h4">Torneos</span></span>
+          <p>Cuatro, ocho o dieciséis equipos. Sorteas los cruces y los ganadores avanzan solos.
+            Tabla, anotadores, valla menos vencida y podio salen del marcador, no de una hoja
+            aparte.</p>
+          <span class="bar"><i></i></span>
+        </button>
+        <button class="tab" type="button">
+          <span class="tt"><span class="h4">El panel</span></span>
+          <p>Facturado y cobrado como dos números distintos, porque son dos cosas distintas.
+            Ingresos de los últimos catorce días y qué cancha deja más plata.</p>
+          <span class="bar"><i></i></span>
+        </button>
+      </div>
+
+      <div class="canvas canvas--foto">
+        <!-- 01 · agenda -->
+        <div class="scene scene--foto" data-scene>
+          <div class="pzas" role="img" aria-label="Pantalla de Reservas del sábado 23: cuatro canchas por columna, de las 17:00 a las 22:00, con cada hora en verde si está pagada, ámbar si tiene adelanto, rojo si no ha abonado y gris si está libre."
+               style="--paso:90ms;aspect-ratio:774/538">
+              <span class="pz pz--chasis" style="--i:0"><img src="assets/producto/carr-agenda-chasis-780.webp" srcset="assets/producto/carr-agenda-chasis-780.webp 780w, assets/producto/carr-agenda-chasis-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz pz--izq" style="--i:1;--pw:92.248%;--ph:19.888%;--px:53.333%;--py:4.64%"><img src="assets/producto/carr-agenda-780.webp" srcset="assets/producto/carr-agenda-780.webp 780w, assets/producto/carr-agenda-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz" style="--i:2;--pw:74.935%;--ph:5.019%;--px:74.227%;--py:29.55%"><img src="assets/producto/carr-agenda-780.webp" srcset="assets/producto/carr-agenda-780.webp 780w, assets/producto/carr-agenda-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz pz--izq" style="--i:3;--pw:91.085%;--ph:7.993%;--px:60.87%;--py:37.98%"><img src="assets/producto/carr-agenda-780.webp" srcset="assets/producto/carr-agenda-780.webp 780w, assets/producto/carr-agenda-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz pz--izq" style="--i:4;--pw:91.085%;--ph:8.178%;--px:60.87%;--py:48.381%"><img src="assets/producto/carr-agenda-780.webp" srcset="assets/producto/carr-agenda-780.webp 780w, assets/producto/carr-agenda-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz pz--izq" style="--i:5;--pw:91.085%;--ph:7.807%;--px:60.87%;--py:58.669%"><img src="assets/producto/carr-agenda-780.webp" srcset="assets/producto/carr-agenda-780.webp 780w, assets/producto/carr-agenda-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz pz--izq" style="--i:6;--pw:91.085%;--ph:7.807%;--px:60.87%;--py:68.952%"><img src="assets/producto/carr-agenda-780.webp" srcset="assets/producto/carr-agenda-780.webp 780w, assets/producto/carr-agenda-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz pz--izq" style="--i:7;--pw:91.085%;--ph:8.178%;--px:60.87%;--py:79.352%"><img src="assets/producto/carr-agenda-780.webp" srcset="assets/producto/carr-agenda-780.webp 780w, assets/producto/carr-agenda-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz pz--izq" style="--i:8;--pw:91.085%;--ph:8.178%;--px:60.87%;--py:89.879%"><img src="assets/producto/carr-agenda-780.webp" srcset="assets/producto/carr-agenda-780.webp 780w, assets/producto/carr-agenda-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          </div>
+        </div>
+        <div class="scene scene--foto" data-scene>
+          <div class="pzas" role="img" aria-label="Conversación de WhatsApp con Neo AI: el cliente pregunta por sintética el sábado a las 7, el asistente ofrece las horas libres con el precio, explica el adelanto y cierra con la reserva apartada y su código."
+               style="--paso:560ms;aspect-ratio:676/546">
+              <span class="pz pz--chasis" style="--i:0"><img src="assets/producto/carr-neo-chasis-780.webp" srcset="assets/producto/carr-neo-chasis-780.webp 780w, assets/producto/carr-neo-chasis-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz pz--izq" style="--i:1;--pw:91.124%;--ph:12.271%;--px:40.0%;--py:3.967%"><img src="assets/producto/carr-neo-780.webp" srcset="assets/producto/carr-neo-780.webp 780w, assets/producto/carr-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz pz--izq" style="--i:2;--pw:50.74%;--ph:9.707%;--px:8.108%;--py:19.067%"><img src="assets/producto/carr-neo-780.webp" srcset="assets/producto/carr-neo-780.webp 780w, assets/producto/carr-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz" style="--i:3;--pw:59.32%;--ph:17.949%;--px:91.273%;--py:33.259%"><img src="assets/producto/carr-neo-780.webp" srcset="assets/producto/carr-neo-780.webp 780w, assets/producto/carr-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz pz--izq" style="--i:4;--pw:47.633%;--ph:8.242%;--px:7.627%;--py:50.499%"><img src="assets/producto/carr-neo-780.webp" srcset="assets/producto/carr-neo-780.webp 780w, assets/producto/carr-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz" style="--i:5;--pw:69.379%;--ph:12.637%;--px:88.406%;--py:62.893%"><img src="assets/producto/carr-neo-780.webp" srcset="assets/producto/carr-neo-780.webp 780w, assets/producto/carr-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz pz--izq" style="--i:6;--pw:36.095%;--ph:8.242%;--px:6.25%;--py:74.85%"><img src="assets/producto/carr-neo-780.webp" srcset="assets/producto/carr-neo-780.webp 780w, assets/producto/carr-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz" style="--i:7;--pw:69.97%;--ph:11.538%;--px:88.177%;--py:87.371%"><img src="assets/producto/carr-neo-780.webp" srcset="assets/producto/carr-neo-780.webp 780w, assets/producto/carr-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz pz--izq" style="--i:8;--pw:92.751%;--ph:6.593%;--px:51.02%;--py:96.275%"><img src="assets/producto/carr-neo-780.webp" srcset="assets/producto/carr-neo-780.webp 780w, assets/producto/carr-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          </div>
+        </div>
+        <div class="scene scene--foto" data-scene>
+          <div class="pzas" role="img" aria-label="Llave del Torneo Relámpago de cuatro equipos: las dos semifinales con su marcador, los ganadores ya colocados en la final y Los Cafeteros coronados campeones."
+               style="--paso:300ms;aspect-ratio:683/482">
+              <span class="pz pz--chasis" style="--i:0"><img src="assets/producto/carr-llave-chasis-780.webp" srcset="assets/producto/carr-llave-chasis-780.webp 780w, assets/producto/carr-llave-chasis-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz pz--izq" style="--i:1;--pw:11.274%;--ph:1.66%;--px:19.967%;--py:3.586%"><img src="assets/producto/carr-llave-780.webp" srcset="assets/producto/carr-llave-780.webp 780w, assets/producto/carr-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz pz--izq" style="--i:2;--pw:90.483%;--ph:15.56%;--px:46.154%;--py:7.862%"><img src="assets/producto/carr-llave-780.webp" srcset="assets/producto/carr-llave-780.webp 780w, assets/producto/carr-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz pz--izq" style="--i:3;--pw:35.286%;--ph:56.432%;--px:5.882%;--py:64.762%"><img src="assets/producto/carr-llave-780.webp" srcset="assets/producto/carr-llave-780.webp 780w, assets/producto/carr-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz" style="--i:4;--pw:31.479%;--ph:56.432%;--px:57.051%;--py:64.762%"><img src="assets/producto/carr-llave-780.webp" srcset="assets/producto/carr-llave-780.webp 780w, assets/producto/carr-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz" style="--i:5;--pw:25.915%;--ph:56.432%;--px:95.257%;--py:64.762%"><img src="assets/producto/carr-llave-780.webp" srcset="assets/producto/carr-llave-780.webp 780w, assets/producto/carr-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz pz--izq" style="--i:6;--pw:11.274%;--ph:1.66%;--px:19.967%;--py:3.586%"><img src="assets/producto/carr-llave-780.webp" srcset="assets/producto/carr-llave-780.webp 780w, assets/producto/carr-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz pz--izq" style="--i:7;--pw:90.483%;--ph:15.56%;--px:46.154%;--py:7.862%"><img src="assets/producto/carr-llave-780.webp" srcset="assets/producto/carr-llave-780.webp 780w, assets/producto/carr-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz pz--izq" style="--i:8;--pw:92.679%;--ph:56.432%;--px:52.0%;--py:64.762%"><img src="assets/producto/carr-llave-780.webp" srcset="assets/producto/carr-llave-780.webp 780w, assets/producto/carr-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          </div>
+        </div>
+        <div class="scene scene--foto" data-scene>
+          <div class="pzas" role="img" aria-label="Panel del dueño: facturado $8.4M, cobrado $6.1M y por cobrar $2.3M como tres números distintos, con la curva de los últimos catorce días y el ranking de qué cancha deja más plata."
+               style="--paso:180ms;aspect-ratio:676/424">
+              <span class="pz pz--chasis" style="--i:0"><img src="assets/producto/carr-panel-chasis-780.webp" srcset="assets/producto/carr-panel-chasis-780.webp 780w, assets/producto/carr-panel-chasis-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz pz--izq" style="--i:1;--pw:90.68%;--ph:12.736%;--px:41.27%;--py:5.405%"><img src="assets/producto/carr-panel-780.webp" srcset="assets/producto/carr-panel-780.webp 780w, assets/producto/carr-panel-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz pz--izq" style="--i:2;--pw:92.456%;--ph:19.104%;--px:47.059%;--py:24.781%"><img src="assets/producto/carr-panel-780.webp" srcset="assets/producto/carr-panel-780.webp 780w, assets/producto/carr-panel-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz pz--izq" style="--i:3;--pw:92.456%;--ph:16.745%;--px:49.02%;--py:54.674%"><img src="assets/producto/carr-panel-780.webp" srcset="assets/producto/carr-panel-780.webp 780w, assets/producto/carr-panel-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz pz--izq" style="--i:4;--pw:88.018%;--ph:6.368%;--px:41.975%;--py:72.544%"><img src="assets/producto/carr-panel-780.webp" srcset="assets/producto/carr-panel-780.webp 780w, assets/producto/carr-panel-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz pz--izq" style="--i:5;--pw:88.018%;--ph:6.604%;--px:41.975%;--py:83.081%"><img src="assets/producto/carr-panel-780.webp" srcset="assets/producto/carr-panel-780.webp 780w, assets/producto/carr-panel-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+              <span class="pz pz--izq" style="--i:6;--pw:88.018%;--ph:6.368%;--px:41.975%;--py:92.443%"><img src="assets/producto/carr-panel-780.webp" srcset="assets/producto/carr-panel-780.webp 780w, assets/producto/carr-panel-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 02 · LA PLATA ════════════════════════════════════════════════════
+     De aquí para abajo, cada pilar del producto tiene su propia banda con
+     UNA captura real de la demo corriendo y tres datos. Antes esto era un
+     carrusel de cuatro pestañas: cuatro pantallas compitiendo por el mismo
+     hueco, y de las cuatro solo se veía una. Un carrusel esconde tres
+     cuartas partes de lo que tienes que enseñar.
+     ──────────────────────────────────────────────────────────────────── -->
+<section class="band b-paper" id="plataforma">
+  <div class="wrap">
+    <div class="pro">
+      <div class="pantalla rv rv-1">
+        <div class="pzas" role="img" aria-label="Dos números enfrentados: facturado de treinta días, $108.9M, contra cobrado, $88.5M, cada uno con su barra; debajo el saldo por cobrar de $20.441.000 y los catorce clientes que lo deben."
+             style="--paso:260ms;aspect-ratio:693/392">
+          <span class="pz pz--chasis" style="--i:0"><img src="assets/producto/b-plata-chasis-780.webp" srcset="assets/producto/b-plata-chasis-780.webp 780w, assets/producto/b-plata-chasis-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          <span class="pz pz--izq" style="--i:1;--pw:93.074%;--ph:7.143%;--px:50.0%;--py:3.846%"><img src="assets/producto/b-plata-780.webp" srcset="assets/producto/b-plata-780.webp 780w, assets/producto/b-plata-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          <span class="pz pz--izq" style="--i:2;--pw:68.975%;--ph:3.827%;--px:22.326%;--py:16.446%"><img src="assets/producto/b-plata-780.webp" srcset="assets/producto/b-plata-780.webp 780w, assets/producto/b-plata-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          <span class="pz pz--izq" style="--i:3;--pw:74.17%;--ph:14.286%;--px:25.698%;--py:27.976%"><img src="assets/producto/b-plata-780.webp" srcset="assets/producto/b-plata-780.webp 780w, assets/producto/b-plata-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          <span class="pz pz--izq" style="--i:4;--pw:84.704%;--ph:6.633%;--px:41.509%;--py:45.628%"><img src="assets/producto/b-plata-780.webp" srcset="assets/producto/b-plata-780.webp 780w, assets/producto/b-plata-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          <span class="pz pz--izq" style="--i:5;--pw:87.879%;--ph:17.092%;--px:53.571%;--py:84.0%"><img src="assets/producto/b-plata-780.webp" srcset="assets/producto/b-plata-780.webp 780w, assets/producto/b-plata-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+        </div>
+      </div>
+      <div class="pro-txt">
+        <span class="eyebrow rv">La plata</span>
+        <h2 class="h2 rv rv-1">Facturado y cobrado no son el mismo número.</h2>
+        <p class="lead rv rv-2">Uno es lo que vale la agenda. El otro es lo que ya está en la
+          cuenta. Aquí nunca se presentan como si fueran lo mismo — y ahí es donde aparece la
+          plata que creías tener.</p>
+        <div class="datos rv rv-3">
+          <div><b>Facturado</b><span>Lo que vale lo reservado en el rango.</span></div>
+          <div><b>Cobrado</b><span>Los adelantos y abonos ya recibidos.</span></div>
+          <div><b>Por cobrar</b><span>El saldo de hoy en adelante, con nombre y teléfono.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <svg class="seam" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 90 L0 44 C 268 18 512 62 790 47 C 1006 35 1214 66 1440 52 L1440 90 Z" fill="#070b13"/>
+  </svg>
+</section>
+
+<!-- ══ 03 · NEO AI ══════════════════════════════════════════════════════ -->
+<section class="band b-night on-night" id="neo" style="overflow:hidden">
+  <div class="grain" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="pro pro--flip">
+      <div class="pantalla rv rv-1">
+        <div class="pzas" role="img" aria-label="Conversación de WhatsApp con Neo AI: el cliente pregunta si hay cancha libre mañana a las 7, el asistente ofrece tres horas libres, y la reserva queda apartada con su código SP-3F9A."
+             style="--paso:480ms;aspect-ratio:683/561">
+          <span class="pz pz--chasis" style="--i:0"><img src="assets/producto/b-neo-chasis-780.webp" srcset="assets/producto/b-neo-chasis-780.webp 780w, assets/producto/b-neo-chasis-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          <span class="pz pz--izq" style="--i:1;--pw:87.994%;--ph:10.695%;--px:36.585%;--py:6.387%"><img src="assets/producto/b-neo-780.webp" srcset="assets/producto/b-neo-780.webp 780w, assets/producto/b-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          <span class="pz pz--izq" style="--i:2;--pw:59.883%;--ph:3.922%;--px:19.708%;--py:27.458%"><img src="assets/producto/b-neo-780.webp" srcset="assets/producto/b-neo-780.webp 780w, assets/producto/b-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          <span class="pz" style="--i:3;--pw:73.646%;--ph:23.529%;--px:82.222%;--py:46.62%"><img src="assets/producto/b-neo-780.webp" srcset="assets/producto/b-neo-780.webp 780w, assets/producto/b-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          <span class="pz pz--izq" style="--i:4;--pw:30.307%;--ph:3.922%;--px:11.555%;--py:71.243%"><img src="assets/producto/b-neo-780.webp" srcset="assets/producto/b-neo-780.webp 780w, assets/producto/b-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          <span class="pz pz--izq" style="--i:5;--pw:90.337%;--ph:14.082%;--px:51.515%;--py:90.456%"><img src="assets/producto/b-neo-780.webp" srcset="assets/producto/b-neo-780.webp 780w, assets/producto/b-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          <span class="pz pz--izq" style="--i:6;--pw:89.165%;--ph:1.604%;--px:51.351%;--py:94.022%"><img src="assets/producto/b-neo-780.webp" srcset="assets/producto/b-neo-780.webp 780w, assets/producto/b-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+        </div>
+      </div>
+      <div class="pro-txt">
+        <span class="eyebrow rv">Neo AI</span>
+        <h2 class="h2 rv rv-1">Contesta a las once de la noche y aparta la cancha.</h2>
+        <p class="lead rv rv-2">Lee la agenda de verdad antes de ofrecer una hora, así que nunca
+          promete lo que ya está tomado. Y si alguien la toma mientras están hablando, lo dice y
+          ofrece las que quedan.</p>
+        <div class="datos rv rv-3">
+          <div><b>Cuatro huecos</b><span>Deporte, día, cancha y hora. Lo demás es acompañamiento.</span></div>
+          <div><b>Código SP-XXXX</b><span>Cada reserva sale con el suyo, y con él se cancela.</span></div>
+          <div><b>La misma reserva</b><span>La que crea hablando es la del mostrador. Solo cambia de dónde entró.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <svg class="seam" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 90 L0 58 C 210 36 466 74 742 55 C 968 40 1188 16 1440 38 L1440 90 Z" fill="#f5f7fa"/>
+  </svg>
+</section>
+
+<!-- ══ 04 · LOS CINCO DEPORTES ══════════════════════════════════════════ -->
+<section class="band b-bone" id="deportes">
+  <div class="wrap">
+    <div class="pro">
+      <figure class="shot shot--suelto rv rv-1">
+        <img src="assets/producto/pieza-deportes-780.webp"
+             srcset="assets/producto/pieza-deportes-780.webp 780w,
+                     assets/producto/pieza-deportes-1560.webp 1560w"
+             sizes="(min-width:64rem) 720px, 92vw"
+             width="1560" height="752" loading="lazy" decoding="async"
+             alt="Cinco cartas en abanico, una por deporte, cada una con el plano de su cancha dibujado y el color real de su superficie: paintball, voleibol, tenis, pádel y sintética.">
+      </figure>
+      <div class="pro-txt">
+        <span class="eyebrow rv">Los cinco deportes</span>
+        <h2 class="h2 rv rv-1">La cancha no es un icono: es el fondo.</h2>
+        <p class="lead rv rv-2">Cambias de deporte y se retiñe la sección entera. La foto de la
+          cancha pasa a ser el fondo, las fichas flotan encima en vidrio, y hasta el vocabulario
+          cambia: la sintética habla de goles, el pádel de puntos, el paintball de eliminaciones.</p>
+      </div>
+    </div>
+    <!-- Los cinco a lo ancho de la banda y no dentro de la columna de texto:
+         en 46ch solo caben cuatro y el quinto se quedaba huérfano abajo. -->
+    <div class="tintes rv rv-3">
+      <span class="tinte" style="--c:#16a34a;--crgb:40,205,110"><i></i>Sintética · goles</span>
+      <span class="tinte" style="--c:#0e9aa7;--crgb:30,190,205"><i></i>Pádel · puntos</span>
+      <span class="tinte" style="--c:#2f5cbf;--crgb:90,140,240"><i></i>Tenis · puntos</span>
+      <span class="tinte" style="--c:#c48633;--crgb:220,160,80"><i></i>Voleibol · puntos</span>
+      <span class="tinte" style="--c:#d0392f;--crgb:226,80,70"><i></i>Paintball · eliminaciones</span>
+    </div>
+  </div>
+  <svg class="seam" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 90 L0 50 C 300 74 520 20 812 42 C 1044 60 1230 28 1440 46 L1440 90 Z" fill="#070b13"/>
+  </svg>
+</section>
+
+<!-- ══ 05 · TORNEOS ═════════════════════════════════════════════════════ -->
+<section class="band b-night on-night" id="torneos" style="overflow:hidden">
+  <div class="grain" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="pro pro--flip">
+      <div class="pantalla rv rv-1">
+        <div class="pzas" role="img" aria-label="Llave de ocho equipos: los cuatro cruces de cuartos con su marcador, los ganadores ya colocados en semifinal, la final esperando, y el pie recordando que los ganadores avanzan solos."
+             style="--paso:180ms;aspect-ratio:694/494">
+          <span class="pz pz--chasis" style="--i:0"><img src="assets/producto/b-llave-chasis-780.webp" srcset="assets/producto/b-llave-chasis-780.webp 780w, assets/producto/b-llave-chasis-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          <span class="pz pz--izq" style="--i:1;--pw:31.844%;--ph:5.061%;--px:6.554%;--py:3.625%"><img src="assets/producto/b-llave-780.webp" srcset="assets/producto/b-llave-780.webp 780w, assets/producto/b-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          <span class="pz" style="--i:2;--pw:30.115%;--ph:5.061%;--px:51.959%;--py:3.625%"><img src="assets/producto/b-llave-780.webp" srcset="assets/producto/b-llave-780.webp 780w, assets/producto/b-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          <span class="pz" style="--i:3;--pw:26.513%;--ph:5.061%;--px:90.392%;--py:3.625%"><img src="assets/producto/b-llave-780.webp" srcset="assets/producto/b-llave-780.webp 780w, assets/producto/b-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          <span class="pz pz--izq" style="--i:4;--pw:63.545%;--ph:12.955%;--px:10.672%;--py:16.512%"><img src="assets/producto/b-llave-780.webp" srcset="assets/producto/b-llave-780.webp 780w, assets/producto/b-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          <span class="pz pz--izq" style="--i:5;--pw:63.256%;--ph:2.632%;--px:10.98%;--py:28.274%"><img src="assets/producto/b-llave-780.webp" srcset="assets/producto/b-llave-780.webp 780w, assets/producto/b-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          <span class="pz pz--izq" style="--i:6;--pw:92.651%;--ph:10.729%;--px:52.941%;--py:34.467%"><img src="assets/producto/b-llave-780.webp" srcset="assets/producto/b-llave-780.webp 780w, assets/producto/b-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          <span class="pz pz--izq" style="--i:7;--pw:92.651%;--ph:14.17%;--px:52.941%;--py:49.057%"><img src="assets/producto/b-llave-780.webp" srcset="assets/producto/b-llave-780.webp 780w, assets/producto/b-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          <span class="pz pz--izq" style="--i:8;--pw:29.683%;--ph:2.834%;--px:5.533%;--py:65.0%"><img src="assets/producto/b-llave-780.webp" srcset="assets/producto/b-llave-780.webp 780w, assets/producto/b-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          <span class="pz pz--izq" style="--i:9;--pw:29.683%;--ph:2.632%;--px:5.533%;--py:70.478%"><img src="assets/producto/b-llave-780.webp" srcset="assets/producto/b-llave-780.webp 780w, assets/producto/b-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+          <span class="pz pz--izq" style="--i:10;--pw:89.769%;--ph:9.919%;--px:36.62%;--py:91.011%"><img src="assets/producto/b-llave-780.webp" srcset="assets/producto/b-llave-780.webp 780w, assets/producto/b-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
+        </div>
+      </div>
+      <div class="pro-txt">
+        <span class="eyebrow rv">Torneos</span>
+        <h2 class="h2 rv rv-1">Pones el marcador y la llave se resuelve sola.</h2>
+        <p class="lead rv rv-2">Cuatro, ocho o dieciséis equipos. Los ganadores avanzan solos, el
+          tercer puesto se alimenta de los que perdieron en semifinal, y la tabla sale del
+          marcador — no de una hoja aparte que alguien tiene que cuadrar.</p>
+        <div class="datos rv rv-3">
+          <div><b>4 · 8 · 16</b><span>Eliminación directa, siempre con tercer puesto.</span></div>
+          <div><b>Inscripción abierta</b><span>El equipo se mete solo en el primer cupo libre.</span></div>
+          <div><b>Sortear cruces</b><span>Se vuelven a barajar mientras el torneo no haya empezado.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <svg class="seam" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 90 L0 44 C 268 18 512 62 790 47 C 1006 35 1214 66 1440 52 L1440 90 Z" fill="#fcfdfe"/>
+  </svg>
+</section>
+
+<!-- ══ 06 · EQUIPOS E HISTÓRICO ═════════════════════════════════════════ -->
+<section class="band b-paper" id="comunidad">
+  <div class="wrap">
+    <div class="pro">
+      <figure class="shot shot--suelto rv rv-1">
+        <img src="assets/producto/pieza-comunidad-780.webp"
+             srcset="assets/producto/pieza-comunidad-780.webp 780w,
+                     assets/producto/pieza-comunidad-1560.webp 1560w"
+             sizes="(min-width:64rem) 720px, 92vw"
+             width="1560" height="1008" loading="lazy" decoding="async"
+             alt="Tres clubes con su escudo, su récord de partidos y su racha de los últimos cinco resultados, con el salón de la fama de goleadores debajo.">
+      </figure>
+      <div class="pro-txt">
+        <span class="eyebrow rv">La comunidad</span>
+        <h2 class="h2 rv rv-1">El histórico no se guarda: se calcula.</h2>
+        <p class="lead rv rv-2">Récord, goles, títulos y racha salen de los partidos cada vez que
+          se leen. Nada de totales acumulados en una columna aparte, que es lo que se
+          desincroniza el día que alguien corrige un marcador.</p>
+        <div class="datos rv rv-3">
+          <div><b>Un marcador, un sitio</b><span>Se corrige una vez y cuadra en todas partes.</span></div>
+          <div><b>El mismo equipo</b><span>Tres torneos, un solo club, una sola historia.</span></div>
+          <div><b>Salón de la fama</b><span>Máximos anotadores y los clubes que más han ganado.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <svg class="seam" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 90 L0 58 C 210 36 466 74 742 55 C 968 40 1188 16 1440 38 L1440 90 Z" fill="#070b13"/>
+  </svg>
+</section>
+
+<!-- ══ 03 · EL MOMENTO · CONECTOR A LA DEMO ═════════════════════════════ -->
+<section class="band b-night on-night" id="demo" style="overflow:hidden">
+  <div class="grain" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="head rv">
+      <span class="eyebrow">La demo</span>
+      <h2 class="h2">El momento que vende dura veinte segundos.</h2>
+      <p class="lead">No hay que explicarlo: reservas una cancha como jugador, tocas el conmutador de
+        abajo a la izquierda, entras como dueño y ves <b>tu propia reserva</b> en la agenda, en la
+        hora exacta. Todo lo demás de la plataforma existe para que ese momento sea posible y
+        creíble.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step rv rv-1">
+        <span class="mono">Como jugador</span>
+        <h3>Reservas en veinte segundos</h3>
+        <p>Deporte, día, cancha y hora en una sola pantalla. Eliges si apartas con la mitad, pagas
+          todo o pagas al llegar.</p>
+        <div class="step-art">
+          <div class="row"><span class="mono">Sáb 23 · 19:00</span><span class="em">$120.000</span></div>
+          <div class="row"><b>Sintética 1</b><span class="em">apartar $60.000</span></div>
+        </div>
+      </div>
+      <div class="step rv rv-2">
+        <span class="mono">El conmutador</span>
+        <h3>Cambias de lado sin salir</h3>
+        <p>No es un filtro de permisos: son dos productos distintos sobre el mismo estado. Cambia la
+          navegación entera, no los datos que se ocultan.</p>
+        <div class="step-art">
+          <div class="switch"><span>Jugador</span><span class="on">Dueño</span></div>
+        </div>
+      </div>
+      <div class="step rv rv-3">
+        <span class="mono">Como dueño</span>
+        <h3>Ya está en la agenda</h3>
+        <p>La misma reserva, en la misma franja, con su adelanto contado y su saldo pendiente. Nada
+          se simula: es el mismo registro.</p>
+        <div class="step-art">
+          <div class="row"><span class="mono">19:00</span><b>Tu reserva</b></div>
+          <div class="row"><span style="color:var(--on-night-3)">saldo</span><span class="em">$60.000</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-row rv rv-4" style="margin-top:clamp(36px,4vw,52px)">
+      <a class="btn btn-em btn-lg" href="https://filyandco.com/demos/sportplatz/" data-demo>Abrir la demo <span class="arw">→</span></a>
+      <a class="lnk" href="#capacidad">Antes, hazme la cuenta <span class="arw">→</span></a>
+    </div>
+
+    <div class="demo-notes rv rv-5">
+      <div>No pide correo ni contraseña. Se abre y ya.</div>
+      <div>Se configura en cuatro preguntas: tus deportes, tus canchas, tus precios.</div>
+      <div>Funciona igual en el celular — mándasela a tu socio por WhatsApp.</div>
+      <div>Lo que hagas se queda en tu navegador. Puedes reiniciarla cuando quieras.</div>
+    </div>
+  </div>
+  <svg class="seam" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 90 L0 56 C 214 74 436 30 704 44 C 942 57 1188 82 1440 60 L1440 90 Z" fill="#ffffff"/>
+  </svg>
+</section>
+
+<!-- ══ 04 · CAPACIDAD ═══════════════════════════════════════════════════
+     Aquí había una parrilla de siete días × siete franjas: cuarenta y nueve
+     cuadros verdes y blancos que ocupaban una pantalla entera y no decían
+     nada. Un patrón no es un argumento.
+     Ahora es UN día, UNA cancha y UN hueco, con el precio dentro del hueco.
+     Cabe en un tercio del alto y se entiende sin leer el texto.
+     ══════════════════════════════════════════════════════════════════════ -->
+<section class="band b-paper" id="capacidad">
+  <div class="wrap">
+    <div class="head head--rule rv">
+      <span class="eyebrow">La cuenta</span>
+      <h2 class="h2">La hora que nadie reservó no vuelve.</h2>
+      <p class="lead">Un viernes a las ocho no se recupera el lunes. Con un hueco solo se puede
+        hacer una cosa: llenarlo antes de que pase.</p>
+    </div>
+
+    <div class="dia rv rv-1">
+      <div class="dia-hd">
+        <span class="mono">Viernes · Sintética 1</span>
+        <span class="dia-pico">Hora pico · 5 a 10 p. m.</span>
+      </div>
+      <div class="dia-fila">
+        <div class="fr fr--ok" style="--i:0"><b>17:00</b><span>Los Cafeteros</span></div>
+        <div class="fr fr--ok" style="--i:1"><b>18:00</b><span>Andrés Vélez</span></div>
+        <div class="fr fr--ok" style="--i:2"><b>19:00</b><span>Mateo Ruiz</span></div>
+        <div class="fr fr--hueco" style="--i:3"><b>20:00</b><span>nadie</span><em>$120.000</em></div>
+        <div class="fr fr--ok" style="--i:4"><b>21:00</b><span>Club Palmares</span></div>
+        <div class="fr fr--ok" style="--i:5"><b>22:00</b><span>Los Tigres</span></div>
+      </div>
+    </div>
+
+    <div class="datos datos--ancho rv rv-2">
+      <div><b>Se cae una</b><span>La franja vuelve a estar libre en ese mismo momento, no cuando alguien se acuerde de borrarla.</span></div>
+      <div><b>A la hora que sea</b><span>Neo la ofrece al siguiente que pregunte, aunque sean las once de la noche.</span></div>
+      <div><b>No se guarda para mañana</b><span>Una cancha parada no se puede vender al día siguiente. Es lo único del negocio que caduca.</span></div>
+    </div>
+  </div>
+  <svg class="seam" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 90 L0 50 C 246 70 498 26 762 42 C 998 56 1204 80 1440 54 L1440 90 Z" fill="#070b13"/>
+  </svg>
+</section>
+
+<!-- ══ 05 · LAS TRECE VISTAS ════════════════════════════════════════════
+     Va sobre noche a propósito. Es la sección más larga de la página (el
+     inventario completo), y con claro encima y claro debajo la mitad de
+     atrás se leía como un solo rollo blanco de cinco mil píxeles. Además es
+     la ficha técnica del producto, y la ficha técnica pesa mejor en oscuro.
+     ══════════════════════════════════════════════════════════════════════ -->
+<section class="band b-night on-night vistas" style="overflow:hidden">
+  <div class="grain" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="head rv">
+      <span class="eyebrow">Qué trae</span>
+      <h2 class="h2">Trece vistas y un onboarding, sin una sola pantalla de relleno.</h2>
+      <p class="lead">El dueño ve plata y ocupación. El jugador ve su próximo partido. Son dos
+        productos distintos sobre el mismo estado, y por eso el conmutador de la demo se siente
+        como cambiar de app y no como cambiar de pestaña.</p>
+    </div>
+
+    <div class="vgroup rv rv-1">
+      <h3 class="h3">Lado del dueño <em>siete vistas</em></h3>
+      <div class="views">
+        <div class="view"><b>Panel</b><p>Facturado de hoy y de la semana, cobrado del mes, saldos por cobrar, ingresos de catorce días y qué cancha deja más plata.</p></div>
+        <div class="view"><b>Canchas</b><p>La foto del deporte a sangre y las tarjetas flotando encima. El selector cambia el color de toda la sección.</p></div>
+        <div class="view"><b>Reservas</b><p>Agenda por hora y por cancha, con filtro por deporte. Crear con adelanto, registrar abonos, cancelar.</p></div>
+        <div class="view"><b>Torneos</b><p>Crear, sortear cruces, llaves que avanzan solas, calendario, tabla, anotadores, valla menos vencida y podio.</p></div>
+        <div class="view"><b>Equipos</b><p>Clubes con escudo y récord, jugadores con ficha, y un salón de la fama con los máximos anotadores.</p></div>
+        <div class="view"><b>Neo AI</b><p>La conversación de WhatsApp, y al lado las cinco cosas que el bot está haciendo por detrás.</p></div>
+        <div class="view"><b>Ajustes</b><p>Nombre y logo del negocio, horario de atención, renombrar y tarifar cada cancha, fotos, reiniciar.</p></div>
+      </div>
+    </div>
+
+    <!-- El lado del jugador deja de ser una rejilla de seis textos y pasa a
+         ser su propio carrusel: seis vistas, seis escenas. El motor es el
+         mismo que el del carrusel del dueño — uno por cada .stage. -->
+    <div class="vgroup rv rv-2">
+      <h3 class="h3">Lado del jugador <em>seis vistas</em></h3>
+
+      <div class="stage">
+        <div class="tablist">
+        <button class="tab" type="button">
+          <span class="tt"><span class="tn">01</span><span class="h4">Inicio</span></span>
+          <p>Su próximo partido, sus reservas, cómo va su equipo y qué canchas están libres en este momento.</p>
+          <span class="bar"><i></i></span>
+        </button>
+        <button class="tab" type="button">
+          <span class="tt"><span class="tn">02</span><span class="h4">Reservar</span></span>
+          <p>Deporte, día, cancha y hora en una sola pantalla, con la parrilla de horas libres.</p>
+          <span class="bar"><i></i></span>
+        </button>
+        <button class="tab" type="button">
+          <span class="tt"><span class="tn">03</span><span class="h4">Mi equipo</span></span>
+          <p>Crearlo, ponerle escudo y color, armar la plantilla.</p>
+          <span class="bar"><i></i></span>
+        </button>
+        <button class="tab" type="button">
+          <span class="tt"><span class="tn">04</span><span class="h4">Torneos</span></span>
+          <p>Ver los que hay, meter su equipo en un cupo libre y seguir la llave.</p>
+          <span class="bar"><i></i></span>
+        </button>
+        <button class="tab" type="button">
+          <span class="tt"><span class="tn">05</span><span class="h4">Mi histórico</span></span>
+          <p>Partidos, anotaciones, títulos y en qué canchas juega más. Nada de esto se guarda: se deriva del marcador.</p>
+          <span class="bar"><i></i></span>
+        </button>
+        <button class="tab" type="button">
+          <span class="tt"><span class="tn">06</span><span class="h4">Neo AI</span></span>
+          <p>El mismo asistente, dentro de la app y con el mismo estado.</p>
+          <span class="bar"><i></i></span>
+        </button>
+        </div>
+
+        <div class="canvas">
+          <!-- 01 · INICIO -->
+          <div class="scene" data-scene>
+            <div class="scene-hd"><span class="mono">Inicio</span><small>tu semana</small></div>
+            <div class="j-prox">
+              <span class="j-cre" style="background:#34d399">LV</span>
+              <span class="t"><b>Los Vikingos · Sintética 1</b><span>sáb 23 · 7:00 p. m.</span></span>
+              <span class="cd">en 2 días</span>
+            </div>
+            <span class="j-rot">Libres ahora mismo</span>
+            <div class="j-fila">
+              <span class="j-chip j-chip--on" style="--i:0">Sintética 2 · 8:00</span>
+              <span class="j-chip" style="--i:1">Pádel 1 · 8:00</span>
+              <span class="j-chip" style="--i:2">Tenis 1 · 9:00</span>
+              <span class="j-chip" style="--i:3">Voleibol · 9:00</span>
+            </div>
+            <span class="j-rot" style="margin-top:4px">Tu equipo</span>
+            <div class="ranks">
+              <div class="rank" style="--i:0"><span>Ganados</span><span class="rb"><i style="--w:.8"></i></span><em>12</em></div>
+              <div class="rank" style="--i:1"><span>Empatados</span><span class="rb"><i style="--w:.2;background:rgba(255,255,255,.4)"></i></span><em>3</em></div>
+              <div class="rank" style="--i:2"><span>Perdidos</span><span class="rb"><i style="--w:.2;background:#ff9d96"></i></span><em>3</em></div>
+            </div>
+          </div>
+
+          <!-- 02 · RESERVAR -->
+          <div class="scene" data-scene>
+            <div class="scene-hd"><span class="mono">Reservar</span><small>cuatro pasos, una pantalla</small></div>
+            <div class="j-pasos">
+              <span class="j-rot">Deporte</span>
+              <div class="j-fila">
+                <span class="j-chip j-chip--on" style="--i:0">Sintética</span>
+                <span class="j-chip" style="--i:1">Pádel</span>
+                <span class="j-chip" style="--i:2">Tenis</span>
+                <span class="j-chip" style="--i:3">Voleibol</span>
+              </div>
+              <span class="j-rot">Día</span>
+              <div class="j-fila">
+                <span class="j-chip" style="--i:4">vie 22</span>
+                <span class="j-chip j-chip--on" style="--i:5">sáb 23</span>
+                <span class="j-chip" style="--i:6">dom 24</span>
+                <span class="j-chip" style="--i:7">lun 25</span>
+              </div>
+              <span class="j-rot">Horas libres · Sintética 1</span>
+              <div class="j-horas">
+                <span class="j-h j-h--no" style="--i:0">5:00 p.m.</span>
+                <span class="j-h" style="--i:1">6:00 p.m.</span>
+                <span class="j-h j-h--pick" style="--i:2">7:00 p.m.</span>
+                <span class="j-h j-h--no" style="--i:3">8:00 p.m.</span>
+              </div>
+            </div>
+            <div class="j-pie">
+              <span class="j-rot" style="text-transform:none">Sintética 1 · sáb 23 · 7:00 p. m.</span>
+              <b>$120.000 <span class="mono" style="color:var(--em-hi);font-size:.66rem">adelanto $60.000</span></b>
+            </div>
+          </div>
+
+          <!-- 03 · MI EQUIPO -->
+          <div class="scene" data-scene>
+            <div class="scene-hd"><span class="mono">Mi equipo</span><small>escudo, color y plantilla</small></div>
+            <div class="j-team">
+              <span class="j-cre j-cre--big" style="background:linear-gradient(150deg,#34d399,#047857);color:#04231a">LV</span>
+              <div>
+                <div style="font-size:1.05rem;font-variation-settings:'wdth' 104,'wght' 750;letter-spacing:-.02em;text-align:center">Los Vikingos</div>
+                <div class="j-rot" style="text-align:center;margin-top:4px">Fútbol · 7 jugadores</div>
+              </div>
+              <div class="j-plant">
+                <span class="j-av" style="--i:0;background:#7dd3fc">SM</span>
+                <span class="j-av" style="--i:1;background:#fca5a5">KM</span>
+                <span class="j-av" style="--i:2;background:#fcd34d">JB</span>
+                <span class="j-av" style="--i:3;background:#a7f3d0">DC</span>
+                <span class="j-av" style="--i:4;background:#c4b5fd">VO</span>
+                <span class="j-av" style="--i:5;background:#fdba74">EC</span>
+                <span class="j-av" style="--i:6;background:rgba(255,255,255,.22);color:#fff">+</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 04 · TORNEOS -->
+          <div class="scene" data-scene>
+            <div class="scene-hd"><span class="mono">Torneos</span><small>inscripción abierta</small></div>
+            <div class="j-lista">
+              <div class="j-cupo"><span class="dot" style="width:9px;height:9px;border-radius:50%;background:#e5231f;display:block"></span>Los Tigres<span class="lib">cupo 1</span></div>
+              <div class="j-cupo"><span class="dot" style="width:9px;height:9px;border-radius:50%;background:#1447e6;display:block"></span>Real Manrique<span class="lib">cupo 2</span></div>
+              <div class="j-cupo j-cupo--tuyo"><span class="dot" style="width:9px;height:9px;border-radius:50%;background:#34d399;display:block"></span>Los Vikingos<span class="lib" style="color:var(--em-hi)">tu equipo</span></div>
+              <div class="j-cupo"><span class="dot" style="width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.2);display:block"></span>Cupo libre<span class="lib">cupo 4</span></div>
+            </div>
+            <div class="j-pie" style="animation-delay:1.9s">
+              <span class="j-rot" style="text-transform:none">Torneo Relámpago · 8 equipos</span>
+              <b style="font-size:.92rem;color:var(--em-hi)">3 cupos libres</b>
+            </div>
+          </div>
+
+          <!-- 05 · MI HISTÓRICO -->
+          <div class="scene" data-scene>
+            <div class="scene-hd"><span class="mono">Mi histórico</span><small>se deriva del marcador</small></div>
+            <div class="tiles">
+              <div class="tile tile--a"><span class="mono">Partidos</span><b>42</b></div>
+              <div class="tile tile--b"><span class="mono">Goles</span><b>18</b></div>
+              <div class="tile tile--c"><span class="mono">Títulos</span><b>2</b></div>
+            </div>
+            <span class="j-rot" style="margin-top:6px">Últimos cinco</span>
+            <div class="j-racha">
+              <i style="--i:0;background:#0d9c5f"></i><i style="--i:1;background:#0d9c5f"></i>
+              <i style="--i:2;background:rgba(255,255,255,.2)"></i><i style="--i:3;background:#e5231f"></i>
+              <i style="--i:4;background:#0d9c5f"></i>
+            </div>
+            <span class="j-rot" style="margin-top:6px">Dónde juega más</span>
+            <div class="ranks">
+              <div class="rank" style="--i:0"><span>Sintética 1</span><span class="rb"><i style="--w:1"></i></span><em>19</em></div>
+              <div class="rank" style="--i:1"><span>Sintética 3</span><span class="rb"><i style="--w:.58"></i></span><em>11</em></div>
+              <div class="rank" style="--i:2"><span>Pádel 2</span><span class="rb"><i style="--w:.32"></i></span><em>6</em></div>
+            </div>
+          </div>
+
+          <!-- 06 · NEO AI -->
+          <div class="scene" data-scene>
+            <div class="scene-hd"><span class="mono">Neo AI</span><small>el mismo asistente, dentro de la app</small></div>
+            <div class="chat">
+              <div class="bub bub--out" style="--i:0">¿Queda algo el sábado por la tarde?</div>
+              <div class="bub bub--in" style="--i:1">Sí. En Sintética 1 me quedan estas horas:
+                <span class="chips"><span>5:00 p.m.</span><span>7:00 p.m.</span><span>9:00 p.m.</span></span></div>
+              <div class="bub bub--out" style="--i:2">La de las 7</div>
+              <div class="bub bub--in" style="--i:3">Lista. Sintética 1, sábado 23 a las 7:00 p. m.
+                <span class="mono">SP-3F9A · adelanto $60.000</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <svg class="seam" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 90 L0 40 C 280 60 496 18 786 38 C 1030 55 1218 76 1440 48 L1440 90 Z" fill="#ffffff"/>
+  </svg>
+</section>
+
+<!-- ══ 06 · PLANES ══════════════════════════════════════════════════════ -->
+<section class="band b-paper" id="planes">
+  <div class="wrap">
+    <div class="head head--rule rv">
+      <span class="eyebrow">Planes</span>
+      <h2 class="h2">Se cobra por complejo, y escala con las canchas.</h2>
+      <p class="lead">Prueba sin tarjeta. El precio depende de cuántas canchas
+        tengas, así que lo cotizamos contigo en cinco minutos en vez de ponerte una tabla que no
+        corresponde a tu negocio.</p>
+    </div>
+
+    <div class="plans rv rv-1">
+      <div class="plan-c">
+        <h3>El de barrio</h3>
+        <p class="plan-sub">Un complejo de barrio con una o dos sintéticas y algo de pádel.</p>
+        <div class="plan-price"><b>Prueba gratis</b><span>después, según tus canchas</span></div>
+        <div class="featbox">
+          <span class="mono">Incluye</span>
+          <ul class="feat">
+            <li><span>Agenda por hora y por cancha</span></li>
+            <li><span>Panel con facturado y cobrado separados</span></li>
+            <li><span>Tus jugadores reservan desde el celular</span></li>
+            <li><span>Torneos, equipos y salón de la fama</span></li>
+            <li><span>Neo AI dentro de la plataforma</span></li>
+          </ul>
+          <span class="mono mono--no">No incluye</span>
+          <ul class="feat feat--no">
+            <li><span>Neo en tu propio número de WhatsApp</span></li>
+            <li><span>Recordatorios y avisos de saldo</span></li>
+            <li><span>Cuentas de mostrador</span></li>
+            <li><span>Cobro del adelanto con pasarela</span></li>
+          </ul>
+        </div>
+        <a class="btn btn-line" href="https://wa.me/57XXXXXXXXXX" data-wa>Cotizar</a>
+      </div>
+
+      <div class="plan-c plan-c--dark">
+        <h3>El que ya tiene mostrador</h3>
+        <p class="plan-sub">El complejo que ya tiene mostrador, turnos y más de un deporte.</p>
+        <div class="plan-price"><b>Prueba gratis</b><span>después, según tus canchas</span></div>
+        <div class="featbox">
+          <span class="mono">Todo lo anterior, más</span>
+          <ul class="feat">
+            <li><span>Neo contestando en tu número de WhatsApp<em class="soon">por fases</em></span></li>
+            <li><span>Recordatorio antes del partido y aviso de saldo<em class="soon">por fases</em></span></li>
+            <li><span>Cuentas de mostrador que no ven las finanzas<em class="soon">por fases</em></span></li>
+            <li><span>Adelanto cobrado con pasarela, a tu cuenta</span></li>
+          </ul>
+          <span class="mono mono--no">No incluye</span>
+          <ul class="feat feat--no">
+            <li><span>Migración de lo que hay en el cuaderno</span></li>
+            <li><span>Acompañamiento la primera semana</span></li>
+            <li><span>Soporte con línea directa</span></li>
+          </ul>
+        </div>
+        <a class="btn btn-em" href="https://wa.me/57XXXXXXXXXX" data-wa>Cotizar <span class="arw">→</span></a>
+      </div>
+
+      <div class="plan-c">
+        <h3>El grande</h3>
+        <p class="plan-sub">Cuando la agenda ya no cabe en una pantalla y hay gente en turnos.</p>
+        <div class="plan-price"><b>Hablamos</b><span>según tus canchas y sedes</span></div>
+        <div class="featbox">
+          <span class="mono">Todo lo anterior, más</span>
+          <ul class="feat">
+            <li><span>Migramos contigo lo que hay en el cuaderno</span></li>
+            <li><span>Acompañamiento la primera semana de operación</span></li>
+            <li><span>Soporte con línea directa</span></li>
+          </ul>
+        </div>
+        <a class="btn btn-line" href="https://wa.me/57XXXXXXXXXX" data-wa>Cotizar</a>
+      </div>
+    </div>
+
+    <div class="plan-foot rv rv-2">
+      <p><b>Lo que no se cobra:</b> el dinero de los adelantos entra a tu cuenta, no a la nuestra.
+        No somos intermediarios de fondos y no nos quedamos un porcentaje de tus reservas.
+        Y si un mes no pagas, la plataforma pasa a solo lectura: nunca se borran datos y la agenda
+        de mañana se puede seguir consultando.</p>
+      <a class="btn btn-ink" href="https://filyandco.com/demos/sportplatz/" data-demo>Probar la demo primero <span class="arw">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PREGUNTAS ════════════════════════════════════════════════════════ -->
+<section class="band b-bone" id="preguntas" style="padding-bottom:clamp(112px,11vw,196px);overflow:hidden">
+  <div class="wrap">
+    <div class="head rv"><span class="eyebrow">Preguntas</span><h2 class="h2">Lo que siempre nos preguntan.</h2></div>
+    <div class="faq rv rv-1">
+      <details><summary>¿Mis clientes tienen que descargar algo?</summary>
+        <div class="ans">No. Sportplatz es web: le mandas el link por WhatsApp y se abre en el
+          navegador del celular. No hay app que instalar, ni tienda que aprobar, ni actualización
+          que nadie va a hacer.</div></details>
+      <details><summary>¿Sirve si solo tengo dos canchas?</summary>
+        <div class="ans">Sí, y de hecho es donde más se nota: con dos canchas una hora perdida es un
+          porcentaje enorme de tu día. El plan más pequeño está pensado justo para eso.</div></details>
+      <details><summary>¿Cómo se cobra el adelanto?</summary>
+        <div class="ans">El sugerido es la mitad del precio de la cancha, redondeado a miles.
+          El jugador también puede pagar todo por adelantado o pagar al llegar. El dinero entra a
+          tu cuenta, no a la nuestra.</div></details>
+      <details><summary>¿Y lo que ya tengo anotado en el cuaderno?</summary>
+        <div class="ans">Se sube. En los complejos grandes lo hacemos contigo la primera
+          semana; en los pequeños se pasa a mano en una tarde, porque solo hace falta lo que
+          está de hoy en adelante.</div></details>
+      <details><summary>¿Neo contesta de verdad o son respuestas armadas?</summary>
+        <div class="ans">Neo lee la agenda real antes de ofrecer una hora, y la reserva que crea es
+          el mismo registro que crearía tu mostrador — solo cambia de dónde entró. Nunca ofrece una
+          hora que ya está tomada, y si alguien la toma mientras conversaban, lo dice y ofrece las
+          que quedan. No negocia precios ni inventa promociones: si no sabe, te pasa la
+          conversación.</div></details>
+      <details><summary>¿Puedo cambiar horarios, precios y nombres de canchas?</summary>
+        <div class="ans">Todo. Y cambiar la tarifa mañana no reescribe el pasado: el precio se
+          congela en la reserva el día que se hizo. Si cambias el horario de atención, las reservas
+          que queden fuera no se borran — se muestran igual y se te avisa.</div></details>
+      <details><summary>¿Qué deportes soporta?</summary>
+        <div class="ans">Cancha sintética, pádel, tenis, voleibol playa y paintball, cada uno con su
+          plano de cancha dibujado, su color de superficie y su vocabulario. Si tienes otro, el
+          modelo lo aguanta; lo que hay que dibujar es su plano, y eso lo hablamos.</div></details>
+      <details><summary>¿Qué está funcionando hoy y qué está en camino?</summary>
+        <div class="ans">Todo lo que ves en la demo funciona de verdad: la agenda, el dinero, los
+          torneos, los equipos y Neo dentro de la plataforma. Lo que entra por fases es el WhatsApp
+          real con tu propio número, el cobro con pasarela y las cuentas de mostrador. Antes de que
+          firmes te decimos exactamente en qué fase está lo que tú necesitas.</div></details>
+    </div>
+  </div>
+  <svg class="seam" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 90 L0 38 C 296 66 528 22 812 40 C 1044 55 1226 78 1440 58 L1440 90 Z" fill="#070b13"/>
+  </svg>
+</section>
+
+<!-- ══ CTA FINAL ════════════════════════════════════════════════════════ -->
+<section class="band b-night on-night cta" id="cta" style="overflow:hidden;text-align:center">
+  <div class="grain" aria-hidden="true"></div>
+  <div class="hero-beams" aria-hidden="true" style="opacity:.5"></div>
+  <div class="wrap" style="display:flex;flex-direction:column;align-items:center;gap:var(--s-6)">
+    <span class="eyebrow">Veinte segundos</span>
+    <h2 class="h2 cta-t" id="ctaTitle" style="max-width:16ch">Ábrela y reserva una cancha.</h2>
+    <p class="lead" style="max-width:48ch">Es la forma más corta de saber si esto le sirve a tu
+      complejo. No pide correo, no pide tarjeta y no hay nadie esperando al otro lado.</p>
+    <div class="cta-row" style="justify-content:center">
+      <a class="btn btn-em btn-lg" href="https://filyandco.com/demos/sportplatz/" data-demo>Abrir la demo <span class="arw">→</span></a>
+      <a class="btn btn-ghost btn-lg" href="https://wa.me/57XXXXXXXXXX" data-wa>Hablar por WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ═══════════════════════════════════════════════════════════ -->
+<footer><div class="wrap">
+  <div class="f-grid">
+    <div class="f-brand">
+      <a href="#" class="brand"><span class="brand-ph"><img src="assets/marca/logo.png?v=1"
+         alt="" width="30" height="30" decoding="async"></span><b>Sportplatz</b></a>
+      <p>Reservas, torneos, equipos y Neo AI para complejos deportivos en Colombia.</p>
+    </div>
+    <div class="f-col"><h4>Producto</h4>
+      <a href="#plataforma">La agenda</a><a href="#plataforma">Neo AI</a>
+      <a href="#plataforma">Torneos</a><a href="#plataforma">El panel</a>
+      <a href="#capacidad">La cuenta</a></div>
+    <div class="f-col"><h4>Empezar</h4>
+      <a href="https://filyandco.com/demos/sportplatz/" data-demo>Abrir la demo</a>
+      <a href="#planes">Planes</a><a href="#preguntas">Preguntas</a>
+      <a href="https://wa.me/57XXXXXXXXXX" data-wa>WhatsApp</a></div>
+    <div class="f-col"><h4>Legal</h4>
+      <a href="#">Términos</a><a href="#">Privacidad</a></div>
+  </div>
+  <div class="f-bot">
+    <span>© 2026 Sportplatz · Hecho en Colombia</span>
+    <span>Diseño y desarrollo — <a href="https://filyandco.com">fily&amp;co</a></span>
+  </div>
+</div></footer>
+
+<script>
+(() => {
+'use strict';
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $  = (s, c) => (c || document).querySelector(s);
+const $$ = (s, c) => [...(c || document).querySelectorAll(s)];
+
+/* ⚠️ PENDIENTE — el WhatsApp real de Fily & Co, solo dígitos con indicativo
+   (ej. '573001234567'). Mientras esté vacío, los enlaces marcados con
+   data-wa se quedan con el marcador visible del HTML, que falla a la vista
+   en vez de llevar al número de un desconocido. */
+/* ── el puente con la escena 3D ───────────────────────────────────────────
+   El motor de scroll no sabe qué es Spline y la escena no sabe qué es el
+   scroll. Este objeto es todo lo que se dicen. Nace vacío: si la escena no
+   llega a existir —móvil, movimiento reducido, la red— nadie se entera. */
+const escena3d = { pausar(){}, reanudar(){} };
+
+const WA = '';
+if (WA) $$('[data-wa]').forEach(a => a.href = 'https://wa.me/' + WA);
+
+/* ══ MOTOR DE SCROLL ══════════════════════════════════════════════════════
+   Un solo listener y un solo rAF para toda la página. Quince bucles
+   compitiendo en el mismo fotograma vuelven el scroll pegajoso justo en lo
+   que más se mira. El motor SOLO mide; cada suscriptor decide qué hace. */
+const motor = (() => {
+  const subs = [];
+  let pedido = false;
+  /* ── la altura amortiguada ────────────────────────────────────────────
+     El scroll de la página NO se toca: sigue siendo el del navegador, con
+     su inercia y su rueda. Lo que se amortigua es lo que las piezas hacen
+     con él. Persiguiendo la altura en vez de copiarla, un fotograma perdido
+     deja de verse como un tirón: la pieza ya venía en camino y sigue.
+     `ys` es lo que ven los suscriptores; `y` de verdad va aparte, para el
+     que necesite la altura exacta —la barra decide dirección con ella y con
+     la amortiguada se le escaparía el gesto—. */
+  let ys = window.scrollY;
+  /* 0.30 a 60 fps: se asienta en ~7 fotogramas (~120 ms). Más alto y no amortigua
+     nada; más bajo y la pieza sigue viajando cuando ya paraste, que se lee
+     como que la página va detrás de ti. Se corrige por delta real para que
+     a 120 Hz no vaya al doble de rápido. */
+  let ultimo = 0;
+  function frame(t){
+    pedido = false;
+    const y = window.scrollY, h = innerHeight;
+    const dt = ultimo ? Math.min(t - ultimo, 50) : 16.7;
+    ultimo = t;
+    if (reduce) {
+      ys = y;
+    } else {
+      ys += (y - ys) * (1 - Math.pow(1 - .3, dt / 16.7));
+      /* Sin el imán nunca llega: la exponencial se acerca infinitamente y el
+         rAF no pararía jamás. */
+      if (Math.abs(y - ys) < .06) ys = y;
+    }
+    /* FASE DE LECTURA — aquí no se toca ni un estilo. */
+    const trabajo = new Array(subs.length);
+    for (let i = 0; i < subs.length; i++) trabajo[i] = subs[i].leer ? subs[i].leer(ys, h, y) : null;
+    /* FASE DE ESCRITURA */
+    for (let i = 0; i < subs.length; i++) subs[i].escribir(trabajo[i], ys, h, y);
+    /* Mientras quede camino por recorrer, el motor se pide otro fotograma
+       aunque el dedo ya no se mueva. */
+    if (ys !== y) pedir();
+  }
+  const pedir = () => { if (!pedido) { pedido = true; requestAnimationFrame(frame); } };
+  /* Se expone para que el puntero pueda despertar al MISMO rAF. Un segundo
+     bucle para el foco del hero sería el fallo número uno del catálogo: dos
+     motores compitiendo por el mismo fotograma. */
+  const remedir = () => { for (const s of subs) if (s.medir) s.medir(); pedir(); };
+  addEventListener('scroll', pedir, {passive:true});
+  addEventListener('resize', remedir, {passive:true});
+  /* Las fuentes y las imágenes que cargan tarde mueven todo lo de abajo. */
+  addEventListener('load', () => { remedir(); setTimeout(remedir, 900); });
+  if (document.fonts) document.fonts.ready.then(remedir);
+  return { seguir(s){ subs.push(s); if (s.medir) s.medir(); pedir(); }, remedir, pedir };
+})();
+
+/* offsetTop subiendo por la cadena de offsetParent. JAMÁS
+   getBoundingClientRect() sobre algo que se anima: el rect INCLUYE el
+   transform, así que medir cambia la medida, repinta, y vuelve a medir.
+   Bucle a 60 fps y la pestaña se congela sin un solo error en consola. */
+function posicion(el){ let y = 0, n = el; while (n) { y += n.offsetTop; n = n.offsetParent; } return y; }
+
+/* ── nav ──────────────────────────────────────────────────────────────────
+   Dos decisiones en un solo suscriptor: si la barra tiene fondo, y de qué
+   tono. El tono sale de qué banda cae bajo el canto inferior de la barra;
+   las bandas oscuras se miden una vez y se recachean en resize, con
+   posicion() —offsetTop— y nunca con rect. */
+const nav = $('#nav'), pill = $('#pill'), hoja = $('#sheet');
+/* Declarada (no const): la usa tanto el motor de aquí arriba como el
+   disparador de más abajo, y con `function` sube por hoisting sin que haya
+   que reordenar medio archivo. */
+function cerrarHoja(){
+  hoja.classList.remove('open');
+  const b = $('#burger');
+  if (b) { b.classList.remove('x'); b.setAttribute('aria-expanded', 'false'); }
+}
+/* `ancla` guarda la altura desde la que se mide la dirección y `cantoNav` el
+   alto de la cápsula. Las dos se usaban SIN declarar: la barra lanzaba un
+   ReferenceError en el primer fotograma de scroll y, como todos los
+   suscriptores escriben en el mismo bucle, se llevaba por delante a los que
+   van detrás — el paralaje del hero y el enderezado del panel de la agenda
+   dejaban de moverse. Sin un solo error a la vista, porque pasaba dentro del
+   rAF. */
+let corta = false, ancla = 0, cantoNav = 72;
+motor.seguir({
+  medir(){
+    /* Los dos anchos, medidos de verdad y no calculados a ojo: el texto
+       cambia de ancho con la fuente cargada, con el zoom y con el idioma.
+       Son dos lecturas forzadas, y pasan solo en carga, resize y cuando
+       llegan las fuentes — nunca por fotograma. */
+    cantoNav = nav.offsetHeight;
+    pill.classList.add('midiendo');
+    const ancha = pill.offsetWidth;
+    pill.classList.add('sin-links');
+    const cort = pill.offsetWidth;
+    pill.classList.remove('sin-links', 'midiendo');
+    /* En :root y no en .nav: el menú es HERMANO de la barra, no
+       descendiente, y una variable puesta en .nav no le llega. */
+    const raiz = document.documentElement.style;
+    raiz.setProperty('--w-ancha', ancha + 'px');
+    raiz.setProperty('--w-corta', cort + 'px');
+    raiz.setProperty('--nav-alto', nav.offsetHeight + 'px');
+  },
+  /* La altura EXACTA, no la amortiguada: aquí se decide un estado, y un
+     estado que llega 170 ms tarde se nota. */
+  escribir(_, _ys, _h, y){
+    /* Por DIRECCIÓN, no por altura: se guarda en cuanto empiezas a bajar y
+       se despliega en cuanto subes, estés donde estés. Arriba del todo
+       siempre abierta. El ancla solo se mueve cuando el gesto pasa de 6 px:
+       sin esa histéresis el rebote del trackpad la hace latir. */
+    let c = corta;
+    if (y < cantoNav * 1.6) c = false;
+    else if (y - ancla > 6) c = true;
+    else if (ancla - y > 6) c = false;
+    if (Math.abs(y - ancla) > 6) ancla = y;
+    if (c !== corta) {
+      corta = c;
+      nav.classList.toggle('corta', c);
+      /* El menú cuelga del canto de la cápsula. Si la cápsula cambia de
+         ancho con el menú abierto, el menú se quedaría señalando a un sitio
+         donde ya no hay nada: se cierra. */
+      if (hoja.classList.contains('open')) cerrarHoja();
+    }
+  }
+});
+
+/* La escena 3D ya no se para al hacer scroll. Se probó —paraba mientras te
+   movías y volvía 180 ms después de soltar— y devolvía el hilo entero al
+   scroll, pero el fondo es de lo que más pesa en la primera pantalla y tiene
+   que estar vivo siempre. Se queda el resto: dibuja a 1×, no escucha al
+   puntero, y se destruye al salir del hero. */
+
+/* ── el hero al salir ─────────────────────────────────────────────────────
+   Dos piezas a dos velocidades: el fondo se queda atrás y el texto se
+   adelanta. Eso es lo que da profundidad — no el bloque entero
+   desplazándose, que es el efecto barato y además marea.
+   Recorridos CORTOS: 26 px el texto y 58 el fondo. Con 90 el hero se
+   despega de la página y se nota el truco.
+   Al salir encoge un 4 % y nada más. NO se oscurece: oscurecer el bloque que
+   se va ensucia los tonos y se lee como que la página se apaga.
+   Se suscribe al motor: ni un listener ni un rAF más. */
+const bgPar = $('#bgPar'), copy = $('.hero-copy'), heroEl = $('.hero');
+if (bgPar && heroEl && !reduce) {
+  let top = 0, alto = 1, ultima = -1;
+  motor.seguir({
+    /* posicion() sube por offsetParent. JAMÁS rect aquí: el rect incluye el
+       transform que estamos escribiendo, así que medir cambiaría la medida,
+       repintaría y volvería a medir. Bucle a 60 fps y pestaña colgada, sin
+       un solo error en consola. */
+    medir(){ top = posicion(heroEl); alto = heroEl.offsetHeight || 1; },
+    leer(y){
+      const p = (y - top) / alto;
+      return p < 0 ? 0 : p > 1 ? 1 : p;
+    },
+    escribir(p){
+      /* Fuera del hero el valor se queda clavado en 0 o en 1, y escribir el
+         MISMO string en style.transform invalida el estilo igual que
+         escribir uno nuevo. Con el último guardado, el hero deja de costar
+         nada en cuanto sale de pantalla. */
+      if (p === ultima) return;
+      ultima = p;
+      /* smoothstep: arranca y acaba con pendiente cero, así no se ve dónde
+         empieza ni dónde termina el efecto. Una multiplicación en vez de
+         resolver una bézier en cada fotograma. */
+      const e = p * p * (3 - 2 * p);
+      bgPar.style.transform = `translate3d(0,${(e * 58).toFixed(1)}px,0)`;
+      if (copy) {
+        copy.style.transform =
+          `translate3d(0,${(e * -26).toFixed(1)}px,0) scale(${(1 - e * .04).toFixed(4)})`;
+        /* La opacidad no arranca hasta pasada la mitad: si empieza a
+           desvanecerse desde el primer píxel, el titular se apaga mientras
+           todavía se está leyendo. */
+        copy.style.opacity = (1 - Math.max(0, (p - .5) / .5) * .9).toFixed(3);
+      }
+    }
+  });
+}
+
+/* ── el panel de la agenda al entrar ──────────────────────────────────────
+   Entra inclinado hacia atrás y se endereza mientras sube. Es lo único que
+   convierte un render plano en un objeto con canto, y no hay forma de
+   fingirlo con opacidad.
+   El recorrido va de «asoma por el canto de abajo» a «su centro llega al
+   centro de la ventana», y ahí se QUEDA quieto: un efecto que sigue
+   moviéndose cuando la pieza ya se está leyendo distrae en vez de ayudar.
+   Se suscribe al motor único — ni un listener ni un rAF más (ley 1) — y
+   escribe en .ag-tilt, que no comparte elemento ni con el revelado
+   (.ag-stage) ni con el paralaje (.ag-float): tres transforms, tres nodos
+   (ley 3). */
+const agTilt = $('#agTilt');
+if (agTilt && !reduce) {
+  let top = 0, alto = 1, ultima = -1;
+  motor.seguir({
+    /* offsetTop y offsetHeight: posición y alto de MAQUETA, que ningún
+       transform toca. El rect incluiría el giro que estamos escribiendo y
+       medir cambiaría la medida (ley 2). */
+    medir(){ top = posicion(agTilt); alto = agTilt.offsetHeight || 1; },
+    leer(y, h){
+      const p = (y - (top - h)) / (h / 2 + alto / 2);
+      return p < 0 ? 0 : p > 1 ? 1 : p;
+    },
+    escribir(p){
+      if (p === ultima) return;
+      ultima = p;
+      /* smoothstep: pendiente cero al entrar y al salir, así no se ve dónde
+         empieza ni dónde acaba el enderezado. */
+      const e = p * p * (3 - 2 * p);
+      /* 10.5° y un 7 % de escala. Con 25° la pieza se lee como una carta
+         cayendo y deja de parecer una pantalla. */
+      agTilt.style.transform =
+        `rotateX(${((1 - e) * 10.5).toFixed(2)}deg) scale(${(.93 + e * .07).toFixed(4)})`;
+    }
+  });
+}
+
+/* El índice de cada enlace de la barra, para escalonar su entrada. */
+$$('.nav-links a').forEach((a, i) => a.style.setProperty('--n', i));
+
+/* ── el nombre, letra a letra ─────────────────────────────────────────────
+   Se parte en el cliente y no en el HTML para que el marcado siga diciendo
+   «Sportplatz» y no once <i> sueltos. El aria-label del contenedor evita que
+   un lector lo deletree. */
+const marcaHero = $('#marcaHero');
+if (marcaHero) {
+  const letras = [...marcaHero.textContent.trim()];
+  marcaHero.innerHTML = letras
+    .map((c, i) => `<i style="--n:${i}" aria-hidden="true">${c}</i>`).join('');
+  /* Fin de la entrada: la última letra arranca a n×42 ms y dura 820. Se
+     suelta el will-change, o quedan once capas de composición vivas el resto
+     de la visita para una animación que ya pasó. */
+  setTimeout(() => marcaHero.classList.add('listo'), letras.length * 42 + 1100);
+}
+
+/* ── paralaje declarativo ─────────────────────────────────────────────────
+   Cualquier pieza con data-par se desplaza mientras cruza la pantalla. Un
+   SOLO suscriptor para todas: quince bloques con su propio listener y su
+   propio rAF vuelven el scroll pegajoso justo en lo que más se mira.
+   El valor es el recorrido total en píxeles, y se reparte a los dos lados
+   del centro: data-par="24" son 12 arriba y 12 abajo. Con recorridos de 90
+   la pieza se despega de su sección y se ve el truco.
+   data-par-x mueve en horizontal, que es lo que pide una cinta. */
+const piezas = $$('[data-par],[data-par-x]').map(el => ({
+  el,
+  y: +el.dataset.par || 0,
+  x: +el.dataset.parX || 0,
+  top: 0, alto: 1, ult: -1
+}));
+if (piezas.length && !reduce) {
+  motor.seguir({
+    /* posicion() sube por offsetParent, nunca rect: el rect incluiría el
+       transform que estamos escribiendo y medir cambiaría la medida. */
+    medir(){
+      for (const p of piezas) { p.top = posicion(p.el); p.alto = p.el.offsetHeight || 1; }
+    },
+    /* FASE DE LECTURA: aquí no se toca ni un estilo. */
+    leer(y, h){
+      const q = new Array(piezas.length);
+      for (let i = 0; i < piezas.length; i++) {
+        const p = piezas[i];
+        /* 0 cuando la pieza asoma por abajo, 1 cuando sale por arriba. */
+        const v = (y + h - p.top) / (h + p.alto);
+        q[i] = v < 0 ? 0 : v > 1 ? 1 : v;
+      }
+      return q;
+    },
+    /* FASE DE ESCRITURA */
+    escribir(q){
+      for (let i = 0; i < piezas.length; i++) {
+        const p = piezas[i];
+        /* Una pieza que ya salió de pantalla tiene el valor clavado en 0 o
+           en 1 y no hay nada que reescribir. Ocho piezas × 60 fotogramas de
+           invalidación de estilo que no cambiaba un píxel. */
+        if (q[i] === p.ult) continue;
+        p.ult = q[i];
+        /* smoothstep: pendiente cero al entrar y al salir, así no se ve
+           dónde empieza ni dónde acaba. */
+        const e = q[i] * q[i] * (3 - 2 * q[i]);
+        const d = (e - .5) * 2;
+        p.el.style.transform =
+          `translate3d(${(d * -p.x / 2).toFixed(1)}px,${(d * -p.y / 2).toFixed(1)}px,0)`;
+      }
+    }
+  });
+}
+
+/* ══ LA ESCENA 3D DEL HERO ════════════════════════════════════════════════
+   Debajo hay SIEMPRE un render fijo de los mismos cuadros, así que esto es
+   un extra: si no carga, si el móvil no da, o si hay movimiento reducido, la
+   primera pantalla se ve igual de bien y no cuesta nada.
+
+   Tres cosas la hacen convivir con el scroll, y las tres salieron de medir
+   con Chrome sin cabeza (`ms de script durante un scroll de toda la página`):
+
+   · VIVE SOLO EN EL HERO. `app.stop()` NO sirve — medido: 3 868 ms de script
+     con la escena parada catorce segundos antes; el runtime sigue comiéndose
+     el hilo. Lo que sí sirve es `dispose()`. Al salir del hero se destruye
+     entera, y el resto de la página vuelve a los 11 ms de una página sin 3D.
+     Al volver arriba se reconstruye sobre la imagen —que es idéntica— así
+     que el relevo no se ve.
+   · RESOLUCIÓN CAPADA A 1×. En una pantalla retina el runtime dibuja al
+     doble en cada eje: cuatro veces los píxeles por fotograma para un fondo
+     que está detrás de un velo y de un grano.
+   · SIN EVENTOS. Ni punteros en el lienzo ni eventos globales.
+   ════════════════════════════════════════════════════════════════════════ */
+const lienzo3d = $('#hero3d'), hero = $('.hero');
+if (lienzo3d && hero && !reduce && matchMedia('(min-width:64rem)').matches) {
+  let app = null, cargando = false, dentro = false, Runtime = null, parada = false;
+
+  escena3d.pausar = () => {
+    if (app && !parada) { parada = true; app.stop(); }
+  };
+  escena3d.reanudar = () => {
+    if (app && parada && dentro && !document.hidden) { parada = false; app.play(); }
+  };
+
+  const construir = async () => {
+    if (app || cargando || !dentro) return;
+    cargando = true;
+    try {
+      /* El módulo se importa UNA vez y se guarda: al volver al hero, el
+         segundo montaje no vuelve a pedir sesenta archivos. */
+      Runtime = Runtime || await import('https://unpkg.com/@splinetool/runtime@2.0.5/build/runtime.js');
+      if (!dentro) { cargando = false; return; }   // se fue mientras cargaba
+      const a = new Runtime.Application(lienzo3d);
+      /* Antes de load(): el runtime lo consulta al dimensionar el lienzo. */
+      a._getPixelRatio = () => 1;
+      await a.load('https://prod.spline.design/Slk6b8kz3LRlKiyk/scene.splinecode');
+      if (a.setGlobalEvents) a.setGlobalEvents(false);
+      if (!dentro) { a.dispose(); cargando = false; return; }
+      app = a; cargando = false; parada = false;
+      lienzo3d.classList.add('visible');
+    } catch (e) {
+      /* Que no cargue NO es un error: debajo está el render fijo. */
+      cargando = false;
+    }
+  };
+
+  const destruir = () => {
+    if (!app) return;
+    lienzo3d.classList.remove('visible');
+    /* Se le da el tiempo del fundido antes de destruirla, o el lienzo se
+       queda en blanco a la vista durante el desvanecido. */
+    const muerta = app; app = null; parada = false;
+    setTimeout(() => { try { muerta.dispose(); } catch {} }, 950);
+  };
+
+  new IntersectionObserver(es => {
+    dentro = es[0].isIntersecting;
+    dentro ? construir() : destruir();
+  }, {rootMargin:'10% 0px'}).observe(hero);
+
+  /* Pestaña al fondo: nadie la está viendo y sigue dibujando. */
+  addEventListener('visibilitychange', () => {
+    if (document.hidden) destruir(); else if (dentro) construir();
+  });
+}
+
+/* ── lo que se mueve solo, quieto fuera de pantalla ───────────────────────
+   Las cintas de deportes y las seis de «Hoy / Con Sportplatz» son
+   animaciones CSS infinitas. Fuera de pantalla no las ve nadie y siguen
+   pidiendo fotograma; el observer las apaga y las vuelve a encender. */
+const conBucle = $$('.rail').concat($$('.vs'));
+if (conBucle.length) {
+  const bio = new IntersectionObserver(es => es.forEach(e => {
+    $$('.rail-in,.rowtrack', e.target)
+      .forEach(el => el.classList.toggle('quieta', !e.isIntersecting));
+  }), {rootMargin:'140px 0px'});
+  conBucle.forEach(b => bio.observe(b));
+}
+
+/* ── revelado ─────────────────────────────────────────────────────────────
+   Una sola vez y se queda: IntersectionObserver es más barato que el motor y
+   no compite por el fotograma. Sin JS la página se ve completa, porque .rv
+   solo se oculta bajo html.js. */
+const revelarTodo = () => $$('.rv').forEach(el => el.classList.add('in'));
+if (!('IntersectionObserver' in window)) {
+  revelarTodo();
+} else {
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    io.unobserve(e.target);
+    e.target.classList.add('in');
+     /* El margen de abajo era NEGATIVO (-6%): la pieza tenía que estar bien
+        dentro para empezar a aparecer, y con el viaje encima llegabas antes
+        que ella. Ahora es positivo — el observador mira 22 % por debajo del
+        canto inferior — así que la entrada arranca mientras la sección
+        todavía sube y para cuando la lees ya está puesta.
+        Y el umbral a 0: con .08, una sección más alta que la ventana pedía
+        un 8 % de SU alto, que son cientos de píxeles de espera de más. */
+  }), {threshold:0, rootMargin:'0px 0px 22% 0px'});
+  $$('.rv').forEach(el => io.observe(el));
+  /* Red de seguridad: si algo impide que el observer dispare, nada queda
+     invisible para siempre. */
+  addEventListener('load', () => setTimeout(() => {
+    if (!$('.rv.in')) revelarTodo();
+  }, 1200));
+}
+
+/* ── el menú de los tres puntos ── */
+const burger = $('#burger'), sheet = $('#sheet');
+burger.addEventListener('click', () => {
+  const abierto = sheet.classList.toggle('open');
+  burger.classList.toggle('x', abierto);
+  burger.setAttribute('aria-expanded', String(abierto));
+});
+sheet.addEventListener('click', e => {
+  if (e.target.tagName !== 'A') return;
+  cerrarHoja();
+});
+/* Escape cierra: un menú que solo se cierra volviendo a acertarle al botón
+   es una trampa con el teclado. */
+addEventListener('keydown', e => {
+  if (e.key === 'Escape' && sheet.classList.contains('open')) { cerrarHoja(); burger.focus(); }
+});
+
+/* ══ CINTA DE DEPORTES ════════════════════════════════════════════════════
+   Los planos de cancha salen del mismo módulo que usa la demo
+   (app/core/sports.js): mismas geometrías, mismo vocabulario. */
+const PLANOS = {
+  futbol:`<rect x="4" y="4" width="152" height="92" rx="2"/><line x1="80" y1="4" x2="80" y2="96" class="net"/>
+    <circle cx="80" cy="50" r="16"/><rect x="4" y="26" width="24" height="48"/><rect x="132" y="26" width="24" height="48"/>`,
+  padel:`<rect x="10" y="4" width="140" height="92" rx="2"/><line x1="80" y1="4" x2="80" y2="96" class="net"/>
+    <line x1="38" y1="4" x2="38" y2="96"/><line x1="122" y1="4" x2="122" y2="96"/><line x1="38" y1="50" x2="122" y2="50"/>`,
+  tenis:`<rect x="8" y="8" width="144" height="84" rx="1"/><rect x="8" y="18" width="144" height="64"/>
+    <line x1="80" y1="8" x2="80" y2="92" class="net"/><line x1="44" y1="18" x2="44" y2="82"/>
+    <line x1="116" y1="18" x2="116" y2="82"/><line x1="44" y1="50" x2="116" y2="50"/>`,
+  voleibol:`<rect x="16" y="8" width="128" height="84" rx="1"/><line x1="80" y1="8" x2="80" y2="92" class="net"/>
+    <line x1="58" y1="8" x2="58" y2="92"/><line x1="102" y1="8" x2="102" y2="92"/>`,
+  paintball:`<rect x="4" y="6" width="152" height="88" rx="2"/><line x1="80" y1="6" x2="80" y2="94" class="net"/>
+    <path d="M28 34h14v10H28zM28 56h14v10H28zM118 34h14v10h-14zM118 56h14v10h-14z"/><circle cx="80" cy="50" r="7"/>`
+};
+const DEPORTES = [
+  ['futbol','Cancha sintética','Fútbol 5, 6 y 7 · grama sintética'],
+  ['padel','Pádel','Panorámica en vidrio · dobles'],
+  ['tenis','Tenis','Superficie dura · singles y dobles'],
+  ['voleibol','Voleibol playa','Arena · 2v2 y 4v4'],
+  ['paintball','Paintball','Campo inflable · por persona']
+];
+const ficha = ([id, nombre, blurb]) =>
+  `<div class="sport"><svg class="plan" viewBox="0 0 160 100" preserveAspectRatio="xMidYMid meet"
+     aria-hidden="true">${PLANOS[id]}</svg><div><b>${nombre}</b><span>${blurb}</span></div></div>`;
+$('#rail').innerHTML = [...DEPORTES, ...DEPORTES, ...DEPORTES].map(ficha).join('');
+
+/* ══ CINTAS HOY / CON ═════════════════════════════════════════════════════ */
+const CINTAS = {
+  hoy1:['«¿Está libre el sábado a las 8?»','«Ya te confirmo»','«¿quién debe todavía?»','El cuaderno se mojó'],
+  hoy2:['Dos equipos a la misma hora','47 mensajes sin leer','El adelanto entró por Nequi y nadie lo anotó','«¿Cuánto llevamos este mes?»'],
+  hoy3:['Nadie contestó a las 11 p. m.','La hora de las 3 se quedó vacía otra vez','«Me dijeron que sí por WhatsApp»','El torneo en una hoja de papel'],
+  con1:['Una hora, una reserva','La agenda no se contradice','Dos semanas navegables','Precio congelado en la reserva'],
+  con2:['Facturado y cobrado en dos números','Saldos con nombre y teléfono','Código SP-4F2A para cancelar','El semáforo lleva su etiqueta'],
+  con3:['Neo contesta a las 11 p. m.','WA en la reserva que entró sola','La llave del torneo avanza sola','Se abre en el celular del cliente']
+};
+$$('.rowtrack').forEach(t => {
+  const items = CINTAS[t.dataset.loop] || [], hot = t.dataset.hot === '1';
+  t.innerHTML = [...items, ...items, ...items]
+    .map((s, i) => `<span class="pillx${hot && i % items.length === 0 ? ' hot' : ''}">${s}</span>`).join('');
+});
+
+/* ── odómetro de la franja de impacto ── */
+const oio = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  oio.unobserve(e.target);
+  const el = e.target, to = +el.dataset.to;
+  if (reduce || !to) { el.textContent = to; return; }
+  const t0 = performance.now();
+  (function tick(t){
+    const p = Math.min((t - t0) / 1100, 1), k = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(to * k);
+    if (p < 1) requestAnimationFrame(tick);
+  })(t0);
+  /* Red de seguridad, y no es paranoia: Chrome CONGELA el rAF cuando la
+     pestaña pasa a segundo plano o el marco sale de vista, y el odómetro se
+     queda enseñando el número por el que iba —un 1 donde dice 13—. Un número
+     falso en una landing destruye más confianza que no animar nada. El
+     setTimeout se ralentiza en segundo plano pero SÍ se ejecuta, así que el
+     valor final llega pase lo que pase. */
+  setTimeout(() => { el.textContent = to; }, 1300);
+}), {threshold:.3, rootMargin:'0px 0px 8% 0px'});
+$$('.impact b[data-to]').forEach(b => oio.observe(b));
+
+/* La escena de la agenda se dibujaba aquí a mano, celda por celda. Se fue
+   con el carrusel de piezas: ahora las cuatro escenas son las piezas de
+   diseño y no hay nada que construir en JS. Se quedó apuntando a un
+   `#gridAg` que ya no existía y reventaba el script ENTERO antes de arrancar
+   los carruseles — sin error visible, porque el fallo pasaba en la carga. */
+
+/* La escena de la agenda se dibujaba aquí celda por celda. Ahora las cuatro
+   escenas del dueño son las piezas de diseño, partidas en trozos que entran
+   uno a uno: no hay nada que construir en JS. */
+
+/* ══ CARRUSELES ═══════════════════════════════════════════════════════════
+   Uno por cada `.stage` de la página, cada uno con sus pestañas, su reloj y
+   su observador. Antes había un solo carrusel y el código lo daba por hecho:
+   `$$('.tab')` cogía las pestañas de TODA la página, así que al montar el
+   segundo las diez pasaban a ser un mismo carrusel de diez pasos y las
+   escenas del jugador se encendían con las pestañas del dueño.
+   ════════════════════════════════════════════════════════════════════════ */
+$$('.stage').forEach(stage => {
+  const tabs = $$('.tab', stage), escenas = $$('[data-scene]', stage);
+  if (!tabs.length || tabs.length !== escenas.length) return;
+
+  let reloj = null, vistaUnaVez = false;
+
+  /* Quitar y volver a poner .on reinicia las animaciones CSS de la escena:
+     entran otra vez desde el principio en vez de aparecer ya terminadas. */
+  const ver = (i) => {
+    tabs.forEach((t, k) => t.classList.toggle('on', k === i));
+    escenas.forEach((e, k) => e.classList.toggle('on', k === i));
+  };
+  const auto = () => {
+    clearInterval(reloj);
+    if (reduce) return;
+    reloj = setInterval(() => {
+      ver((tabs.findIndex(t => t.classList.contains('on')) + 1) % tabs.length);
+    }, 7000);
+  };
+
+  tabs.forEach((t, i) => t.addEventListener('click', () => { ver(i); auto(); }));
+  ver(0);
+
+  /* Gira siempre y no se detiene por nada: ni al pasar el ratón por encima
+     ni al salir de pantalla. Lo único que hace el observador es reiniciarlo
+     desde la primera la primera vez que lo ves, para que no llegues a mitad
+     de la vuelta. */
+  auto();
+  new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting && !vistaUnaVez) { vistaUnaVez = true; ver(0); auto(); }
+  }), {threshold:0, rootMargin:'0px 0px 12% 0px'}).observe(stage);
+});
+
+/* ══ CTA · palabra por palabra ════════════════════════════════════════════
+   El espacio va FUERA del span: inline-block recorta los espacios de los
+   bordes y las palabras se pegan. */
+const ctaT = $('#ctaTitle');
+ctaT.innerHTML = ctaT.textContent.trim().split(/\s+/)
+  .map((w, i) => `<span style="animation-delay:${(i * .07).toFixed(2)}s">${w}</span>`).join(' ');
+new IntersectionObserver((es, o) => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  o.unobserve(e.target);
+  e.target.classList.add('in');
+}), {threshold:0, rootMargin:'0px 0px 12% 0px'}).observe($('#cta'));
+})();
+</script>
+</body>
+</html>
