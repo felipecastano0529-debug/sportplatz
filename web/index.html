@@ -1180,55 +1180,60 @@ section{position:relative}
 .on-night .pantalla{box-shadow:inset 0 0 0 1px rgba(255,255,255,.10),
              0 3px 10px rgba(0,0,0,.5),0 40px 80px -40px rgba(0,0,0,.85)}
 .pantalla .pzas{width:100%;height:auto;max-width:none;max-height:none}
+/* El teléfono viene recortado con su alfa: sin marco, flotando sobre la
+   banda. Y con el ancho DECLARADO, no con max-width: `margin-inline:auto` en
+   un hijo de grid le quita el estirado y lo deja midiendo por su contenido,
+   que a su vez pide el 100 % del padre — círculo cerrado, y sale de 0×0. */
+.pantalla--suelta{background:none;box-shadow:none;overflow:visible;border-radius:0;
+  width:min(100%,322px);margin-inline:auto}
+@media (min-width:64rem){
+  .pro:not(.pro--flip) .pantalla--suelta,
+  .pro--flip .pantalla--suelta{margin-left:auto;margin-right:auto}
+}
 /* Sangra por el canto de fuera como sangraba la captura que había antes. */
 @media (min-width:64rem){
   .pro:not(.pro--flip) .pantalla{margin-left:calc(var(--pad) * -1.15)}
   .pro--flip .pantalla{margin-right:calc(var(--pad) * -1.15)}
 }
-.js .pantalla .pz{opacity:0;transform:translate3d(14px,10px,0)}
-.js .pantalla .pz--izq{transform:translate3d(-14px,10px,0)}
-.js .pantalla.in .pz{animation:pzEntra .5s var(--ease) forwards;
-  animation-delay:calc(var(--i) * var(--paso,150ms) + .18s)}
 
-/* ══ ESCENA DE PIEZAS ═════════════════════════════════════════════════════
-   La misma animación que hacían las escenas dibujadas a mano —cada trozo
-   entrando por su cuenta— pero con las láminas de diseño.
-   El truco está en QUÉ se recorta. Partirlas en tiras horizontales no
-   funciona: la lámina lleva un marco que recorre los dos lados, y en cuanto
-   una tira se mueve, el marco se parte y se ve el corte.
-   Aquí cada pieza es un GLOBO, una fila o una tarjeta: cajas sueltas que ya
-   estaban aisladas sobre negro dentro de la lámina. Se recortan con una
-   máscara rectangular a su medida —nunca tocan el marco, que se queda fuera
-   de todas— y el lienzo negro hace de chasis. Como el fondo de la lámina y
-   el del lienzo son el mismo negro, el canto de cada recorte no existe.
-   Las medidas salieron de buscar los bloques de contenido en la propia
-   imagen, no de ponerlas a ojo.
+/* ══ LA PIEZA ENTRA ═══════════════════════════════════════════════════════
+   Entera y de una vez. Estuvo un tiempo partida en trozos —cada globo, cada
+   fila con su máscara, entrando uno detrás de otro— y no funciona con estas
+   láminas: para que el resto no se viera antes de tiempo había que enseñar
+   primero el chasis con el contenido tapado, y ese chasis es un rectángulo
+   negro con los cantos de lo que tapa asomando por los bordes. La primera
+   imagen del carrusel era esa, y era la peor de todas.
+   Una lámina dibujada es un objeto, no un montaje: se mueve como un objeto.
    ════════════════════════════════════════════════════════════════════════ */
 .canvas--foto{background:#000}
-/* Poco margen: cada pieza ya viene recortada a su contenido, así que el
-   hueco es para que respire, no para dejar negro muerto. */
-.scene--foto{padding:clamp(6px,.9vw,14px);justify-content:center;align-items:center}
-.pzas{position:relative;width:auto;height:100%;max-width:100%;margin:0 auto}
-.pzas--ancha{width:100%;height:auto;max-height:100%}
-.pz{position:absolute;inset:0;
-  -webkit-mask-image:linear-gradient(#000,#000);mask-image:linear-gradient(#000,#000);
-  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
-  -webkit-mask-size:var(--pw) var(--ph);mask-size:var(--pw) var(--ph);
-  -webkit-mask-position:var(--px) var(--py);mask-position:var(--px) var(--py)}
-.pz img{width:100%;height:100%;display:block;object-fit:fill;max-width:none;max-height:none}
-/* El chasis es la lámina con el contenido tapado: entra primero, vacío, y
-   las filas lo van llenando. Va sin máscara — es la pieza entera. */
-.pz--chasis{-webkit-mask-image:none;mask-image:none}
+.scene--foto{padding:clamp(8px,1.2vw,18px);justify-content:center;align-items:center}
+.sfoto{position:relative;margin:0 auto;width:auto;height:100%;max-width:100%;
+  display:block}
+.sfoto--ancha{width:100%;height:auto;max-height:100%}
+.sfoto img{width:100%;height:100%;display:block;object-fit:contain;
+  max-width:none;max-height:none}
 
-/* Cada pieza entra por su lado: lo que el cliente escribe llega por la
-   izquierda y lo que contesta Neo por la derecha, igual que en un chat de
-   verdad. El paso lo pone cada escena — 620 ms entre mensajes porque se
-   leen, 90 ms entre filas de la agenda porque son una tabla. */
-.js .scene--foto .pz{opacity:0;transform:translate3d(14px,10px,0)}
-.js .scene--foto .pz--izq{transform:translate3d(-14px,10px,0)}
-.js .scene--foto.on .pz{animation:pzEntra .5s var(--ease) forwards;
-  animation-delay:calc(var(--i) * var(--paso,150ms) + .12s)}
-@keyframes pzEntra{to{opacity:1;transform:none}}
+/* Sube, se asienta y crece el último punto, con el muelle de la casa. */
+.js .scene--foto .sfoto{opacity:0;transform:translateY(22px) scale(.965)}
+.js .scene--foto.on .sfoto{animation:entraPieza .8s var(--muelle) forwards}
+@keyframes entraPieza{to{opacity:1;transform:none}}
+
+/* Y una luz la recorre una vez, ya puesta: es lo que la hace parecer una
+   pantalla encendiéndose en vez de una foto apareciendo. Va en un
+   pseudo-elemento porque el <figure> ya lleva su propio transform. */
+.sfoto::after{content:"";position:absolute;inset:-25% -55%;pointer-events:none;
+  background:linear-gradient(102deg,transparent 43%,rgba(255,255,255,.05) 50%,
+             rgba(190,255,225,.085) 52%,transparent 59%);
+  transform:translateX(-70%);opacity:0}
+.js .scene--foto.on .sfoto::after{animation:luzPieza 1.4s var(--ease) .5s}
+@keyframes luzPieza{
+  0%{transform:translateX(-70%);opacity:0}
+  25%{opacity:1}
+  100%{transform:translateX(70%);opacity:0}}
+
+/* En las bandas la misma entrada, disparada por el revelado de la sección. */
+.js .pantalla{opacity:0;transform:translateY(22px) scale(.975)}
+.js .pantalla.in{animation:entraPieza .8s var(--muelle) forwards}
 
 /* ══ EL MOMENTO · conector a la demo ══════════════════════════════════════ */
 /* Esto es una SECUENCIA de veinte segundos, no tres características que
@@ -1482,13 +1487,13 @@ footer .brand-ph{background:rgba(255,255,255,.06)}
   .bg-par,.ag-tilt,.ag-float,.rail-par,.hero-copy,[data-par],[data-par-x]{
     transform:none!important;opacity:1!important}
   .rail-in,.rowtrack{animation:none}
-  .js .scene--foto .pz,.js .scene--foto.on .pz{animation:none;opacity:1;transform:none}
-  .js .pantalla .pz,.js .pantalla.in .pz{animation:none;opacity:1;transform:none}
   .scene.on .gc,.scene.on .bub,.scene.on .bracket .g{opacity:1;transform:none}
   .scene.on .bracket .ln{stroke-dashoffset:0}
   .scene.on .chart .line{stroke-dashoffset:0}
   .scene.on .chart .area{opacity:1}
   .scene.on .rank .rb i{transform:scaleX(var(--w))}
+  .js .scene--foto .sfoto,.js .scene--foto.on .sfoto,.js .pantalla,.js .pantalla.in{animation:none;opacity:1;transform:none}
+  .js .scene--foto.on .sfoto::after{animation:none;opacity:0}
   .cta.in .cta-t span{opacity:1;transform:none}
   .tab.on .bar i{transform:scaleX(1)}
 }
@@ -1720,58 +1725,40 @@ footer .brand-ph{background:rgba(255,255,255,.06)}
       <div class="canvas canvas--foto">
         <!-- 01 · agenda -->
         <div class="scene scene--foto" data-scene>
-          <div class="pzas" role="img" aria-label="Pantalla de Reservas del sábado 23: cuatro canchas por columna, de las 17:00 a las 22:00, con cada hora en verde si está pagada, ámbar si tiene adelanto, rojo si no ha abonado y gris si está libre."
-               style="--paso:90ms;aspect-ratio:774/538">
-              <span class="pz pz--chasis" style="--i:0"><img src="assets/producto/carr-agenda-chasis-780.webp" srcset="assets/producto/carr-agenda-chasis-780.webp 780w, assets/producto/carr-agenda-chasis-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz pz--izq" style="--i:1;--pw:92.248%;--ph:19.888%;--px:53.333%;--py:4.64%"><img src="assets/producto/carr-agenda-780.webp" srcset="assets/producto/carr-agenda-780.webp 780w, assets/producto/carr-agenda-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz" style="--i:2;--pw:74.935%;--ph:5.019%;--px:74.227%;--py:29.55%"><img src="assets/producto/carr-agenda-780.webp" srcset="assets/producto/carr-agenda-780.webp 780w, assets/producto/carr-agenda-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz pz--izq" style="--i:3;--pw:91.085%;--ph:7.993%;--px:60.87%;--py:37.98%"><img src="assets/producto/carr-agenda-780.webp" srcset="assets/producto/carr-agenda-780.webp 780w, assets/producto/carr-agenda-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz pz--izq" style="--i:4;--pw:91.085%;--ph:8.178%;--px:60.87%;--py:48.381%"><img src="assets/producto/carr-agenda-780.webp" srcset="assets/producto/carr-agenda-780.webp 780w, assets/producto/carr-agenda-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz pz--izq" style="--i:5;--pw:91.085%;--ph:7.807%;--px:60.87%;--py:58.669%"><img src="assets/producto/carr-agenda-780.webp" srcset="assets/producto/carr-agenda-780.webp 780w, assets/producto/carr-agenda-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz pz--izq" style="--i:6;--pw:91.085%;--ph:7.807%;--px:60.87%;--py:68.952%"><img src="assets/producto/carr-agenda-780.webp" srcset="assets/producto/carr-agenda-780.webp 780w, assets/producto/carr-agenda-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz pz--izq" style="--i:7;--pw:91.085%;--ph:8.178%;--px:60.87%;--py:79.352%"><img src="assets/producto/carr-agenda-780.webp" srcset="assets/producto/carr-agenda-780.webp 780w, assets/producto/carr-agenda-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz pz--izq" style="--i:8;--pw:91.085%;--ph:8.178%;--px:60.87%;--py:89.879%"><img src="assets/producto/carr-agenda-780.webp" srcset="assets/producto/carr-agenda-780.webp 780w, assets/producto/carr-agenda-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          </div>
+          <figure class="sfoto sfoto--ancha" style="aspect-ratio:1582/908">
+            <img src="assets/producto/carr-agenda-780.webp"
+                 srcset="assets/producto/carr-agenda-780.webp 780w,
+                         assets/producto/carr-agenda-780.webp 780w"
+                 sizes="(min-width:64rem) 720px, 92vw" loading="lazy" decoding="async"
+                 alt="Pantalla de Reservas del sábado 23: cuatro canchas por columna, de las 17:00 a las 22:00, con cada hora en verde si está pagada, ámbar si tiene adelanto, rojo si no ha abonado y gris si está libre.">
+          </figure>
         </div>
         <div class="scene scene--foto" data-scene>
-          <div class="pzas" role="img" aria-label="Conversación de WhatsApp con Neo AI: el cliente pregunta por sintética el sábado a las 7, el asistente ofrece las horas libres con el precio, explica el adelanto y cierra con la reserva apartada y su código."
-               style="--paso:560ms;aspect-ratio:676/546">
-              <span class="pz pz--chasis" style="--i:0"><img src="assets/producto/carr-neo-chasis-780.webp" srcset="assets/producto/carr-neo-chasis-780.webp 780w, assets/producto/carr-neo-chasis-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz pz--izq" style="--i:1;--pw:91.124%;--ph:12.271%;--px:40.0%;--py:3.967%"><img src="assets/producto/carr-neo-780.webp" srcset="assets/producto/carr-neo-780.webp 780w, assets/producto/carr-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz pz--izq" style="--i:2;--pw:50.74%;--ph:9.707%;--px:8.108%;--py:19.067%"><img src="assets/producto/carr-neo-780.webp" srcset="assets/producto/carr-neo-780.webp 780w, assets/producto/carr-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz" style="--i:3;--pw:59.32%;--ph:17.949%;--px:91.273%;--py:33.259%"><img src="assets/producto/carr-neo-780.webp" srcset="assets/producto/carr-neo-780.webp 780w, assets/producto/carr-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz pz--izq" style="--i:4;--pw:47.633%;--ph:8.242%;--px:7.627%;--py:50.499%"><img src="assets/producto/carr-neo-780.webp" srcset="assets/producto/carr-neo-780.webp 780w, assets/producto/carr-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz" style="--i:5;--pw:69.379%;--ph:12.637%;--px:88.406%;--py:62.893%"><img src="assets/producto/carr-neo-780.webp" srcset="assets/producto/carr-neo-780.webp 780w, assets/producto/carr-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz pz--izq" style="--i:6;--pw:36.095%;--ph:8.242%;--px:6.25%;--py:74.85%"><img src="assets/producto/carr-neo-780.webp" srcset="assets/producto/carr-neo-780.webp 780w, assets/producto/carr-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz" style="--i:7;--pw:69.97%;--ph:11.538%;--px:88.177%;--py:87.371%"><img src="assets/producto/carr-neo-780.webp" srcset="assets/producto/carr-neo-780.webp 780w, assets/producto/carr-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz pz--izq" style="--i:8;--pw:92.751%;--ph:6.593%;--px:51.02%;--py:96.275%"><img src="assets/producto/carr-neo-780.webp" srcset="assets/producto/carr-neo-780.webp 780w, assets/producto/carr-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          </div>
+          <figure class="sfoto" style="aspect-ratio:676/546">
+            <img src="assets/producto/carr-neo-780.webp"
+                 srcset="assets/producto/carr-neo-780.webp 780w,
+                         assets/producto/carr-neo-780.webp 780w"
+                 sizes="(min-width:64rem) 620px, 92vw" loading="lazy" decoding="async"
+                 alt="Conversación de WhatsApp con Neo AI: el cliente pregunta por sintética el sábado a las 7, el asistente ofrece las horas libres con el precio, explica el adelanto y cierra con la reserva apartada y su código.">
+          </figure>
         </div>
         <div class="scene scene--foto" data-scene>
-          <div class="pzas" role="img" aria-label="Llave del Torneo Relámpago de cuatro equipos: las dos semifinales con su marcador, los ganadores ya colocados en la final y Los Cafeteros coronados campeones."
-               style="--paso:300ms;aspect-ratio:683/482">
-              <span class="pz pz--chasis" style="--i:0"><img src="assets/producto/carr-llave-chasis-780.webp" srcset="assets/producto/carr-llave-chasis-780.webp 780w, assets/producto/carr-llave-chasis-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz pz--izq" style="--i:1;--pw:11.274%;--ph:1.66%;--px:19.967%;--py:3.586%"><img src="assets/producto/carr-llave-780.webp" srcset="assets/producto/carr-llave-780.webp 780w, assets/producto/carr-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz pz--izq" style="--i:2;--pw:90.483%;--ph:15.56%;--px:46.154%;--py:7.862%"><img src="assets/producto/carr-llave-780.webp" srcset="assets/producto/carr-llave-780.webp 780w, assets/producto/carr-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz pz--izq" style="--i:3;--pw:35.286%;--ph:56.432%;--px:5.882%;--py:64.762%"><img src="assets/producto/carr-llave-780.webp" srcset="assets/producto/carr-llave-780.webp 780w, assets/producto/carr-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz" style="--i:4;--pw:31.479%;--ph:56.432%;--px:57.051%;--py:64.762%"><img src="assets/producto/carr-llave-780.webp" srcset="assets/producto/carr-llave-780.webp 780w, assets/producto/carr-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz" style="--i:5;--pw:25.915%;--ph:56.432%;--px:95.257%;--py:64.762%"><img src="assets/producto/carr-llave-780.webp" srcset="assets/producto/carr-llave-780.webp 780w, assets/producto/carr-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz pz--izq" style="--i:6;--pw:11.274%;--ph:1.66%;--px:19.967%;--py:3.586%"><img src="assets/producto/carr-llave-780.webp" srcset="assets/producto/carr-llave-780.webp 780w, assets/producto/carr-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz pz--izq" style="--i:7;--pw:90.483%;--ph:15.56%;--px:46.154%;--py:7.862%"><img src="assets/producto/carr-llave-780.webp" srcset="assets/producto/carr-llave-780.webp 780w, assets/producto/carr-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz pz--izq" style="--i:8;--pw:92.679%;--ph:56.432%;--px:52.0%;--py:64.762%"><img src="assets/producto/carr-llave-780.webp" srcset="assets/producto/carr-llave-780.webp 780w, assets/producto/carr-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          </div>
+          <figure class="sfoto sfoto--ancha" style="aspect-ratio:1435/950">
+            <img src="assets/producto/carr-llave-780.webp"
+                 srcset="assets/producto/carr-llave-780.webp 780w,
+                         assets/producto/carr-llave-780.webp 780w"
+                 sizes="(min-width:64rem) 660px, 92vw" loading="lazy" decoding="async"
+                 alt="Llave del Torneo Relámpago de cuatro equipos: las dos semifinales con su marcador, los ganadores ya colocados en la final y Los Cafeteros coronados campeones.">
+          </figure>
         </div>
         <div class="scene scene--foto" data-scene>
-          <div class="pzas" role="img" aria-label="Panel del dueño: facturado $8.4M, cobrado $6.1M y por cobrar $2.3M como tres números distintos, con la curva de los últimos catorce días y el ranking de qué cancha deja más plata."
-               style="--paso:180ms;aspect-ratio:676/424">
-              <span class="pz pz--chasis" style="--i:0"><img src="assets/producto/carr-panel-chasis-780.webp" srcset="assets/producto/carr-panel-chasis-780.webp 780w, assets/producto/carr-panel-chasis-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz pz--izq" style="--i:1;--pw:90.68%;--ph:12.736%;--px:41.27%;--py:5.405%"><img src="assets/producto/carr-panel-780.webp" srcset="assets/producto/carr-panel-780.webp 780w, assets/producto/carr-panel-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz pz--izq" style="--i:2;--pw:92.456%;--ph:19.104%;--px:47.059%;--py:24.781%"><img src="assets/producto/carr-panel-780.webp" srcset="assets/producto/carr-panel-780.webp 780w, assets/producto/carr-panel-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz pz--izq" style="--i:3;--pw:92.456%;--ph:16.745%;--px:49.02%;--py:54.674%"><img src="assets/producto/carr-panel-780.webp" srcset="assets/producto/carr-panel-780.webp 780w, assets/producto/carr-panel-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz pz--izq" style="--i:4;--pw:88.018%;--ph:6.368%;--px:41.975%;--py:72.544%"><img src="assets/producto/carr-panel-780.webp" srcset="assets/producto/carr-panel-780.webp 780w, assets/producto/carr-panel-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz pz--izq" style="--i:5;--pw:88.018%;--ph:6.604%;--px:41.975%;--py:83.081%"><img src="assets/producto/carr-panel-780.webp" srcset="assets/producto/carr-panel-780.webp 780w, assets/producto/carr-panel-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-              <span class="pz pz--izq" style="--i:6;--pw:88.018%;--ph:6.368%;--px:41.975%;--py:92.443%"><img src="assets/producto/carr-panel-780.webp" srcset="assets/producto/carr-panel-780.webp 780w, assets/producto/carr-panel-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          </div>
+          <figure class="sfoto sfoto--ancha" style="aspect-ratio:676/424">
+            <img src="assets/producto/carr-panel-780.webp"
+                 srcset="assets/producto/carr-panel-780.webp 780w,
+                         assets/producto/carr-panel-780.webp 780w"
+                 sizes="(min-width:64rem) 720px, 92vw" loading="lazy" decoding="async"
+                 alt="Panel del dueño: facturado $8.4M, cobrado $6.1M y por cobrar $2.3M como tres números distintos, con la curva de los últimos catorce días y el ranking de qué cancha deja más plata.">
+          </figure>
         </div>
       </div>
     </div>
@@ -1789,15 +1776,13 @@ footer .brand-ph{background:rgba(255,255,255,.06)}
   <div class="wrap">
     <div class="pro">
       <div class="pantalla rv rv-1">
-        <div class="pzas" role="img" aria-label="Dos números enfrentados: facturado de treinta días, $108.9M, contra cobrado, $88.5M, cada uno con su barra; debajo el saldo por cobrar de $20.441.000 y los catorce clientes que lo deben."
-             style="--paso:260ms;aspect-ratio:693/392">
-          <span class="pz pz--chasis" style="--i:0"><img src="assets/producto/b-plata-chasis-780.webp" srcset="assets/producto/b-plata-chasis-780.webp 780w, assets/producto/b-plata-chasis-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          <span class="pz pz--izq" style="--i:1;--pw:93.074%;--ph:7.143%;--px:50.0%;--py:3.846%"><img src="assets/producto/b-plata-780.webp" srcset="assets/producto/b-plata-780.webp 780w, assets/producto/b-plata-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          <span class="pz pz--izq" style="--i:2;--pw:68.975%;--ph:3.827%;--px:22.326%;--py:16.446%"><img src="assets/producto/b-plata-780.webp" srcset="assets/producto/b-plata-780.webp 780w, assets/producto/b-plata-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          <span class="pz pz--izq" style="--i:3;--pw:74.17%;--ph:14.286%;--px:25.698%;--py:27.976%"><img src="assets/producto/b-plata-780.webp" srcset="assets/producto/b-plata-780.webp 780w, assets/producto/b-plata-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          <span class="pz pz--izq" style="--i:4;--pw:84.704%;--ph:6.633%;--px:41.509%;--py:45.628%"><img src="assets/producto/b-plata-780.webp" srcset="assets/producto/b-plata-780.webp 780w, assets/producto/b-plata-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          <span class="pz pz--izq" style="--i:5;--pw:87.879%;--ph:17.092%;--px:53.571%;--py:84.0%"><img src="assets/producto/b-plata-780.webp" srcset="assets/producto/b-plata-780.webp 780w, assets/producto/b-plata-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-        </div>
+        <figure class="sfoto" style="aspect-ratio:693/392">
+          <img src="assets/producto/b-plata-780.webp"
+               srcset="assets/producto/b-plata-780.webp 780w,
+                       assets/producto/b-plata-780.webp 780w"
+               sizes="(min-width:64rem) 720px, 92vw" loading="lazy" decoding="async"
+               alt="Dos números enfrentados: facturado de treinta días, $108.9M, contra cobrado, $88.5M, cada uno con su barra; debajo el saldo por cobrar de $20.441.000 y los catorce clientes que lo deben.">
+        </figure>
       </div>
       <div class="pro-txt">
         <span class="eyebrow rv">La plata</span>
@@ -1823,17 +1808,14 @@ footer .brand-ph{background:rgba(255,255,255,.06)}
   <div class="grain" aria-hidden="true"></div>
   <div class="wrap">
     <div class="pro pro--flip">
-      <div class="pantalla rv rv-1">
-        <div class="pzas" role="img" aria-label="Conversación de WhatsApp con Neo AI: el cliente pregunta si hay cancha libre mañana a las 7, el asistente ofrece tres horas libres, y la reserva queda apartada con su código SP-3F9A."
-             style="--paso:480ms;aspect-ratio:683/561">
-          <span class="pz pz--chasis" style="--i:0"><img src="assets/producto/b-neo-chasis-780.webp" srcset="assets/producto/b-neo-chasis-780.webp 780w, assets/producto/b-neo-chasis-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          <span class="pz pz--izq" style="--i:1;--pw:87.994%;--ph:10.695%;--px:36.585%;--py:6.387%"><img src="assets/producto/b-neo-780.webp" srcset="assets/producto/b-neo-780.webp 780w, assets/producto/b-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          <span class="pz pz--izq" style="--i:2;--pw:59.883%;--ph:3.922%;--px:19.708%;--py:27.458%"><img src="assets/producto/b-neo-780.webp" srcset="assets/producto/b-neo-780.webp 780w, assets/producto/b-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          <span class="pz" style="--i:3;--pw:73.646%;--ph:23.529%;--px:82.222%;--py:46.62%"><img src="assets/producto/b-neo-780.webp" srcset="assets/producto/b-neo-780.webp 780w, assets/producto/b-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          <span class="pz pz--izq" style="--i:4;--pw:30.307%;--ph:3.922%;--px:11.555%;--py:71.243%"><img src="assets/producto/b-neo-780.webp" srcset="assets/producto/b-neo-780.webp 780w, assets/producto/b-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          <span class="pz pz--izq" style="--i:5;--pw:90.337%;--ph:14.082%;--px:51.515%;--py:90.456%"><img src="assets/producto/b-neo-780.webp" srcset="assets/producto/b-neo-780.webp 780w, assets/producto/b-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          <span class="pz pz--izq" style="--i:6;--pw:89.165%;--ph:1.604%;--px:51.351%;--py:94.022%"><img src="assets/producto/b-neo-780.webp" srcset="assets/producto/b-neo-780.webp 780w, assets/producto/b-neo-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-        </div>
+      <div class="pantalla pantalla--suelta rv rv-1">
+        <figure class="sfoto" style="aspect-ratio:804/1770">
+          <img src="assets/producto/fono-450.webp"
+               srcset="assets/producto/fono-450.webp 450w,
+                       assets/producto/fono-450.webp 450w"
+               sizes="(min-width:64rem) 322px, 74vw" loading="lazy" decoding="async"
+               alt="Conversación de WhatsApp con Neo AI: el cliente pregunta si hay cancha libre mañana a las 7, el asistente ofrece tres horas libres, y la reserva queda apartada con su código SP-3F9A.">
+        </figure>
       </div>
       <div class="pro-txt">
         <span class="eyebrow rv">Neo AI</span>
@@ -1895,20 +1877,13 @@ footer .brand-ph{background:rgba(255,255,255,.06)}
   <div class="wrap">
     <div class="pro pro--flip">
       <div class="pantalla rv rv-1">
-        <div class="pzas" role="img" aria-label="Llave de ocho equipos: los cuatro cruces de cuartos con su marcador, los ganadores ya colocados en semifinal, la final esperando, y el pie recordando que los ganadores avanzan solos."
-             style="--paso:180ms;aspect-ratio:694/494">
-          <span class="pz pz--chasis" style="--i:0"><img src="assets/producto/b-llave-chasis-780.webp" srcset="assets/producto/b-llave-chasis-780.webp 780w, assets/producto/b-llave-chasis-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          <span class="pz pz--izq" style="--i:1;--pw:31.844%;--ph:5.061%;--px:6.554%;--py:3.625%"><img src="assets/producto/b-llave-780.webp" srcset="assets/producto/b-llave-780.webp 780w, assets/producto/b-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          <span class="pz" style="--i:2;--pw:30.115%;--ph:5.061%;--px:51.959%;--py:3.625%"><img src="assets/producto/b-llave-780.webp" srcset="assets/producto/b-llave-780.webp 780w, assets/producto/b-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          <span class="pz" style="--i:3;--pw:26.513%;--ph:5.061%;--px:90.392%;--py:3.625%"><img src="assets/producto/b-llave-780.webp" srcset="assets/producto/b-llave-780.webp 780w, assets/producto/b-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          <span class="pz pz--izq" style="--i:4;--pw:63.545%;--ph:12.955%;--px:10.672%;--py:16.512%"><img src="assets/producto/b-llave-780.webp" srcset="assets/producto/b-llave-780.webp 780w, assets/producto/b-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          <span class="pz pz--izq" style="--i:5;--pw:63.256%;--ph:2.632%;--px:10.98%;--py:28.274%"><img src="assets/producto/b-llave-780.webp" srcset="assets/producto/b-llave-780.webp 780w, assets/producto/b-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          <span class="pz pz--izq" style="--i:6;--pw:92.651%;--ph:10.729%;--px:52.941%;--py:34.467%"><img src="assets/producto/b-llave-780.webp" srcset="assets/producto/b-llave-780.webp 780w, assets/producto/b-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          <span class="pz pz--izq" style="--i:7;--pw:92.651%;--ph:14.17%;--px:52.941%;--py:49.057%"><img src="assets/producto/b-llave-780.webp" srcset="assets/producto/b-llave-780.webp 780w, assets/producto/b-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          <span class="pz pz--izq" style="--i:8;--pw:29.683%;--ph:2.834%;--px:5.533%;--py:65.0%"><img src="assets/producto/b-llave-780.webp" srcset="assets/producto/b-llave-780.webp 780w, assets/producto/b-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          <span class="pz pz--izq" style="--i:9;--pw:29.683%;--ph:2.632%;--px:5.533%;--py:70.478%"><img src="assets/producto/b-llave-780.webp" srcset="assets/producto/b-llave-780.webp 780w, assets/producto/b-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-          <span class="pz pz--izq" style="--i:10;--pw:89.769%;--ph:9.919%;--px:36.62%;--py:91.011%"><img src="assets/producto/b-llave-780.webp" srcset="assets/producto/b-llave-780.webp 780w, assets/producto/b-llave-1560.webp 1560w" sizes="(min-width:64rem) 720px, 92vw" loading="lazy" alt="" aria-hidden="true"></span>
-        </div>
+        <figure class="sfoto" style="aspect-ratio:694/494">
+          <img src="assets/producto/b-llave-780.webp"
+               srcset="assets/producto/b-llave-780.webp 780w,
+                       assets/producto/b-llave-780.webp 780w"
+               sizes="(min-width:64rem) 720px, 92vw" loading="lazy" decoding="async"
+               alt="Llave de ocho equipos: los cuatro cruces de cuartos con su marcador, los ganadores ya colocados en semifinal, la final esperando, y el pie recordando que los ganadores avanzan solos.">
+        </figure>
       </div>
       <div class="pro-txt">
         <span class="eyebrow rv">Torneos</span>
@@ -2797,23 +2772,23 @@ if (lienzo3d && hero && !reduce && matchMedia('(min-width:64rem)').matches) {
     }
   };
 
-  const destruir = () => {
-    if (!app) return;
-    lienzo3d.classList.remove('visible');
-    /* Se le da el tiempo del fundido antes de destruirla, o el lienzo se
-       queda en blanco a la vista durante el desvanecido. */
-    const muerta = app; app = null; parada = false;
-    setTimeout(() => { try { muerta.dispose(); } catch {} }, 950);
-  };
+  /* Antes se DESTRUÍA al salir del hero y se reconstruía al volver. Eso es
+     lo que se veía como un parón: entre el dispose y el nuevo montaje hay
+     una carga por medio, y si volvías antes de 950 ms el dispose pendiente
+     caía encima de la escena recién montada y dejaba el lienzo muerto.
+     Ahora no se destruye nunca: se para con stop() —medido, 0,7 ms de
+     script por segundo— y se reanuda con play(), que es instantáneo. */
+  const destruir = () => { escena3d.pausar(); };
 
   new IntersectionObserver(es => {
     dentro = es[0].isIntersecting;
-    dentro ? construir() : destruir();
+    if (dentro) { construir(); escena3d.reanudar(); } else { destruir(); }
   }, {rootMargin:'10% 0px'}).observe(hero);
 
   /* Pestaña al fondo: nadie la está viendo y sigue dibujando. */
   addEventListener('visibilitychange', () => {
-    if (document.hidden) destruir(); else if (dentro) construir();
+    if (document.hidden) escena3d.pausar();
+    else if (dentro) { construir(); escena3d.reanudar(); }
   });
 }
 
