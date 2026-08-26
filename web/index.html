@@ -241,12 +241,12 @@ button{cursor:pointer}
    La interlínea BAJA cuando el cuerpo sube. */
 .d{font-size:clamp(2.55rem,7.1vw,6.2rem);font-variation-settings:'wdth' 112,'wght' 800;
   line-height:.9;letter-spacing:-.045em;overflow-wrap:break-word}
-.h2{font-size:clamp(1.95rem,4.4vw,3.55rem);font-variation-settings:'wdth' 108,'wght' 800;
+.h2{font-size:clamp(1.7rem,3.2vw,2.7rem);font-variation-settings:'wdth' 108,'wght' 800;
   line-height:.98;letter-spacing:-.035em;overflow-wrap:break-word}
-.h3{font-size:clamp(1.12rem,1.5vw,1.4rem);font-variation-settings:'wdth' 104,'wght' 700;
+.h3{font-size:clamp(1.06rem,1.3vw,1.26rem);font-variation-settings:'wdth' 104,'wght' 700;
   line-height:1.18;letter-spacing:-.02em}
 .h4{font-size:1rem;font-variation-settings:'wdth' 102,'wght' 700;letter-spacing:-.014em;line-height:1.3}
-.lead{font-size:clamp(1.02rem,1.25vw,1.19rem);line-height:1.55;color:var(--ink-2);
+.lead{font-size:clamp(.97rem,1vw,1.08rem);line-height:1.6;color:var(--ink-2);
   font-variation-settings:'wdth' 100,'wght' 420;letter-spacing:-.008em}
 .small{font-size:.875rem;line-height:1.55;color:var(--ink-3)}
 .mono{font-family:var(--mono);font-size:.7rem;font-weight:500;letter-spacing:.13em;
@@ -284,7 +284,7 @@ section{position:relative}
 /* El ancho del titular se mide en SU propia tipografía. Si se limita la
    cabecera en `ch`, el `ch` sale de la métrica del cuerpo (~9px) y un display
    de 56px acaba partido en seis líneas de tres palabras. */
-.head .h2{max-width:19ch}
+.head .h2{max-width:22ch}
 .head .h2{margin-top:var(--s-2)}
 .head .lead{max-width:52ch}
 /* Siete cabeceras con la misma forma se leen como una plantilla, por muy
@@ -759,7 +759,7 @@ section{position:relative}
 
 .agenda-txt{display:flex;flex-direction:column;gap:var(--s-4);
   max-width:42ch;align-self:center}
-.agenda-txt .h3{font-size:clamp(1.28rem,1.9vw,1.7rem);margin-top:var(--s-1)}
+.agenda-txt .h3{font-size:clamp(1.16rem,1.6vw,1.45rem);margin-top:var(--s-1)}
 /* Leyenda: la misma cuenta que hacen las píldoras del panel, en texto.
    Filas separadas por filete de 1px — ni tarjetas, ni pastillas, ni iconos
    redondos: es una lista, y se lee como una lista. */
@@ -798,7 +798,7 @@ section{position:relative}
   .pro--flip .pro-txt{order:0}
 }
 .pro-txt{display:flex;flex-direction:column;gap:var(--s-4);max-width:46ch}
-.pro-txt .h2{font-size:clamp(1.6rem,3vw,2.5rem);max-width:16ch}
+.pro-txt .h2{font-size:clamp(1.42rem,2.4vw,2.05rem);max-width:17ch}
 .pro-txt .lead{max-width:42ch}
 
 /* ── el marco de la captura ────────────────────────────────────────────────
@@ -1235,6 +1235,164 @@ section{position:relative}
 .js .pantalla{opacity:0;transform:translateY(22px) scale(.975)}
 .js .pantalla.in{animation:entraPieza .8s var(--muelle) forwards}
 
+/* ══ EL LADO DEL JUGADOR, EN NEÓN ═════════════════════════════════════════
+   Estas seis escenas son las únicas dibujadas a mano que quedan, y por eso
+   son las únicas que se arman elemento por elemento delante de ti. Lo que se
+   les da aquí es el acabado de las láminas: negro puro en vez de degradado
+   azulado, un filo de neón con el color de cada cosa, y el resplandor que
+   ese filo proyecta hacia fuera.
+   Un solo recurso, --n, lleva el color de cada pieza: el filo, el brillo y
+   el punto salen todos de él, así que retintar una fila es cambiar un valor
+   y no cinco reglas. ─────────────────────────────────────────────────────── */
+.stage--jug .canvas{background:#000;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.09),
+             0 40px 80px -40px rgba(0,0,0,.9)}
+.stage--jug .scene{gap:12px}
+.stage--jug .scene-hd .mono,.stage--mom .scene-hd .mono{color:#4ade80;text-shadow:0 0 14px rgba(74,222,128,.5)}
+.stage--jug .scene-hd small,.stage--mom .scene-hd small{color:rgba(255,255,255,.42)}
+
+/* La pieza de neón: caja casi negra, filo de color y halo. Es el mismo
+   material de las fichas de deporte y de las filas de la agenda. */
+.stage--jug .j-prox,.stage--jug .j-chip,.stage--jug .j-h,.stage--jug .j-cupo,
+.stage--jug .tile,.stage--jug .fama,.stage--mom .j-h{
+  --n:74,222,128;
+  background:linear-gradient(160deg,rgba(var(--n),.10),rgba(0,0,0,.55) 62%);
+  box-shadow:inset 0 0 0 1.4px rgba(var(--n),.55),
+             0 0 18px -4px rgba(var(--n),.45),
+             inset 0 1px 0 rgba(255,255,255,.10)}
+.stage--jug .j-chip{color:#eafff4}
+.stage--jug .j-chip--on{--n:74,222,128}
+.stage--jug .j-h,.stage--mom .j-h{--n:255,255,255;background:rgba(255,255,255,.045);
+  box-shadow:inset 0 0 0 1.2px rgba(255,255,255,.13)}
+.stage--jug .j-h--no,.stage--mom .j-h--no{opacity:.32;box-shadow:inset 0 0 0 1.2px rgba(255,255,255,.09)}
+.stage--jug .j-h--pick,.stage--mom .j-h--pick{--n:74,222,128;color:#eafff4;
+  background:linear-gradient(160deg,rgba(74,222,128,.22),rgba(0,0,0,.5) 70%);
+  box-shadow:inset 0 0 0 1.6px rgba(74,222,128,.75),0 0 22px -2px rgba(74,222,128,.6)}
+.stage--jug .j-prox .cd{background:rgba(74,222,128,.16);color:#7ff0ae;
+  box-shadow:inset 0 0 0 1px rgba(74,222,128,.4)}
+.stage--jug .j-cupo{--n:255,255,255;background:rgba(255,255,255,.04);
+  box-shadow:inset 0 0 0 1.2px rgba(255,255,255,.10)}
+.stage--jug .j-cupo--tuyo{--n:74,222,128;color:#fff;
+  background:linear-gradient(160deg,rgba(74,222,128,.18),rgba(0,0,0,.5) 70%);
+  box-shadow:inset 0 0 0 1.6px rgba(74,222,128,.7),0 0 24px -4px rgba(74,222,128,.55)}
+.stage--jug .tile{--n:255,255,255;background:rgba(255,255,255,.045);
+  box-shadow:inset 0 0 0 1.2px rgba(255,255,255,.11)}
+.stage--jug .tile--b{--n:74,222,128;
+  box-shadow:inset 0 0 0 1.3px rgba(74,222,128,.45),0 0 18px -6px rgba(74,222,128,.5)}
+.stage--jug .tile--b b{color:#4ade80;text-shadow:0 0 16px rgba(74,222,128,.55)}
+.stage--jug .tile--c b{color:#fbbf24;text-shadow:0 0 16px rgba(251,191,36,.5)}
+
+/* Los escudos y los avatares dejan de ser manchas planas: cogen filo y halo
+   de su propio color. */
+.stage--jug .j-cre{box-shadow:0 0 0 1.5px rgba(255,255,255,.22),0 0 26px -4px currentColor}
+.stage--jug .j-cre--big{box-shadow:0 0 0 2px rgba(255,255,255,.25),0 0 42px -6px rgba(74,222,128,.8)}
+.stage--jug .j-av{box-shadow:0 0 0 1.5px rgba(255,255,255,.18),0 0 14px -4px rgba(255,255,255,.35)}
+
+/* La racha y los puntos de estado: color pleno con su brillo. */
+.stage--jug .j-racha i{box-shadow:0 0 12px -2px currentColor}
+.stage--jug .dot{box-shadow:0 0 10px -1px currentColor}
+
+/* Las barras del ranking, encendidas. */
+.stage--jug .rank .rb{background:rgba(255,255,255,.07)}
+.stage--jug .rank .rb i{background:linear-gradient(90deg,#16a34a,#4ade80);
+  box-shadow:0 0 14px -2px rgba(74,222,128,.7)}
+.stage--jug .rank em{color:#eafff4}
+
+/* El chat: el globo de Neo en verde pleno con halo, el del cliente en
+   grafito con filo, como en la lámina. */
+.stage--jug .bub--in{background:linear-gradient(160deg,rgba(255,255,255,.10),rgba(255,255,255,.04));
+  box-shadow:inset 0 0 0 1.2px rgba(255,255,255,.13)}
+.stage--jug .bub--out{background:linear-gradient(160deg,#15803d,#0d5b2c);
+  box-shadow:inset 0 0 0 1.3px rgba(74,222,128,.5),0 0 26px -6px rgba(74,222,128,.55)}
+.stage--jug .chips span{background:rgba(74,222,128,.14);color:#8df3b5;
+  box-shadow:inset 0 0 0 1px rgba(74,222,128,.38)}
+
+/* Los rótulos, con el mismo mono de la lámina. */
+.stage--jug .j-rot,.stage--mom .j-rot{color:rgba(255,255,255,.45);letter-spacing:.16em}
+.stage--jug .j-prox .t b{text-shadow:0 0 22px rgba(74,222,128,.35)}
+
+/* ── correcciones del retinte ──────────────────────────────────────────────
+   Tres cosas que el neón dejó mal y se ven en cuanto se mira la escena
+   entera, no la pieza suelta. */
+
+/* 1 · Todos los chips brillaban igual, así que el elegido no se distinguía
+       del resto: un selector donde todo parece seleccionado no selecciona
+       nada. Los de reposo pasan a grafito y el verde queda SOLO para el que
+       está puesto. */
+.stage--jug .j-chip{--n:255,255,255;background:rgba(255,255,255,.045);
+  box-shadow:inset 0 0 0 1.2px rgba(255,255,255,.12);color:var(--on-night-2)}
+.stage--jug .j-chip--on{--n:74,222,128;color:#eafff4;
+  background:linear-gradient(160deg,rgba(74,222,128,.20),rgba(0,0,0,.5) 70%);
+  box-shadow:inset 0 0 0 1.6px rgba(74,222,128,.7),0 0 22px -4px rgba(74,222,128,.55)}
+
+/* 2 · El contenido se apoyaba arriba y dejaba un tercio de negro muerto
+       abajo. Centrado, la escena ocupa el hueco que tiene. */
+.stage--jug .scene{justify-content:center}
+.stage--jug .scene-hd{position:absolute;top:clamp(16px,2.4vw,28px);
+  left:clamp(16px,2.4vw,28px);right:clamp(16px,2.4vw,28px)}
+
+/* 3 · El chat colgaba del canto de abajo y el hueco de arriba pesaba más que
+       la conversación. */
+.stage--jug .chat{justify-content:center;gap:11px}
+
+/* ══ EL MOMENTO, EN CARRUSEL ══════════════════════════════════════════════
+   Los tres pasos son una SECUENCIA. En tres columnas se leían como tres
+   características sueltas; en carrusel se reproducen solos, y eso es
+   justamente lo que dice el titular: el momento dura veinte segundos.
+   Comparte el neón del lado del jugador — misma escena, mismo material. */
+.stage--mom .canvas{background:#000;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.09),0 40px 80px -40px rgba(0,0,0,.9)}
+.m-cuerpo{flex:1;min-height:0;display:flex;flex-direction:column;gap:12px;justify-content:center}
+.m-centro{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:20px}
+.m-horas{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.m-tot{display:flex;gap:clamp(20px,4vw,52px);padding-top:14px;
+  border-top:1px solid rgba(255,255,255,.10)}
+.m-tot > div{display:flex;flex-direction:column;gap:5px}
+.m-tot b{font-size:clamp(1.1rem,2vw,1.5rem);letter-spacing:-.03em;
+  font-variation-settings:'wdth' 104,'wght' 780}
+.m-tot b.em{color:#4ade80;text-shadow:0 0 20px rgba(74,222,128,.5)}
+.m-pie{flex:none;display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding-top:12px;border-top:1px solid rgba(255,255,255,.10)}
+.m-pie .mono{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:#4ade80}
+.m-cod{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;padding:5px 10px;
+  border-radius:7px;background:rgba(255,255,255,.06);color:var(--on-night-2);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.10)}
+
+/* El conmutador: la pastilla se desliza de Jugador a Dueño. Es el gesto
+   entero de la sección en un solo objeto. */
+.m-sw{position:relative;display:grid;grid-template-columns:1fr 1fr;
+  width:min(100%,320px);padding:5px;border-radius:999px;
+  background:rgba(255,255,255,.055);box-shadow:inset 0 0 0 1.2px rgba(255,255,255,.12)}
+.m-sw span{position:relative;z-index:2;text-align:center;padding:11px 0;font-size:.92rem;
+  font-variation-settings:'wdth' 102,'wght' 650;color:var(--on-night-3);
+  transition:color .3s var(--ease)}
+.m-sw i{position:absolute;z-index:1;top:5px;bottom:5px;left:5px;width:calc(50% - 5px);
+  border-radius:999px;background:linear-gradient(160deg,#16a34a,#0d5b2c);
+  box-shadow:inset 0 0 0 1.3px rgba(74,222,128,.55),0 0 26px -4px rgba(74,222,128,.6)}
+.scene.on .m-sw i{animation:swPasa 1.1s var(--muelle) .5s forwards}
+@keyframes swPasa{to{transform:translateX(100%)}}
+.scene.on .m-sw span:first-of-type{animation:swApaga .4s var(--ease) .9s forwards}
+.scene.on .m-sw span:last-of-type{animation:swEnciende .4s var(--ease) .9s forwards}
+@keyframes swApaga{to{color:var(--on-night-3)}}
+@keyframes swEnciende{to{color:#fff}}
+.m-nota{font-size:.9rem;line-height:1.55;color:var(--on-night-3);text-align:center;max-width:34ch}
+
+/* La agenda del dueño, cuatro franjas, y la tuya encendida. */
+.m-ag{display:flex;flex-direction:column;gap:7px}
+.m-fila{display:grid;grid-template-columns:60px minmax(0,1fr) auto;align-items:center;gap:12px;
+  padding:12px 14px;border-radius:11px;font-size:.9rem;
+  background:rgba(255,255,255,.04);box-shadow:inset 0 0 0 1.2px rgba(255,255,255,.09);
+  opacity:0;transform:translateY(10px)}
+.scene.on .m-fila{animation:cellIn .45s var(--ease) forwards;
+  animation-delay:calc(var(--i) * 130ms + .25s)}
+.m-fila .mono{font-family:var(--mono);font-size:.72rem;color:var(--on-night-3)}
+.m-fila em{font-style:normal;font-family:var(--mono);font-size:.68rem;letter-spacing:.05em}
+.m-fila em.ok{color:#4ade80} .m-fila em.warn{color:#fbbf24} .m-fila em.neg{color:#f87171}
+.m-fila--tuya{background:linear-gradient(160deg,rgba(74,222,128,.16),rgba(0,0,0,.5) 70%);
+  box-shadow:inset 0 0 0 1.6px rgba(74,222,128,.6),0 0 26px -6px rgba(74,222,128,.5)}
+.m-fila--tuya span{color:#fff;font-variation-settings:'wdth' 102,'wght' 700}
+
 /* ══ EL MOMENTO · conector a la demo ══════════════════════════════════════ */
 /* Esto es una SECUENCIA de veinte segundos, no tres características que
    pasan a la vez. Tres tarjetas iguales en rejilla dicen «tres cosas»; una
@@ -1419,6 +1577,37 @@ section{position:relative}
 .plan-foot{margin-top:clamp(26px,3vw,40px);display:flex;flex-wrap:wrap;gap:var(--s-4);
   align-items:center;justify-content:space-between}
 .plan-foot p{font-size:.86rem;color:var(--ink-3);max-width:52ch;line-height:1.55}
+
+/* ── planes: que quepan de una ─────────────────────────────────────────────
+   Medía 1.440 px de alto: para comparar tres planes había que subir y bajar,
+   y comparar es LO ÚNICO que se hace en esta sección. Se aprieta todo lo que
+   no es información —aire, tipos de adorno, huecos— y se deja intacto lo que
+   sí lo es: los tres nombres, el precio y lo que trae cada uno. */
+#planes{padding:clamp(34px,3.4vw,48px) 0}
+/* La cabecera de esta sección va más corta que las demás: aquí lo que hay
+   que leer son las tres tarjetas, no la entradilla. */
+#planes .head{gap:10px;padding-top:var(--s-4)}
+#planes .h2{font-size:clamp(1.5rem,2.6vw,2.2rem);max-width:24ch}
+#planes .lead{font-size:.94rem;max-width:56ch}
+.plans{margin-top:clamp(24px,2.6vw,34px)}
+.plan-c{padding:clamp(20px,2.2vw,28px);gap:11px}
+.plan-c h3{font-size:clamp(1.12rem,1.5vw,1.28rem)}
+.plan-sub{font-size:.83rem;line-height:1.45}
+.plan-price{padding:var(--s-2) 0}
+.plan-price b{font-size:clamp(1.14rem,1.6vw,1.32rem)}
+.plan-price span{font-size:.79rem}
+.featbox{margin-top:0;padding:13px 15px;gap:8px}
+.feat{gap:6px}
+.plan-c .btn{padding:11px 18px;font-size:.9rem}
+.feat li{font-size:.83rem;line-height:1.4}
+.feat li::before{width:14px;height:14px;background-size:14px;margin-top:1px}
+/* Lo que no trae, en un renglón y con su regla encima: sigue estando, sigue
+   separado de lo que sí trae, y ya no cuesta noventa píxeles por tarjeta. */
+.feat-no{font-size:.79rem;line-height:1.45;color:var(--ink-4)}
+.plan-c--dark .feat-no{color:var(--on-night-4)}
+.mono--no{margin-top:2px;padding-top:10px}
+.plan-foot{margin-top:var(--s-4);font-size:.8rem;gap:var(--s-3)}
+.plan-foot p{font-size:.8rem;line-height:1.45}
 
 /* ══ FAQ ══════════════════════════════════════════════════════════════════ */
 .faq{margin-top:clamp(36px,4vw,56px);border-top:1px solid var(--line-2)}
@@ -1950,34 +2139,75 @@ footer .brand-ph{background:rgba(255,255,255,.06)}
         creíble.</p>
     </div>
 
-    <div class="steps">
-      <div class="step rv rv-1">
-        <span class="mono">Como jugador</span>
-        <h3>Reservas en veinte segundos</h3>
-        <p>Deporte, día, cancha y hora en una sola pantalla. Eliges si apartas con la mitad, pagas
-          todo o pagas al llegar.</p>
-        <div class="step-art">
-          <div class="row"><span class="mono">Sáb 23 · 19:00</span><span class="em">$120.000</span></div>
-          <div class="row"><b>Sintética 1</b><span class="em">apartar $60.000</span></div>
-        </div>
+    <!-- Los tres pasos dejan de estar uno al lado del otro y pasan a ser un
+         carrusel: SON una secuencia de veinte segundos, y en tres columnas
+         se leen como tres características sueltas. Así se reproduce sola,
+         que es exactamente lo que la sección promete. -->
+    <div class="stage stage--mom rv rv-1">
+      <div class="tablist">
+        <button class="tab" type="button">
+          <span class="tt"><span class="tn">01</span><span class="h4">Como jugador</span></span>
+          <p>Deporte, día, cancha y hora en una sola pantalla. Eliges si apartas con la mitad,
+            pagas todo o pagas al llegar.</p>
+          <span class="bar"><i></i></span>
+        </button>
+        <button class="tab" type="button">
+          <span class="tt"><span class="tn">02</span><span class="h4">El conmutador</span></span>
+          <p>No es un filtro de permisos: son dos productos distintos sobre el mismo estado.
+            Cambia la navegación entera, no los datos que se ocultan.</p>
+          <span class="bar"><i></i></span>
+        </button>
+        <button class="tab" type="button">
+          <span class="tt"><span class="tn">03</span><span class="h4">Como dueño</span></span>
+          <p>La misma reserva, en la misma franja, con su adelanto contado y su saldo pendiente.
+            Nada se simula: es el mismo registro.</p>
+          <span class="bar"><i></i></span>
+        </button>
       </div>
-      <div class="step rv rv-2">
-        <span class="mono">El conmutador</span>
-        <h3>Cambias de lado sin salir</h3>
-        <p>No es un filtro de permisos: son dos productos distintos sobre el mismo estado. Cambia la
-          navegación entera, no los datos que se ocultan.</p>
-        <div class="step-art">
-          <div class="switch"><span>Jugador</span><span class="on">Dueño</span></div>
+
+      <div class="canvas">
+        <!-- 01 · el jugador elige -->
+        <div class="scene" data-scene>
+          <div class="scene-hd"><span class="mono">Como jugador</span><small>reservar</small></div>
+          <div class="m-cuerpo">
+            <span class="j-rot">Sábado 23 · Sintética 1</span>
+            <div class="m-horas">
+              <span class="j-h j-h--no" style="--i:0">17:00</span>
+              <span class="j-h" style="--i:1">18:00</span>
+              <span class="j-h j-h--pick" style="--i:2">19:00</span>
+              <span class="j-h j-h--no" style="--i:3">20:00</span>
+            </div>
+            <div class="m-tot">
+              <div><span class="j-rot">La hora</span><b>$120.000</b></div>
+              <div><span class="j-rot">Apartas con</span><b class="em">$60.000</b></div>
+            </div>
+          </div>
+          <div class="m-pie"><span class="mono">Confirmada</span><span class="m-cod">SP-3F9A</span></div>
         </div>
-      </div>
-      <div class="step rv rv-3">
-        <span class="mono">Como dueño</span>
-        <h3>Ya está en la agenda</h3>
-        <p>La misma reserva, en la misma franja, con su adelanto contado y su saldo pendiente. Nada
-          se simula: es el mismo registro.</p>
-        <div class="step-art">
-          <div class="row"><span class="mono">19:00</span><b>Tu reserva</b></div>
-          <div class="row"><span style="color:var(--on-night-3)">saldo</span><span class="em">$60.000</span></div>
+
+        <!-- 02 · el conmutador -->
+        <div class="scene" data-scene>
+          <div class="scene-hd"><span class="mono">El conmutador</span><small>abajo a la izquierda</small></div>
+          <div class="m-centro">
+            <div class="m-sw"><i></i><span>Jugador</span><span>Dueño</span></div>
+            <p class="m-nota">La misma reserva, vista desde el otro lado.<br>
+              No se oculta nada: cambia el producto entero.</p>
+          </div>
+        </div>
+
+        <!-- 03 · el dueño la ve -->
+        <div class="scene" data-scene>
+          <div class="scene-hd"><span class="mono">Como dueño</span><small>agenda del sábado</small></div>
+          <div class="m-cuerpo">
+            <span class="j-rot">Sintética 1</span>
+            <div class="m-ag">
+              <div class="m-fila" style="--i:0"><span class="mono">17:00</span><span>Los Cafeteros</span><em class="ok">Pagada</em></div>
+              <div class="m-fila" style="--i:1"><span class="mono">18:00</span><span>Andrés Vélez</span><em class="warn">Con adelanto</em></div>
+              <div class="m-fila m-fila--tuya" style="--i:2"><span class="mono">19:00</span><span>Tu reserva</span><em class="warn">saldo $60.000</em></div>
+              <div class="m-fila" style="--i:3"><span class="mono">20:00</span><span>Club Palmares</span><em class="neg">Sin abonar</em></div>
+            </div>
+          </div>
+          <div class="m-pie"><span class="mono">Entró hace un momento</span><span class="m-cod">SP-3F9A</span></div>
         </div>
       </div>
     </div>
@@ -2077,7 +2307,7 @@ footer .brand-ph{background:rgba(255,255,255,.06)}
     <div class="vgroup rv rv-2">
       <h3 class="h3">Lado del jugador <em>seis vistas</em></h3>
 
-      <div class="stage">
+      <div class="stage stage--jug">
         <div class="tablist">
         <button class="tab" type="button">
           <span class="tt"><span class="tn">01</span><span class="h4">Inicio</span></span>
@@ -2252,9 +2482,8 @@ footer .brand-ph{background:rgba(255,255,255,.06)}
     <div class="head head--rule rv">
       <span class="eyebrow">Planes</span>
       <h2 class="h2">Se cobra por complejo, y escala con las canchas.</h2>
-      <p class="lead">Prueba sin tarjeta. El precio depende de cuántas canchas
-        tengas, así que lo cotizamos contigo en cinco minutos en vez de ponerte una tabla que no
-        corresponde a tu negocio.</p>
+      <p class="lead">Prueba sin tarjeta. El precio sale de cuántas canchas tengas, así que se
+        cotiza contigo en cinco minutos.</p>
     </div>
 
     <div class="plans rv rv-1">
@@ -2272,12 +2501,7 @@ footer .brand-ph{background:rgba(255,255,255,.06)}
             <li><span>Neo AI dentro de la plataforma</span></li>
           </ul>
           <span class="mono mono--no">No incluye</span>
-          <ul class="feat feat--no">
-            <li><span>Neo en tu propio número de WhatsApp</span></li>
-            <li><span>Recordatorios y avisos de saldo</span></li>
-            <li><span>Cuentas de mostrador</span></li>
-            <li><span>Cobro del adelanto con pasarela</span></li>
-          </ul>
+          <p class="feat-no">Neo en tu propio número de WhatsApp · Recordatorios y avisos de saldo · Cuentas de mostrador · Cobro del adelanto con pasarela</p>
         </div>
         <a class="btn btn-line" href="https://wa.me/57XXXXXXXXXX" data-wa>Cotizar</a>
       </div>
@@ -2295,11 +2519,7 @@ footer .brand-ph{background:rgba(255,255,255,.06)}
             <li><span>Adelanto cobrado con pasarela, a tu cuenta</span></li>
           </ul>
           <span class="mono mono--no">No incluye</span>
-          <ul class="feat feat--no">
-            <li><span>Migración de lo que hay en el cuaderno</span></li>
-            <li><span>Acompañamiento la primera semana</span></li>
-            <li><span>Soporte con línea directa</span></li>
-          </ul>
+          <p class="feat-no">Migración de lo que hay en el cuaderno · Acompañamiento la primera semana · Soporte con línea directa</p>
         </div>
         <a class="btn btn-em" href="https://wa.me/57XXXXXXXXXX" data-wa>Cotizar <span class="arw">→</span></a>
       </div>
@@ -2321,21 +2541,20 @@ footer .brand-ph{background:rgba(255,255,255,.06)}
     </div>
 
     <div class="plan-foot rv rv-2">
-      <p><b>Lo que no se cobra:</b> el dinero de los adelantos entra a tu cuenta, no a la nuestra.
-        No somos intermediarios de fondos y no nos quedamos un porcentaje de tus reservas.
-        Y si un mes no pagas, la plataforma pasa a solo lectura: nunca se borran datos y la agenda
-        de mañana se puede seguir consultando.</p>
+      <p><b>Lo que no se cobra:</b> los adelantos entran a tu cuenta, no a la nuestra — no nos
+        quedamos un porcentaje. Y si un mes no pagas, la plataforma pasa a solo lectura: nunca se
+        borran datos.</p>
       <a class="btn btn-ink" href="https://filyandco.com/demos/sportplatz/" data-demo>Probar la demo primero <span class="arw">→</span></a>
     </div>
   </div>
 </section>
 
 <!-- ══ PREGUNTAS ════════════════════════════════════════════════════════ -->
-<section class="band b-bone" id="preguntas" style="padding-bottom:clamp(112px,11vw,196px);overflow:hidden">
+<section class="band b-bone" id="preguntas" style="padding-bottom:clamp(64px,6vw,96px);overflow:hidden">
   <div class="wrap">
     <div class="head rv"><span class="eyebrow">Preguntas</span><h2 class="h2">Lo que siempre nos preguntan.</h2></div>
     <div class="faq rv rv-1">
-      <details><summary>¿Mis clientes tienen que descargar algo?</summary>
+      <details open><summary>¿Mis clientes tienen que descargar algo?</summary>
         <div class="ans">No. Sportplatz es web: le mandas el link por WhatsApp y se abre en el
           navegador del celular. No hay app que instalar, ni tienda que aprobar, ni actualización
           que nadie va a hacer.</div></details>
