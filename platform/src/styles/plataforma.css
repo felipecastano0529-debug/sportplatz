@@ -1,0 +1,219 @@
+/* ==========================================================================
+   SPORTPLATZ · PLATAFORMA · lo que la demo no tenía
+
+   Aquí SOLO vive lo que existe porque hay cuentas de verdad: la entrada, el
+   registro, la elección de complejo y los estados que trae un backend
+   (guardando, sin permiso, plan vencido).
+
+   Regla de la casa: todo se construye con los tokens de `momentum.css`. Si
+   una regla de este archivo necesita un valor literal que no sea una capa de
+   luz o de velo, es que falta un token — y entonces se añade allí, no aquí.
+   ========================================================================== */
+
+/* ── Entrada ─────────────────────────────────────────────────────────────── */
+
+.auth-actions { margin-top: var(--s6); }
+
+/* El aviso que confirma algo que ya pasó: tinte de marca y etiqueta, nunca
+   solo color. Es el mismo lenguaje que el semáforo de la agenda (R21). */
+.nota {
+  display: flex; align-items: flex-start; gap: .5rem;
+  margin-bottom: var(--s5); padding: .6875rem .875rem;
+  background: var(--brand-tint);
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  border-radius: var(--r2);
+  font-size: var(--fs-sm); line-height: var(--lh-sm); color: var(--accent-deep);
+  box-shadow: var(--e1);
+}
+.nota .ic { flex: none; margin-top: .0625rem; color: var(--accent); }
+
+.nota--neg {
+  background: var(--red-tint);
+  border-color: rgba(229, 35, 31, .22);
+  color: var(--red-deep);
+}
+.nota--neg .ic { color: var(--red); }
+
+/* ── Elegir a qué complejo se entra ──────────────────────────────────────── */
+
+/* Un mismo ser humano puede ser dueño de un complejo y jugador en otro (§2).
+   Cuando pasa, esta es la primera pantalla que ve. */
+.espacios { display: flex; flex-direction: column; gap: .5rem; }
+
+.espacio {
+  display: flex; align-items: center; gap: .875rem; width: 100%;
+  padding: .875rem 1rem; text-align: left;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r3); box-shadow: var(--e1), var(--hi);
+  transition: transform var(--t-hover) var(--ease-out),
+              box-shadow var(--t-hover) var(--ease-out),
+              border-color var(--t-hover) var(--ease-out);
+}
+.espacio:active { transform: scale(.985); }
+@media (hover: hover) and (pointer: fine) {
+  .espacio:hover {
+    border-color: var(--brand-2);
+    box-shadow: var(--e3), var(--hi);
+    transform: translateY(-1px);
+  }
+}
+
+.espacio-ic {
+  display: grid; place-items: center; flex: none;
+  width: 2.75rem; height: 2.75rem; border-radius: var(--r2);
+  background-image: var(--g-brand-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--accent);
+  font-size: var(--fs-h3); font-weight: 800; letter-spacing: -.02em;
+}
+.espacio-ic img { width: 100%; height: 100%; border-radius: inherit; object-fit: cover; }
+
+.espacio-txt { display: grid; min-width: 0; flex: 1; }
+.espacio-txt b {
+  font-size: var(--fs-h3); font-weight: var(--fw-h3); letter-spacing: var(--tr-h3);
+  color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.espacio-txt em {
+  font-style: normal; font-size: var(--fs-xs); color: var(--ink-3);
+}
+.espacio .ic-go { flex: none; color: var(--ink-4); }
+
+/* ── Estados de la plataforma ────────────────────────────────────────────── */
+
+/* Plan vencido: la agenda se sigue consultando y nada se borra (§8.3). Un
+   negocio que no puede ver su agenda de mañana nos denuncia, con razón. */
+.solo-lectura {
+  display: flex; align-items: center; gap: .5rem;
+  padding: .5rem .875rem;
+  background: var(--amber-tint); border-bottom: 1px solid rgba(245, 163, 0, .28);
+  font-size: var(--fs-xs); font-weight: 600; color: var(--amber-deep);
+}
+.solo-lectura .ic { flex: none; color: var(--amber-deep); }
+
+/* Cuando una franja se la lleva otro entre que se abre el formulario y se
+   confirma (R5). No es un fallo del usuario y no se le habla como tal. */
+.choque { margin-top: .75rem; }
+.choque-horas { display: flex; flex-wrap: wrap; gap: .375rem; margin-top: .5rem; }
+
+/* ── Utilidades que la demo no necesitaba ────────────────────────────────── */
+
+/* La demo renderizaba una forma u otra de la agenda según `matchMedia`. Aquí
+   la pinta el servidor, que no sabe el ancho de la pantalla, así que van las
+   dos y manda el CSS. Es más DOM, pero a cambio no hay salto al hidratar ni
+   media vista rota al girar el teléfono. */
+.solo-angosto { display: none; }
+@media (max-width: 62rem) {
+  .solo-ancho   { display: none; }
+  .solo-angosto { display: block; }
+}
+
+/* Para lo que tiene que oírse pero no verse: la etiqueta del semáforo de la
+   agenda (R21) ya está en el color y en la posición, pero el color nunca
+   puede ser la única señal. */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+
+/* Dato técnico: horas y códigos de reserva. */
+.mono { font-family: var(--mono); font-variant-numeric: var(--num); font-size: .9em; }
+
+/* ── Ajustes · las canchas una por una ───────────────────────────────────── */
+
+/* La demo llevaba a Canchas para editar cada una. Aquí caben en Ajustes
+   porque es donde se busca "cambiarle la foto y el precio a la número 3", y
+   una lista de filas se recorre mejor que una rejilla de tarjetas cuando lo
+   que se hace es administrar, no mirar. */
+.set-courts {
+  display: flex; flex-direction: column;
+  margin: 0 0 var(--s5);
+  border: 1px solid var(--line); border-radius: var(--r3);
+  background: var(--surface); box-shadow: var(--e1), var(--hi);
+  overflow: hidden;
+}
+.set-court {
+  display: flex; align-items: center; gap: .875rem;
+  padding: .75rem .875rem;
+}
+.set-court + .set-court { box-shadow: inset 0 1px 0 var(--line); }
+
+.set-court-ball {
+  display: grid; place-items: center; flex: none;
+  width: 2.25rem; height: 2.25rem; border-radius: var(--r1);
+  background: var(--surface-3);
+}
+.set-court-ball .ball { width: 1.375rem; height: 1.375rem; }
+
+.set-court-txt { display: grid; min-width: 0; flex: 1; }
+.set-court-txt b {
+  font-size: var(--fs-sm); font-weight: 700; letter-spacing: -.012em;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.set-court-txt em {
+  font-style: normal; font-size: var(--fs-xs); color: var(--ink-3);
+  font-variant-numeric: var(--num);
+}
+
+.set-court-tools { display: flex; align-items: center; gap: .375rem; flex: none; flex-wrap: wrap; }
+
+@media (max-width: 40rem) {
+  .set-court { flex-wrap: wrap; }
+  .set-court-tools { width: 100%; padding-left: 3.125rem; }
+}
+
+/* Los pasos del onboarding, dentro del escenario. El rail de la izquierda es
+   una escena compartida por entrar, registro y onboarding, así que no sabe
+   en qué paso va: la tira vive en el panel. */
+.ob-steps--inline {
+  flex-direction: row; flex-wrap: wrap; gap: 1.25rem;
+  margin: 0 0 var(--s6);
+}
+.ob-steps--inline .ob-step {
+  border-bottom: 0; padding: 0; gap: .5rem;
+  color: var(--ink-4); white-space: nowrap;
+}
+.ob-steps--inline .ob-step-n { border-color: var(--line-2); }
+.ob-steps--inline .ob-step.is-now { color: var(--ink); }
+.ob-steps--inline .ob-step.is-done { color: var(--ink-3); }
+.ob-steps--inline .ob-step.is-done .ob-step-n {
+  background: var(--green-tint); border-color: color-mix(in srgb, var(--green) 40%, transparent);
+  color: var(--green-deep);
+}
+@media (max-width: 40rem) {
+  .ob-steps--inline .ob-step-t { display: none; }
+  .ob-steps--inline .ob-step.is-now .ob-step-t { display: inline; }
+}
+
+/* Selector de posición dentro de una fila de plantilla: hereda el campo pero
+   se encoge para no romper la línea. */
+.input-mini {
+  padding: .25rem .5rem; font-size: var(--fs-xs);
+  width: auto; min-width: 8rem; margin-top: .1875rem;
+}
+
+/* ── Mientras carga ──────────────────────────────────────────────────────── */
+
+/* Esqueletos con la forma de lo que viene. El brillo va por `background-position`
+   y no por un pseudo-elemento que se desplaza: así no hay una capa más
+   componiéndose en cada frame sobre media pantalla. */
+.sk {
+  border-radius: var(--r3);
+  background:
+    linear-gradient(100deg,
+      var(--surface-2) 30%,
+      var(--surface-3) 44%,
+      var(--surface-2) 58%) 0 0 / 300% 100%;
+  animation: sk 1.4s var(--ease-in-out) infinite;
+}
+@keyframes sk { to { background-position: -150% 0; } }
+
+.sk-head { height: 3.25rem; width: min(22rem, 60%); margin-bottom: var(--s6); border-radius: var(--r2); }
+.sk-stat { height: 7.5rem; }
+.sk-card { height: 18rem; }
+
+.cargando .stat-row,
+.cargando .grid-2 { margin-bottom: .75rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sk { animation: none; background: var(--surface-2); }
+}

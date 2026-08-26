@@ -1,0 +1,23 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "src/components/MediaBlock.tsx"
+        ],
+        "createdAt": "2026-08-22T17:46:35.514Z",
+        "reason": "El <img> va detrás de {src && ...}: solo se renderiza cuando hay una URL real de Supabase Storage. Sin foto se dibuja el plano de cancha, no un placeholder."
+      },
+      {
+        "rule": "bounce-easing",
+        "value": "cubic-bezier(.34, 1.12, .48, 1)",
+        "createdAt": "2026-08-22T20:39:35.937Z",
+        "reason": "Es --ease-pop de DESIGN.md §10.5, la curva de confirmaciones y podio de la casa. La demo la bajó de 1.4 a 1.12 exactamente por el motivo del hook: a 1.4 el movimiento se leía a juguete. Un 12% de sobreimpulso insinúa inercia, no rebota, y así CSS y JS se mueven igual."
+      }
+    ]
+  }
+}

@@ -1,0 +1,84 @@
+/* ==========================================================================
+   SPORTPLATZ · PLATAFORMA · hoja raíz
+
+   El orden importa y no es negociable:
+
+     1. Tailwind (incluye su preflight, que resetea elementos).
+     2. `momentum.css` — LOS TOKENS. La fuente de verdad del diseño, copiada
+        de la demo sin tocar un valor. Si un color no está aquí, no existe.
+     3. `base.css` y `premium.css` — los componentes de la demo, tal cual.
+
+   Migrar de stack no es licencia para rediseñar (PLATAFORMA.md §10). Estas
+   tres hojas son la piel probada; Tailwind queda como utilidad para el
+   andamiaje nuevo, nunca para redefinir lo que ya tiene token.
+   ========================================================================== */
+
+@import "tailwindcss";
+
+@import "../styles/momentum.css";
+@import "../styles/base.css";
+@import "../styles/premium.css";
+@import "../styles/plataforma.css";
+
+/* Las utilidades de Tailwind se sirven de los MISMOS tokens. `inline` hace
+   que apunten a las variables de momentum en vez de copiar sus valores: si
+   Ajustes cambia `--accent` en caliente, `bg-accent` se retiñe con todo lo
+   demás. Sin esto habría dos verdes distintos, uno por sistema. */
+@theme inline {
+  --color-bg:        var(--bg);
+  --color-surface:   var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-line:      var(--line);
+  --color-line-2:    var(--line-2);
+  --color-line-3:    var(--line-3);
+  --color-field:     var(--field);
+
+  --color-ink:   var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-ink-4: var(--ink-4);
+
+  --color-accent:      var(--accent);
+  --color-accent-hi:   var(--accent-hi);
+  --color-accent-deep: var(--accent-deep);
+  --color-on-accent:   var(--on-accent);
+
+  --color-red:   var(--red);
+  --color-amber: var(--amber);
+  --color-green: var(--green);
+  --color-gold:  var(--gold);
+
+  --color-band-bg-a: var(--band-bg-a);
+  --color-band-bg-b: var(--band-bg-b);
+  --color-panel:     var(--panel-base);
+  --color-panel-2:   var(--panel-2);
+
+  --font-sans: var(--font);
+  --font-mono: var(--mono);
+
+  --radius-r1: var(--r1);
+  --radius-r2: var(--r2);
+  --radius-r3: var(--r3);
+  --radius-r4: var(--r4);
+  --radius-r5: var(--r5);
+
+  --shadow-e1: var(--e1);
+  --shadow-e2: var(--e2);
+  --shadow-e3: var(--e3);
+  --shadow-e4: var(--e4);
+  --shadow-e5: var(--e5);
+
+  --ease-out-sp:    var(--ease-out);
+  --ease-in-out-sp: var(--ease-in-out);
+  --ease-drawer:    var(--ease-drawer);
+  --ease-pop:       var(--ease-pop);
+}
+
+/* `next/font` expone las familias como variables; se enchufan a los tokens
+   que ya usaba la demo para no cambiar ni una regla. */
+:root {
+  --font:         var(--font-archivo), -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-display: var(--font-archivo), -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --mono:         var(--font-plex-mono), ui-monospace, SFMono-Regular, monospace;
+}
