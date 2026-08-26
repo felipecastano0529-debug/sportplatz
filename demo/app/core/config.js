@@ -14,8 +14,8 @@
    en el navegador. Es a propósito: nunca se rompe por falta de configuración.
    ========================================================================== */
 
-export const SUPABASE_URL  = '';
-export const SUPABASE_ANON = '';
+export const SUPABASE_URL  = 'https://yhprxfgxmfvnlkcksbxb.supabase.co';
+export const SUPABASE_ANON = 'sb_publishable_FP2xV4BcwAeoHrXhi-PS3w_pjhYJejp';
 
 export const nubeConfigurada = () =>
   SUPABASE_URL.startsWith('https://') && SUPABASE_ANON.length > 40;

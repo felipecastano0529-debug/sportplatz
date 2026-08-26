@@ -50,6 +50,15 @@ Luego `http://localhost:5173`.
 queda con el JS de antes después de cada edición y parece que los cambios no
 entraron.
 
+## La nube
+
+`app/core/config.js` trae las claves de **`sportplatz-demo`**, un proyecto de
+Supabase aparte del de la plataforma — cualquier visitante puede registrarse
+aquí y no le pesa nada a la base de un cliente real. Si esas dos cadenas
+estuvieran vacías la app seguiría andando igual, guardando en el navegador:
+es el respaldo a propósito, no una app rota. El proyecto, sus claves y cómo se
+comprobó están en **[../docs/BASE.md](../docs/BASE.md)**.
+
 ## Qué hace
 
 ### Lado del dueño
