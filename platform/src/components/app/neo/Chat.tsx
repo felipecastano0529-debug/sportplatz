@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import { Ball } from '@/components/Ball';
 import { Icon } from '@/components/Icon';
 import { hablarConNeo } from '@/lib/actions/neo';
@@ -79,7 +78,7 @@ export function Chat({
         <span className="neo-av">
           {logoUrl
             ? <img src={logoUrl} alt="" />
-            : <Image className="logo" src="/assets/marca/logo.png" alt="" width={256} height={256} />}
+            : <img className="logo" src="/assets/marca/logo.png" alt="" width={256} height={256} />}
         </span>
         <span className="neo-who">
           <b>Neo AI</b>

@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { Backdrop } from '@/components/Backdrop';
 
@@ -18,14 +17,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       <div className="ob">
         <aside className="ob-rail">
           <Link href="/" className="ob-brand">
-            <Image
-              className="logo"
-              src="/assets/marca/logo.png"
-              alt=""
-              width={256}
-              height={256}
-              priority
-            />
+            <img className="logo" src="/assets/marca/logo.png" alt="" width={256} height={256} />
             Sportplatz
           </Link>
 

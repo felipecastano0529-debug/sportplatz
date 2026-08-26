@@ -2,7 +2,6 @@
 
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import { guardarNegocio, guardarLogo, quitarLogo } from '@/lib/actions/negocio';
 import { toast } from '@/components/ui/Toast';
 import { SubirFoto } from '@/components/app/SubirFoto';
@@ -54,7 +53,7 @@ export function Identidad({
         <span className="logo-prev">
           {logoUrl
             ? <img src={logoUrl} alt="" />
-            : <Image className="logo" src="/assets/marca/logo.png" alt="" width={256} height={256} />}
+            : <img className="logo" src="/assets/marca/logo.png" alt="" width={256} height={256} />}
         </span>
         {esDueno && (
           <div className="crest-tools">

@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { Backdrop } from '@/components/Backdrop';
 
 /* ==========================================================================
@@ -17,7 +16,7 @@ export default function NoEncontrado() {
       <div className="ob">
         <aside className="ob-rail">
           <Link href="/" className="ob-brand">
-            <Image className="logo" src="/assets/marca/logo.png" alt="" width={256} height={256} />
+            <img className="logo" src="/assets/marca/logo.png" alt="" width={256} height={256} />
             Sportplatz
           </Link>
         </aside>

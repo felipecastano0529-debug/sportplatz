@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { Icon } from '@/components/Icon';
@@ -59,14 +58,7 @@ export function NavRail({
               <img src={logoUrl} alt="" />
             </span>
           ) : (
-            <Image
-              className="logo"
-              src="/assets/marca/logo.png"
-              alt=""
-              width={256}
-              height={256}
-              priority
-            />
+            <img className="logo" src="/assets/marca/logo.png" alt="" width={256} height={256} />
           )}
           <span className="nav-brand-txt">
             <b>{nombreComplejo}</b>
