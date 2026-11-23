@@ -275,7 +275,7 @@ code { font-family: var(--mono); font-size: .84em; letter-spacing: 0; }
 
 /* Primario: degradado + filo de luz interior + resplandor propio. */
 .btn-primary {
-  background-image: var(--g-brand); color: var(--on-brand);
+  background-image: var(--g-brand); color: var(--on-accent);
   box-shadow: var(--glow-brand), inset 0 1px 0 rgba(255,255,255,.28);
 }
 .btn-primary:hover:not(:disabled) {
@@ -855,7 +855,7 @@ select.input { appearance: none; cursor: pointer;
      así que el `opacity: 0` de `.media-img` la mantenía invisible. Una imagen
      que ya está en el navegador no puede depender de que corra JavaScript
      para verse. */
-  opacity: 1; }}
+  opacity: 1; }
 /* Velo: sin él, texto y tarjetas se pierden sobre el césped iluminado. */
 .vb-scrim { position: absolute; inset: 0;
   background:

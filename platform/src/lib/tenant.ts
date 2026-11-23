@@ -54,33 +54,46 @@ export const misComplejos = cache(async () => {
  * Resuelve el complejo del slug y el rol de quien mira. Si no hay sesión,
  * a entrar; si el slug no existe o no es suyo, 404 — y son la misma
  * respuesta a propósito: "existe pero no es tuyo" ya es información.
+ *
+ * La primera versión encadenaba CUATRO viajes de red en fila —
+ * `getUser()`, `personas`, `complejos`, `membresias`— antes de que la
+ * página empezara a pedir un solo dato suyo. Solo el primero depende de
+ * verdad de algo previo (hace falta el `user.id` para preguntar el resto);
+ * las otras dos preguntas —quién es esta persona, y a qué complejo con este
+ * slug pertenece— no dependen una de la otra, así que van a la vez. Y la de
+ * membresía se combina con la del complejo en una sola consulta con
+ * embebido: PostgREST trae `complejos` colgado de la fila de `membresias`
+ * en la misma petición, así que esa pareja deja de ser dos viajes y pasa a
+ * ser uno.
  */
 export const resolverTenant = cache(async (slug: string): Promise<Sesion> => {
-  const persona = await miPersona();
-  if (!persona) redirect('/entrar');
-
   const sb = await supabaseServer();
 
-  const { data: complejo } = await sb
-    .from('complejos').select('*').eq('slug', slug).maybeSingle();
-  if (!complejo) notFound();
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user) redirect('/entrar');
 
-  const { data: membresias } = await sb
-    .from('membresias').select('rol')
-    .eq('complejo_id', (complejo as Complejo).id)
-    .eq('persona_id', persona.id);
+  const [{ data: persona }, { data: filas }] = await Promise.all([
+    sb.from('personas').select('*').eq('id', user.id).maybeSingle(),
+    sb.from('membresias')
+      .select('rol, complejos!inner(*)')
+      .eq('persona_id', user.id)
+      .eq('complejos.slug', slug)
+  ]);
 
-  const roles = (membresias ?? []).map(m => m.rol as Rol);
-  if (!roles.length) notFound();
+  if (!persona) redirect('/entrar');
 
+  const membresias = (filas ?? []) as unknown as { rol: Rol; complejos: Complejo }[];
+  if (!membresias.length) notFound();
+
+  const roles = membresias.map(m => m.rol);
   // Si alguien es dueño Y jugador del mismo complejo, manda el rol de más
   // alcance: el conmutador de la demo es cosa de la demo, aquí es la sesión.
   const rol: Rol = roles.includes('dueno') ? 'dueno'
     : roles.includes('operador') ? 'operador' : 'jugador';
 
-  const c = complejo as Complejo;
+  const c = membresias[0].complejos;
   return {
-    persona,
+    persona: persona as Persona,
     complejo: c,
     rol,
     staff: rol === 'dueno' || rol === 'operador',

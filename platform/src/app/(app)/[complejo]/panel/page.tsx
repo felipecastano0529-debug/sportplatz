@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { exigirDueno } from '@/lib/tenant';
 import { canchasDe } from '@/lib/queries/canchas';
 import {
-  reservasEntre, facturado, cobrado, porCobrar, ocupacion,
+  reservasEntre, resumenEntre, facturado, cobrado, porCobrar, ocupacion,
   facturadoPorCancha, serieDiaria, serieSemanal, seriePendiente
 } from '@/lib/queries/agenda';
 import {
@@ -40,17 +40,22 @@ export default async function PanelPage({
   const hoy = today();
   const hoyISO = iso(hoy);
 
-  // UNA consulta de 60 días y todo lo demás se deriva en memoria. Sesenta
-  // porque el comparativo del mes necesita el mes anterior entero.
-  const [canchas, rango] = await Promise.all([
+  // El rango de 120 días solo sirve para SUMAR (facturado, cobrado, la
+  // franja ocupada): va por `resumenEntre`, que trae cuatro columnas y no
+  // dieciséis. «Próximas reservas» y «Saldos pendientes» sí necesitan la
+  // fila completa —cliente, hora— pero solo enseñan seis y cinco filas, así
+  // que se piden aparte y en una ventana corta: no hace falta cargar dos
+  // meses de detalle para mostrar cinco nombres.
+  const [canchas, resumen, cercanas] = await Promise.all([
     canchasDe(c.id),
-    reservasEntre(c.id, iso(addDays(hoy, -59)), iso(addDays(hoy, 60)))
+    resumenEntre(c.id, iso(addDays(hoy, -59)), iso(addDays(hoy, 60))),
+    reservasEntre(c.id, hoyISO, iso(addDays(hoy, 30)))
   ]);
 
   const entre = (d: number, h: number) => {
     const a = iso(addDays(hoy, d));
     const b = iso(addDays(hoy, h));
-    return rango.filter(r => r.fecha >= a && r.fecha <= b);
+    return resumen.filter(r => r.fecha >= a && r.fecha <= b);
   };
 
   const deHoy        = entre(0, 0);
@@ -59,8 +64,8 @@ export default async function PanelPage({
   const semanaAnt    = entre(-13, -7);
   const deMes        = entre(-29, 0);
   const mesAnt       = entre(-59, -30);
-  const pasado       = rango.filter(r => r.fecha <= hoyISO);
-  const futuro       = rango.filter(r => r.fecha >= hoyISO);
+  const pasado       = resumen.filter(r => r.fecha <= hoyISO);
+  const futuro       = resumen.filter(r => r.fecha >= hoyISO);
 
   const ocup = ocupacion(deSemana, c, canchas.filter(x => x.activa).length, 7);
 
@@ -102,12 +107,14 @@ export default async function PanelPage({
   const maxV = Math.max(...serie.map(x => x.valor), 1);
   const totalSerie = serie.reduce((a, x) => a + x.valor, 0);
 
-  const proximas = futuro
+  // De los próximos 30 días, no de los 60: son seis y cinco filas, y lo que
+  // importa es lo que se viene encima, no lo que falta dos meses.
+  const proximas = cercanas
     .slice()
     .sort((a, b) => (a.fecha + a.inicio).localeCompare(b.fecha + b.inicio))
     .slice(0, 6);
 
-  const deudores = futuro
+  const deudores = cercanas
     .filter(r => r.abonado < r.total)
     .sort((a, b) => saldo(b) - saldo(a))
     .slice(0, 5);

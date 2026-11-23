@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { exigirDueno } from '@/lib/tenant';
 import { canchasDe } from '@/lib/queries/canchas';
-import { reservasEntre, facturado, cobrado } from '@/lib/queries/agenda';
+import { resumenEntre, facturado, cobrado } from '@/lib/queries/agenda';
 import { moneyShort, fmtDate, iso, today, addDays } from '@/lib/util';
 import { SPORTS } from '@/lib/sports';
 import { PageHead } from '@/components/app/PageHead';
@@ -39,8 +39,10 @@ export default async function AjustesPage({
   const [canchas, historia] = await Promise.all([
     canchasDe(c.id),
     // Un año hacia atrás y dos meses hacia delante: es todo lo que necesitan
-    // los totales de abajo, y evita traerse la agenda entera.
-    reservasEntre(c.id, iso(addDays(hoy, -365)), iso(addDays(hoy, 60)))
+    // los totales de abajo. Aquí no se enseña ni una fila —solo se cuentan
+    // y se suman—, así que va por `resumenEntre`: cuatro columnas, no
+    // dieciséis, y ninguna se tira sin mirar.
+    resumenEntre(c.id, iso(addDays(hoy, -365)), iso(addDays(hoy, 60)))
   ]);
 
   const deportes = [...new Set(canchas.map(x => x.deporte))];
